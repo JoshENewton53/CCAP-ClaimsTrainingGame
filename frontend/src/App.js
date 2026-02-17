@@ -47,7 +47,7 @@ function App() {
       <div className="app">
         <header className="app-header">
           <img 
-            src="/PrincipalLogo1.png" 
+            src="/PrincipalLogo3.png" 
             alt="Principal Logo" 
             className="principal-logo"
           />
@@ -64,7 +64,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <img 
-          src="/PrincipalLogo1.png" 
+          src="/PrincipalLogo3.png" 
           alt="Principal Logo" 
           className="principal-logo"
         />
