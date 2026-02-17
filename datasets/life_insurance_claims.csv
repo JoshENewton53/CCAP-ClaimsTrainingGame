@@ -1,0 +1,1001 @@
+claim_id,policy_id,claim_type,policy_amount,claim_amount,beneficiary_id,claim_date,age_at_death,claim_status,difficulty,policy_active_months,cause_of_death,beneficiary_relationship,premium_payments_current,in_contestability_period,exclusions_apply,amount_vs_expected_percent,missing_documentation
+3000,LP00000,death_benefit,100000,98517.71,B00000,2023-01-01,44,approved,medium,36,Natural causes,Child,Yes,True,None,98.5,None
+3001,LP00001,death_benefit,500000,497187.51,B00001,2023-01-02,51,under_review,easy,36,Stroke,Child,Grace period,False,None,99.4,Death certificate
+3002,LP00002,terminal_illness,100000,73368.94,B00002,2023-01-03,41,approved,hard,30,Heart disease,Spouse,Yes,False,None,73.4,None
+3003,LP00003,death_benefit,500000,496485.88,B00003,2023-01-04,73,under_review,hard,36,Natural causes,Child,Yes,False,None,99.3,Police report
+3004,LP00004,accidental_death,500000,936091.13,B00004,2023-01-05,79,under_review,medium,12,Fall,Spouse,Yes,True,None,187.2,Medical records
+3005,LP00005,death_benefit,250000,245714.16,B00005,2023-01-07,73,under_review,medium,60,Heart attack,Parent,Yes,False,None,98.3,Medical records
+3006,LP00006,accidental_death,100000,189027.02,B00006,2023-01-08,36,approved,hard,30,Car accident,Parent,Yes,False,None,189.0,None
+3007,LP00007,death_benefit,500000,499046.93,B00007,2023-01-09,75,approved,medium,36,Natural causes,Spouse,Yes,True,None,99.8,None
+3008,LP00008,death_benefit,500000,495117.1,B00008,2023-01-10,61,under_review,medium,60,Cancer,Spouse,Yes,False,None,99.0,Medical records
+3009,LP00009,accidental_death,500000,913433.71,B00009,2023-01-11,87,approved,hard,30,Fall,Spouse,Yes,True,None,182.7,None
+3010,LP00010,accidental_death,100000,189625.39,B00010,2023-01-13,50,approved,hard,30,Car accident,Spouse,Yes,False,None,189.6,None
+3011,LP00011,death_benefit,1000000,982109.23,B00011,2023-01-14,47,under_review,medium,24,Stroke,Spouse,Yes,True,None,98.2,Medical records
+3012,LP00012,death_benefit,250000,247825.04,B00012,2023-01-15,55,approved,medium,36,Natural causes,Spouse,Yes,False,None,99.1,None
+3013,LP00013,accidental_death,500000,937896.04,B00013,2023-01-16,75,under_review,hard,120,Drowning,Spouse,Yes,False,None,187.6,Police report
+3014,LP00014,death_benefit,250000,245751.44,B00014,2023-01-17,71,under_review,medium,36,Heart attack,Spouse,Yes,False,None,98.3,Medical records
+3015,LP00015,terminal_illness,250000,138403.52,B00015,2023-01-19,38,under_review,medium,240,Cancer,Sibling,Yes,False,None,55.4,Medical records
+3016,LP00016,death_benefit,500000,491877.74,B00016,2023-01-20,36,under_review,easy,12,Heart attack,Spouse,Grace period,True,None,98.4,Death certificate
+3017,LP00017,death_benefit,1000000,982424.38,B00017,2023-01-21,38,approved,hard,30,Natural causes,Spouse,Yes,True,None,98.2,None
+3018,LP00018,death_benefit,500000,495617.87,B00018,2023-01-22,39,approved,easy,60,Stroke,Spouse,Yes,False,None,99.1,None
+3019,LP00019,death_benefit,500000,494855.01,B00019,2023-01-23,60,denied,easy,2,Natural causes,Spouse,No,False,Suicide clause,99.0,Death certificate
+3020,LP00020,death_benefit,1000000,986648.64,B00020,2023-01-25,38,approved,medium,36,Stroke,Spouse,Yes,False,None,98.7,None
+3021,LP00021,death_benefit,1000000,980219.74,B00021,2023-01-26,85,under_review,easy,36,Stroke,Spouse,Grace period,False,None,98.0,Death certificate
+3022,LP00022,death_benefit,500000,490003.9,B00022,2023-01-27,53,approved,easy,60,Stroke,Spouse,Yes,False,None,98.0,None
+3023,LP00023,death_benefit,100000,98576.38,B00023,2023-01-28,84,denied,medium,18,Natural causes,Spouse,Grace period,False,Pre-existing condition,98.6,None
+3024,LP00024,terminal_illness,250000,152495.83,B00024,2023-01-30,70,approved,easy,60,Heart disease,Spouse,Yes,True,None,61.0,None
+3025,LP00025,death_benefit,100000,99433.75,B00025,2023-01-31,39,denied,hard,120,Cancer,Spouse,Yes,False,Pre-existing condition,99.4,Police report
+3026,LP00026,accidental_death,500000,919412.03,B00026,2023-02-01,59,under_review,hard,3,Fall,Spouse,Yes,True,None,183.9,Police report
+3027,LP00027,death_benefit,1000000,982376.07,B00027,2023-02-02,36,approved,medium,36,Heart attack,Parent,Yes,False,None,98.2,None
+3028,LP00028,terminal_illness,250000,146460.37,B00028,2023-02-03,54,under_review,easy,36,Cancer,Spouse,Grace period,False,None,58.6,Death certificate
+3029,LP00029,death_benefit,1000000,997729.63,B00029,2023-02-05,65,under_review,easy,120,Natural causes,Sibling,Grace period,False,None,99.8,Death certificate
+3030,LP00030,death_benefit,500000,499139.95,B00030,2023-02-06,71,under_review,easy,240,Stroke,Spouse,Grace period,False,None,99.8,Death certificate
+3031,LP00031,death_benefit,250000,248390.35,B00031,2023-02-07,37,denied,easy,2,Natural causes,Other,No,True,Suicide clause,99.4,Death certificate
+3032,LP00032,accidental_death,250000,485833.79,B00032,2023-02-08,46,under_review,easy,6,Drowning,Child,Grace period,True,Pre-existing condition,194.3,Death certificate
+3033,LP00033,terminal_illness,500000,378763.74,B00033,2023-02-09,52,approved,easy,60,Cancer,Spouse,Yes,False,None,75.8,None
+3034,LP00034,death_benefit,100000,99044.64,B00034,2023-02-11,81,denied,medium,18,Stroke,Child,Grace period,True,Pre-existing condition,99.0,None
+3035,LP00035,death_benefit,1000000,994473.6,B00035,2023-02-12,72,under_review,medium,120,Natural causes,Child,Yes,False,None,99.4,Medical records
+3036,LP00036,death_benefit,100000,99998.39,B00036,2023-02-13,62,under_review,hard,12,Natural causes,Spouse,Yes,True,None,100.0,Police report
+3037,LP00037,accidental_death,1000000,1806634.93,B00037,2023-02-14,65,approved,hard,30,Fall,Spouse,Yes,False,None,180.7,None
+3038,LP00038,death_benefit,500000,499519.85,B00038,2023-02-15,72,under_review,easy,36,Cancer,Child,Grace period,False,None,99.9,Death certificate
+3039,LP00039,death_benefit,500000,492279.35,B00039,2023-02-17,41,under_review,medium,60,Heart attack,Spouse,Yes,False,None,98.5,Medical records
+3040,LP00040,death_benefit,100000,98993.31,B00040,2023-02-18,63,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,99.0,Medical records
+3041,LP00041,death_benefit,100000,99913.2,B00041,2023-02-19,51,under_review,easy,6,Natural causes,Spouse,Grace period,True,None,99.9,Death certificate
+3042,LP00042,death_benefit,500000,490187.61,B00042,2023-02-20,66,denied,hard,24,Cancer,Child,Yes,True,Pre-existing condition,98.0,None
+3043,LP00043,death_benefit,100000,99049.44,B00043,2023-02-21,83,approved,easy,60,Stroke,Child,Yes,True,None,99.0,None
+3044,LP00044,death_benefit,250000,245109.64,B00044,2023-02-23,74,approved,easy,60,Natural causes,Spouse,Yes,True,None,98.0,None
+3045,LP00045,death_benefit,100000,98377.34,B00045,2023-02-24,54,approved,medium,36,Heart attack,Spouse,Yes,False,None,98.4,None
+3046,LP00046,death_benefit,250000,249723.25,B00046,2023-02-25,86,approved,hard,30,Heart attack,Spouse,Yes,False,None,99.9,None
+3047,LP00047,accidental_death,100000,198575.08,B00047,2023-02-26,52,under_review,hard,12,Car accident,Spouse,Yes,True,None,198.6,Police report
+3048,LP00048,death_benefit,1000000,987813.78,B00048,2023-02-28,68,approved,hard,30,Natural causes,Child,Yes,False,None,98.8,None
+3049,LP00049,death_benefit,100000,99895.17,B00049,2023-03-01,64,denied,hard,36,Cancer,Spouse,Yes,False,Pre-existing condition,99.9,None
+3050,LP00050,death_benefit,1000000,981380.32,B00050,2023-03-02,68,under_review,easy,24,Stroke,Child,Grace period,True,Pre-existing condition,98.1,Death certificate
+3051,LP00051,death_benefit,100000,99882.89,B00051,2023-03-03,66,denied,easy,2,Cancer,Spouse,No,False,Suicide clause,99.9,Death certificate
+3052,LP00052,death_benefit,250000,246718.92,B00052,2023-03-04,63,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,98.7,Police report
+3053,LP00053,death_benefit,500000,498876.67,B00053,2023-03-06,86,approved,hard,30,Heart attack,Spouse,Yes,False,None,99.8,None
+3054,LP00054,death_benefit,1000000,987031.4,B00054,2023-03-07,65,approved,medium,36,Heart attack,Spouse,Yes,True,None,98.7,None
+3055,LP00055,death_benefit,500000,496673.08,B00055,2023-03-08,66,under_review,easy,120,Natural causes,Spouse,Grace period,False,None,99.3,Death certificate
+3056,LP00056,death_benefit,100000,98986.88,B00056,2023-03-09,43,denied,hard,12,Stroke,Spouse,Yes,True,Pre-existing condition,99.0,None
+3057,LP00057,death_benefit,250000,249234.47,B00057,2023-03-10,72,under_review,hard,3,Cancer,Spouse,Yes,True,None,99.7,Police report
+3058,LP00058,terminal_illness,1000000,644917.87,B00058,2023-03-12,72,under_review,hard,6,Heart disease,Child,No,True,None,64.5,Police report
+3059,LP00059,death_benefit,1000000,995782.34,B00059,2023-03-13,86,under_review,medium,12,Cancer,Spouse,Yes,True,Pre-existing condition,99.6,Medical records
+3060,LP00060,death_benefit,1000000,988416.45,B00060,2023-03-14,80,approved,easy,60,Natural causes,Spouse,Yes,True,None,98.8,None
+3061,LP00061,death_benefit,500000,492709.03,B00061,2023-03-15,38,under_review,medium,24,Stroke,Sibling,Yes,True,None,98.5,Medical records
+3062,LP00062,death_benefit,500000,495505.35,B00062,2023-03-16,72,approved,easy,60,Heart attack,Spouse,Yes,True,None,99.1,None
+3063,LP00063,death_benefit,1000000,996392.93,B00063,2023-03-18,51,under_review,hard,24,Heart attack,Spouse,Yes,True,None,99.6,Police report
+3064,LP00064,death_benefit,500000,491418.28,B00064,2023-03-19,83,approved,easy,60,Cancer,Spouse,Yes,False,None,98.3,None
+3065,LP00065,death_benefit,1000000,996246.21,B00065,2023-03-20,87,denied,hard,60,Cancer,Spouse,No,False,Pre-existing condition,99.6,Medical records
+3066,LP00066,death_benefit,250000,246112.36,B00066,2023-03-21,83,under_review,medium,240,Stroke,Spouse,Yes,False,None,98.4,Medical records
+3067,LP00067,death_benefit,100000,98715.59,B00067,2023-03-22,67,approved,easy,60,Natural causes,Other,Yes,False,None,98.7,None
+3068,LP00068,accidental_death,250000,474987.8,B00068,2023-03-24,84,denied,easy,2,Fall,Spouse,No,True,Suicide clause,190.0,Death certificate
+3069,LP00069,death_benefit,1000000,987932.63,B00069,2023-03-25,83,under_review,medium,120,Natural causes,Spouse,Yes,False,None,98.8,Medical records
+3070,LP00070,accidental_death,1000000,1970792.24,B00070,2023-03-26,86,approved,hard,30,Drowning,Parent,Yes,True,None,197.1,None
+3071,LP00071,death_benefit,100000,99446.53,B00071,2023-03-27,76,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,99.4,Death certificate
+3072,LP00072,death_benefit,250000,248009.27,B00072,2023-03-29,52,denied,medium,18,Stroke,Spouse,Grace period,True,Pre-existing condition,99.2,None
+3073,LP00073,death_benefit,1000000,994214.21,B00073,2023-03-30,71,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,99.4,None
+3074,LP00074,death_benefit,500000,497924.78,B00074,2023-03-31,61,under_review,medium,120,Cancer,Spouse,Yes,False,None,99.6,Medical records
+3075,LP00075,death_benefit,1000000,991963.17,B00075,2023-04-01,88,approved,medium,36,Stroke,Spouse,Yes,False,None,99.2,None
+3076,LP00076,death_benefit,1000000,998458.22,B00076,2023-04-02,56,denied,easy,2,Stroke,Child,No,False,Suicide clause,99.8,Death certificate
+3077,LP00077,death_benefit,100000,98936.6,B00077,2023-04-04,72,under_review,medium,36,Heart attack,Spouse,Yes,False,None,98.9,Medical records
+3078,LP00078,death_benefit,1000000,996661.8,B00078,2023-04-05,63,under_review,easy,120,Heart attack,Spouse,Grace period,False,None,99.7,Death certificate
+3079,LP00079,death_benefit,100000,98404.93,B00079,2023-04-06,36,denied,medium,18,Stroke,Parent,Grace period,True,Pre-existing condition,98.4,None
+3080,LP00080,terminal_illness,100000,70077.65,B00080,2023-04-07,48,under_review,hard,60,Cancer,Spouse,Yes,False,None,70.1,Police report
+3081,LP00081,accidental_death,500000,939182.68,B00081,2023-04-08,37,denied,hard,12,Drowning,Spouse,Yes,True,Pre-existing condition,187.8,None
+3082,LP00082,accidental_death,500000,992129.37,B00082,2023-04-10,72,denied,easy,2,Car accident,Spouse,No,True,Suicide clause,198.4,Death certificate
+3083,LP00083,death_benefit,500000,495719.05,B00083,2023-04-11,83,approved,medium,36,Stroke,Spouse,Yes,False,None,99.1,None
+3084,LP00084,death_benefit,1000000,987710.05,B00084,2023-04-12,73,denied,medium,18,Stroke,Sibling,Grace period,False,Pre-existing condition,98.8,None
+3085,LP00085,death_benefit,1000000,998240.78,B00085,2023-04-13,72,approved,easy,60,Stroke,Spouse,Yes,False,None,99.8,None
+3086,LP00086,accidental_death,250000,489043.44,B00086,2023-04-14,81,under_review,hard,120,Fall,Sibling,Grace period,False,None,195.6,Police report
+3087,LP00087,death_benefit,1000000,987293.65,B00087,2023-04-16,59,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,98.7,Death certificate
+3088,LP00088,death_benefit,500000,494433.27,B00088,2023-04-17,45,under_review,medium,36,Cancer,Spouse,Yes,False,None,98.9,Medical records
+3089,LP00089,death_benefit,1000000,992957.47,B00089,2023-04-18,69,under_review,medium,3,Cancer,Spouse,Yes,True,None,99.3,Medical records
+3090,LP00090,death_benefit,250000,246179.91,B00090,2023-04-19,55,under_review,hard,120,Stroke,Sibling,Grace period,False,None,98.5,Police report
+3091,LP00091,accidental_death,250000,482617.43,B00091,2023-04-20,77,approved,hard,30,Car accident,Spouse,Yes,False,None,193.0,None
+3092,LP00092,death_benefit,1000000,981550.64,B00092,2023-04-22,80,approved,easy,60,Heart attack,Parent,Yes,True,None,98.2,None
+3093,LP00093,death_benefit,500000,490034.13,B00093,2023-04-23,43,denied,hard,240,Natural causes,Spouse,Grace period,False,Pre-existing condition,98.0,None
+3094,LP00094,death_benefit,100000,98279.79,B00094,2023-04-24,71,approved,easy,60,Natural causes,Spouse,Yes,False,None,98.3,None
+3095,LP00095,accidental_death,100000,188170.46,B00095,2023-04-25,89,denied,easy,2,Drowning,Sibling,No,True,Suicide clause,188.2,Death certificate
+3096,LP00096,accidental_death,1000000,1881130.22,B00096,2023-04-27,42,denied,medium,18,Drowning,Other,Grace period,False,Pre-existing condition,188.1,None
+3097,LP00097,death_benefit,500000,491384.91,B00097,2023-04-28,74,denied,hard,36,Natural causes,Spouse,No,False,Pre-existing condition,98.3,Death certificate
+3098,LP00098,death_benefit,100000,98575.28,B00098,2023-04-29,87,approved,easy,60,Stroke,Child,Yes,False,None,98.6,None
+3099,LP00099,death_benefit,100000,99913.9,B00099,2023-04-30,76,approved,easy,60,Stroke,Other,Yes,True,None,99.9,None
+3100,LP00100,death_benefit,250000,246582.33,B00100,2023-05-01,81,denied,hard,60,Natural causes,Spouse,Grace period,False,Pre-existing condition,98.6,Death certificate
+3101,LP00101,death_benefit,1000000,980467.62,B00101,2023-05-03,64,under_review,easy,36,Natural causes,Spouse,Grace period,False,None,98.0,Death certificate
+3102,LP00102,accidental_death,1000000,1877983.75,B00102,2023-05-04,81,approved,easy,60,Car accident,Spouse,Yes,True,None,187.8,None
+3103,LP00103,death_benefit,100000,99883.73,B00103,2023-05-05,53,under_review,hard,36,Heart attack,Spouse,No,False,None,99.9,Police report
+3104,LP00104,accidental_death,100000,188505.03,B00104,2023-05-06,52,denied,medium,18,Car accident,Spouse,Grace period,False,Pre-existing condition,188.5,None
+3105,LP00105,death_benefit,250000,249945.08,B00105,2023-05-07,71,denied,hard,36,Cancer,Spouse,Yes,False,Pre-existing condition,100.0,Medical records
+3106,LP00106,death_benefit,500000,496744.96,B00106,2023-05-09,57,under_review,hard,36,Heart attack,Spouse,Yes,False,None,99.3,Police report
+3107,LP00107,death_benefit,100000,99542.45,B00107,2023-05-10,78,approved,easy,60,Stroke,Child,Yes,True,None,99.5,None
+3108,LP00108,accidental_death,500000,933454.37,B00108,2023-05-11,87,approved,medium,36,Fall,Spouse,Yes,False,None,186.7,None
+3109,LP00109,death_benefit,1000000,988844.72,B00109,2023-05-12,37,under_review,hard,60,Natural causes,Spouse,Yes,False,None,98.9,Police report
+3110,LP00110,death_benefit,250000,245941.78,B00110,2023-05-13,54,denied,easy,2,Heart attack,Spouse,No,True,Suicide clause,98.4,Death certificate
+3111,LP00111,death_benefit,100000,98037.48,B00111,2023-05-15,85,denied,easy,2,Natural causes,Spouse,No,False,Suicide clause,98.0,Death certificate
+3112,LP00112,accidental_death,250000,493182.08,B00112,2023-05-16,60,under_review,hard,24,Drowning,Spouse,Yes,True,Pre-existing condition,197.3,Police report
+3113,LP00113,death_benefit,250000,248176.76,B00113,2023-05-17,48,denied,medium,18,Heart attack,Parent,Grace period,False,Pre-existing condition,99.3,None
+3114,LP00114,death_benefit,100000,99207.92,B00114,2023-05-18,58,approved,hard,30,Cancer,Spouse,Yes,False,None,99.2,None
+3115,LP00115,death_benefit,500000,497259.28,B00115,2023-05-19,84,denied,medium,18,Natural causes,Spouse,Grace period,True,Pre-existing condition,99.5,None
+3116,LP00116,death_benefit,250000,247074.68,B00116,2023-05-21,59,denied,medium,18,Cancer,Child,Grace period,True,Pre-existing condition,98.8,Medical records
+3117,LP00117,death_benefit,100000,98208.9,B00117,2023-05-22,68,approved,medium,36,Heart attack,Child,Yes,False,None,98.2,None
+3118,LP00118,death_benefit,1000000,985850.62,B00118,2023-05-23,45,denied,hard,240,Natural causes,Spouse,Yes,False,Pre-existing condition,98.6,Medical records
+3119,LP00119,accidental_death,100000,195399.54,B00119,2023-05-24,54,denied,hard,24,Drowning,Spouse,Yes,True,Pre-existing condition,195.4,None
+3120,LP00120,death_benefit,250000,249860.84,B00120,2023-05-26,36,denied,easy,2,Heart attack,Child,No,False,Suicide clause,99.9,Death certificate
+3121,LP00121,terminal_illness,250000,161984.69,B00121,2023-05-27,59,approved,hard,30,Heart disease,Child,Yes,False,None,64.8,None
+3122,LP00122,death_benefit,1000000,999165.68,B00122,2023-05-28,38,under_review,medium,120,Natural causes,Child,Yes,False,None,99.9,Medical records
+3123,LP00123,terminal_illness,100000,57060.92,B00123,2023-05-29,89,under_review,medium,36,Cancer,Child,Yes,False,None,57.1,Medical records
+3124,LP00124,death_benefit,100000,98052.7,B00124,2023-05-30,79,denied,hard,36,Cancer,Spouse,Yes,False,Pre-existing condition,98.1,None
+3125,LP00125,death_benefit,500000,494182.54,B00125,2023-06-01,80,under_review,easy,120,Stroke,Child,Grace period,False,None,98.8,Death certificate
+3126,LP00126,death_benefit,500000,494472.45,B00126,2023-06-02,63,approved,medium,36,Natural causes,Spouse,Yes,False,None,98.9,None
+3127,LP00127,death_benefit,1000000,982866.13,B00127,2023-06-03,78,approved,hard,30,Natural causes,Child,Yes,False,None,98.3,None
+3128,LP00128,death_benefit,100000,99228.43,B00128,2023-06-04,66,approved,easy,60,Heart attack,Spouse,Yes,True,None,99.2,None
+3129,LP00129,accidental_death,500000,910607.7,B00129,2023-06-05,59,under_review,easy,60,Car accident,Child,Grace period,False,None,182.1,Death certificate
+3130,LP00130,death_benefit,100000,98702.95,B00130,2023-06-07,60,denied,hard,3,Cancer,Child,Yes,True,Pre-existing condition,98.7,None
+3131,LP00131,death_benefit,500000,496977.56,B00131,2023-06-08,59,denied,hard,60,Natural causes,Child,Yes,False,Pre-existing condition,99.4,None
+3132,LP00132,death_benefit,1000000,992616.02,B00132,2023-06-09,45,denied,medium,18,Heart attack,Spouse,Grace period,True,Pre-existing condition,99.3,None
+3133,LP00133,accidental_death,1000000,1998248.18,B00133,2023-06-10,53,approved,easy,60,Car accident,Spouse,Yes,True,None,199.8,None
+3134,LP00134,death_benefit,100000,98153.73,B00134,2023-06-11,74,under_review,hard,60,Stroke,Spouse,Yes,False,None,98.2,Police report
+3135,LP00135,death_benefit,250000,245783.24,B00135,2023-06-13,43,under_review,hard,36,Heart attack,Spouse,Yes,False,None,98.3,Police report
+3136,LP00136,accidental_death,100000,188089.66,B00136,2023-06-14,53,approved,medium,36,Fall,Spouse,Yes,True,None,188.1,None
+3137,LP00137,terminal_illness,100000,73412.36,B00137,2023-06-15,50,approved,hard,30,Cancer,Child,Yes,True,None,73.4,None
+3138,LP00138,death_benefit,250000,245358.17,B00138,2023-06-16,67,approved,medium,36,Natural causes,Spouse,Yes,False,None,98.1,None
+3139,LP00139,death_benefit,500000,492780.13,B00139,2023-06-17,63,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,98.6,Death certificate
+3140,LP00140,accidental_death,100000,183528.82,B00140,2023-06-19,83,approved,easy,60,Car accident,Parent,Yes,False,None,183.5,None
+3141,LP00141,accidental_death,1000000,1978073.05,B00141,2023-06-20,49,under_review,medium,12,Car accident,Parent,No,True,None,197.8,Medical records
+3142,LP00142,terminal_illness,1000000,535176.22,B00142,2023-06-21,83,denied,hard,120,Kidney failure,Child,Yes,False,Pre-existing condition,53.5,None
+3143,LP00143,death_benefit,500000,492131.33,B00143,2023-06-22,73,under_review,easy,60,Cancer,Spouse,Grace period,False,None,98.4,Death certificate
+3144,LP00144,death_benefit,500000,498940.74,B00144,2023-06-24,85,denied,easy,2,Natural causes,Child,No,True,Suicide clause,99.8,Death certificate
+3145,LP00145,death_benefit,500000,490098.86,B00145,2023-06-25,87,denied,hard,6,Natural causes,Child,Grace period,True,Pre-existing condition,98.0,None
+3146,LP00146,terminal_illness,100000,76183.54,B00146,2023-06-26,64,approved,medium,36,Kidney failure,Spouse,Yes,True,None,76.2,None
+3147,LP00147,terminal_illness,500000,378324.72,B00147,2023-06-27,58,denied,hard,120,Kidney failure,Sibling,Yes,False,Pre-existing condition,75.7,Medical records
+3148,LP00148,death_benefit,500000,491740.24,B00148,2023-06-28,37,under_review,easy,120,Cancer,Spouse,Grace period,False,None,98.3,Death certificate
+3149,LP00149,accidental_death,250000,486306.79,B00149,2023-06-30,88,denied,easy,2,Car accident,Spouse,No,False,Suicide clause,194.5,Death certificate
+3150,LP00150,death_benefit,250000,247293.64,B00150,2023-07-01,51,under_review,easy,240,Cancer,Spouse,Grace period,False,None,98.9,Death certificate
+3151,LP00151,death_benefit,500000,497522.79,B00151,2023-07-02,64,under_review,hard,24,Stroke,Child,Yes,True,Pre-existing condition,99.5,Police report
+3152,LP00152,death_benefit,500000,493122.17,B00152,2023-07-03,61,denied,medium,18,Heart attack,Child,Grace period,False,Pre-existing condition,98.6,Police report
+3153,LP00153,death_benefit,500000,499688.0,B00153,2023-07-04,78,denied,hard,60,Cancer,Spouse,Yes,False,Pre-existing condition,99.9,None
+3154,LP00154,death_benefit,100000,98539.82,B00154,2023-07-06,61,denied,hard,60,Stroke,Child,Yes,False,Pre-existing condition,98.5,None
+3155,LP00155,death_benefit,500000,493683.32,B00155,2023-07-07,80,denied,medium,18,Heart attack,Child,Grace period,False,Pre-existing condition,98.7,None
+3156,LP00156,death_benefit,250000,247103.58,B00156,2023-07-08,70,under_review,easy,120,Cancer,Spouse,Grace period,False,None,98.8,Death certificate
+3157,LP00157,death_benefit,1000000,981749.54,B00157,2023-07-09,89,under_review,easy,12,Cancer,Spouse,Grace period,True,None,98.2,Death certificate
+3158,LP00158,terminal_illness,500000,376892.01,B00158,2023-07-10,63,approved,hard,30,Kidney failure,Spouse,Yes,True,None,75.4,None
+3159,LP00159,death_benefit,1000000,995295.47,B00159,2023-07-12,74,under_review,easy,60,Natural causes,Spouse,Grace period,False,None,99.5,Death certificate
+3160,LP00160,death_benefit,500000,496169.16,B00160,2023-07-13,78,approved,easy,60,Heart attack,Spouse,Yes,False,None,99.2,None
+3161,LP00161,death_benefit,100000,99117.15,B00161,2023-07-14,89,denied,easy,2,Natural causes,Child,No,True,Suicide clause,99.1,Death certificate
+3162,LP00162,death_benefit,250000,246785.11,B00162,2023-07-15,43,denied,hard,36,Natural causes,Spouse,Yes,False,Pre-existing condition,98.7,None
+3163,LP00163,death_benefit,1000000,985365.32,B00163,2023-07-16,51,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,98.5,Death certificate
+3164,LP00164,death_benefit,500000,493793.8,B00164,2023-07-18,37,approved,hard,30,Cancer,Spouse,Yes,False,None,98.8,None
+3165,LP00165,death_benefit,1000000,988302.76,B00165,2023-07-19,89,under_review,hard,60,Cancer,Child,Yes,False,None,98.8,Police report
+3166,LP00166,death_benefit,500000,498781.18,B00166,2023-07-20,37,denied,medium,18,Stroke,Spouse,Grace period,True,Pre-existing condition,99.8,Police report
+3167,LP00167,death_benefit,100000,98427.07,B00167,2023-07-21,38,approved,easy,60,Stroke,Sibling,Yes,True,None,98.4,None
+3168,LP00168,death_benefit,500000,495606.54,B00168,2023-07-23,41,approved,hard,30,Cancer,Spouse,Yes,True,None,99.1,None
+3169,LP00169,death_benefit,500000,495004.82,B00169,2023-07-24,60,under_review,medium,60,Stroke,Spouse,No,False,None,99.0,Medical records
+3170,LP00170,death_benefit,100000,99255.51,B00170,2023-07-25,49,under_review,easy,60,Heart attack,Spouse,Grace period,False,None,99.3,Death certificate
+3171,LP00171,accidental_death,100000,183452.68,B00171,2023-07-26,56,under_review,medium,60,Fall,Spouse,Yes,False,None,183.5,Medical records
+3172,LP00172,death_benefit,1000000,980549.01,B00172,2023-07-27,85,approved,medium,36,Natural causes,Spouse,Yes,True,None,98.1,None
+3173,LP00173,death_benefit,1000000,981617.07,B00173,2023-07-29,87,denied,medium,18,Stroke,Child,Grace period,False,Pre-existing condition,98.2,Police report
+3174,LP00174,terminal_illness,500000,274363.31,B00174,2023-07-30,69,approved,medium,36,Kidney failure,Child,Yes,True,None,54.9,None
+3175,LP00175,death_benefit,1000000,991411.54,B00175,2023-07-31,65,denied,hard,60,Natural causes,Spouse,Yes,False,Pre-existing condition,99.1,Medical records
+3176,LP00176,death_benefit,500000,496415.52,B00176,2023-08-01,77,approved,easy,60,Stroke,Spouse,Yes,False,None,99.3,None
+3177,LP00177,death_benefit,500000,498926.38,B00177,2023-08-02,73,under_review,medium,6,Stroke,Spouse,Yes,True,Pre-existing condition,99.8,Medical records
+3178,LP00178,death_benefit,1000000,987727.36,B00178,2023-08-04,44,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,98.8,Death certificate
+3179,LP00179,death_benefit,1000000,993669.78,B00179,2023-08-05,83,denied,hard,60,Natural causes,Spouse,Yes,False,Pre-existing condition,99.4,None
+3180,LP00180,death_benefit,100000,98241.47,B00180,2023-08-06,54,under_review,easy,60,Cancer,Child,Grace period,False,None,98.2,Death certificate
+3181,LP00181,death_benefit,500000,491226.14,B00181,2023-08-07,81,approved,medium,36,Heart attack,Spouse,Yes,False,None,98.2,None
+3182,LP00182,death_benefit,1000000,996835.05,B00182,2023-08-08,70,under_review,hard,120,Natural causes,Child,Yes,False,None,99.7,Police report
+3183,LP00183,death_benefit,250000,249428.1,B00183,2023-08-10,45,under_review,hard,120,Cancer,Child,Yes,False,None,99.8,Police report
+3184,LP00184,accidental_death,100000,187645.33,B00184,2023-08-11,89,denied,medium,18,Drowning,Spouse,Grace period,False,Pre-existing condition,187.6,Death certificate
+3185,LP00185,death_benefit,500000,496806.7,B00185,2023-08-12,67,under_review,easy,12,Stroke,Spouse,Grace period,True,None,99.4,Death certificate
+3186,LP00186,accidental_death,100000,192750.7,B00186,2023-08-13,85,denied,hard,36,Drowning,Spouse,Yes,False,Pre-existing condition,192.8,None
+3187,LP00187,death_benefit,100000,98023.48,B00187,2023-08-14,45,approved,medium,36,Cancer,Spouse,Yes,True,None,98.0,None
+3188,LP00188,death_benefit,100000,98446.22,B00188,2023-08-16,50,under_review,medium,60,Natural causes,Child,Yes,False,None,98.4,Medical records
+3189,LP00189,death_benefit,500000,495827.7,B00189,2023-08-17,72,denied,medium,18,Stroke,Child,Grace period,False,Pre-existing condition,99.2,Death certificate
+3190,LP00190,death_benefit,1000000,984948.46,B00190,2023-08-18,85,approved,easy,60,Natural causes,Spouse,Yes,False,None,98.5,None
+3191,LP00191,death_benefit,500000,491480.79,B00191,2023-08-19,82,approved,hard,30,Stroke,Spouse,Yes,False,None,98.3,None
+3192,LP00192,death_benefit,500000,494410.01,B00192,2023-08-21,81,under_review,hard,36,Stroke,Spouse,Yes,False,None,98.9,Police report
+3193,LP00193,death_benefit,1000000,988936.57,B00193,2023-08-22,42,approved,easy,60,Heart attack,Spouse,Yes,False,None,98.9,None
+3194,LP00194,death_benefit,500000,495505.07,B00194,2023-08-23,40,denied,medium,18,Stroke,Spouse,Grace period,False,Pre-existing condition,99.1,None
+3195,LP00195,terminal_illness,500000,364825.56,B00195,2023-08-24,39,denied,medium,18,Cancer,Spouse,Grace period,True,Pre-existing condition,73.0,Police report
+3196,LP00196,accidental_death,250000,452642.24,B00196,2023-08-25,44,under_review,hard,120,Fall,Child,Yes,False,None,181.1,Police report
+3197,LP00197,terminal_illness,1000000,554244.42,B00197,2023-08-27,43,approved,easy,60,Kidney failure,Child,Yes,True,None,55.4,None
+3198,LP00198,death_benefit,1000000,990000.7,B00198,2023-08-28,67,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,99.0,Police report
+3199,LP00199,death_benefit,1000000,991032.7,B00199,2023-08-29,66,under_review,hard,6,Cancer,Spouse,Yes,True,None,99.1,Police report
+3200,LP00200,terminal_illness,500000,372001.98,B00200,2023-08-30,45,under_review,hard,3,Heart disease,Spouse,Yes,True,None,74.4,Police report
+3201,LP00201,accidental_death,100000,184296.19,B00201,2023-08-31,41,under_review,easy,12,Fall,Spouse,Grace period,True,None,184.3,Death certificate
+3202,LP00202,death_benefit,1000000,988894.85,B00202,2023-09-02,81,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,98.9,Death certificate
+3203,LP00203,death_benefit,1000000,985564.57,B00203,2023-09-03,52,under_review,easy,36,Stroke,Spouse,Grace period,False,None,98.6,Death certificate
+3204,LP00204,death_benefit,100000,98191.26,B00204,2023-09-04,59,approved,easy,60,Natural causes,Spouse,Yes,False,None,98.2,None
+3205,LP00205,death_benefit,1000000,985562.73,B00205,2023-09-05,63,under_review,easy,36,Natural causes,Spouse,Grace period,False,None,98.6,Death certificate
+3206,LP00206,death_benefit,1000000,987775.58,B00206,2023-09-06,42,denied,easy,2,Stroke,Spouse,No,True,Suicide clause,98.8,Death certificate
+3207,LP00207,death_benefit,250000,245491.79,B00207,2023-09-08,74,approved,medium,36,Heart attack,Child,Yes,False,None,98.2,None
+3208,LP00208,terminal_illness,1000000,507223.71,B00208,2023-09-09,57,under_review,easy,60,Kidney failure,Spouse,Grace period,False,None,50.7,Death certificate
+3209,LP00209,death_benefit,100000,99455.04,B00209,2023-09-10,55,under_review,medium,120,Stroke,Spouse,Yes,False,None,99.5,Medical records
+3210,LP00210,death_benefit,100000,98528.84,B00210,2023-09-11,49,approved,hard,30,Heart attack,Child,Yes,False,None,98.5,None
+3211,LP00211,death_benefit,100000,98582.37,B00211,2023-09-12,75,denied,hard,240,Natural causes,Parent,Yes,False,Pre-existing condition,98.6,Police report
+3212,LP00212,death_benefit,1000000,983230.91,B00212,2023-09-14,78,approved,easy,60,Cancer,Sibling,Yes,False,None,98.3,None
+3213,LP00213,accidental_death,500000,991708.97,B00213,2023-09-15,37,under_review,easy,36,Car accident,Spouse,Grace period,False,None,198.3,Death certificate
+3214,LP00214,death_benefit,250000,248674.57,B00214,2023-09-16,64,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,99.5,Death certificate
+3215,LP00215,accidental_death,500000,976679.6,B00215,2023-09-17,75,denied,easy,2,Drowning,Child,No,False,Suicide clause,195.3,Death certificate
+3216,LP00216,death_benefit,250000,248814.33,B00216,2023-09-19,36,denied,easy,2,Stroke,Child,No,True,Suicide clause,99.5,Death certificate
+3217,LP00217,accidental_death,250000,463577.03,B00217,2023-09-20,77,denied,easy,2,Drowning,Other,No,True,Suicide clause,185.4,Death certificate
+3218,LP00218,death_benefit,1000000,996467.28,B00218,2023-09-21,72,approved,medium,36,Cancer,Spouse,Yes,True,None,99.6,None
+3219,LP00219,death_benefit,100000,99910.86,B00219,2023-09-22,72,under_review,medium,24,Cancer,Spouse,Yes,True,None,99.9,Medical records
+3220,LP00220,death_benefit,1000000,999948.94,B00220,2023-09-23,57,approved,hard,30,Cancer,Child,Yes,True,None,100.0,None
+3221,LP00221,death_benefit,250000,249656.05,B00221,2023-09-25,79,denied,medium,18,Cancer,Child,Grace period,False,Pre-existing condition,99.9,Police report
+3222,LP00222,death_benefit,250000,249424.58,B00222,2023-09-26,38,approved,hard,30,Natural causes,Spouse,Yes,False,None,99.8,None
+3223,LP00223,death_benefit,500000,496140.7,B00223,2023-09-27,46,denied,medium,18,Natural causes,Parent,Grace period,False,Pre-existing condition,99.2,None
+3224,LP00224,accidental_death,500000,991119.41,B00224,2023-09-28,52,approved,medium,36,Fall,Spouse,Yes,False,None,198.2,None
+3225,LP00225,accidental_death,500000,929066.52,B00225,2023-09-29,60,under_review,easy,12,Car accident,Child,Grace period,True,None,185.8,Death certificate
+3226,LP00226,death_benefit,1000000,991337.19,B00226,2023-10-01,41,under_review,medium,24,Cancer,Parent,No,True,Pre-existing condition,99.1,Medical records
+3227,LP00227,accidental_death,500000,904596.45,B00227,2023-10-02,84,approved,easy,60,Car accident,Spouse,Yes,True,None,180.9,None
+3228,LP00228,accidental_death,1000000,1899975.75,B00228,2023-10-03,88,under_review,medium,60,Car accident,Spouse,Yes,False,None,190.0,Medical records
+3229,LP00229,terminal_illness,100000,55591.56,B00229,2023-10-04,73,under_review,medium,24,Heart disease,Spouse,Yes,True,Pre-existing condition,55.6,Medical records
+3230,LP00230,death_benefit,250000,246439.48,B00230,2023-10-05,63,denied,easy,2,Natural causes,Spouse,No,False,Suicide clause,98.6,Death certificate
+3231,LP00231,death_benefit,1000000,998929.27,B00231,2023-10-07,52,approved,easy,60,Natural causes,Spouse,Yes,False,None,99.9,None
+3232,LP00232,accidental_death,250000,469583.93,B00232,2023-10-08,79,approved,easy,60,Drowning,Spouse,Yes,True,None,187.8,None
+3233,LP00233,death_benefit,500000,491333.49,B00233,2023-10-09,83,approved,medium,36,Heart attack,Spouse,Yes,False,None,98.3,None
+3234,LP00234,death_benefit,1000000,997248.24,B00234,2023-10-10,45,under_review,medium,12,Stroke,Parent,Yes,True,None,99.7,Medical records
+3235,LP00235,terminal_illness,250000,178150.07,B00235,2023-10-11,82,denied,hard,120,Cancer,Child,Yes,False,Pre-existing condition,71.3,None
+3236,LP00236,death_benefit,500000,497345.64,B00236,2023-10-13,72,denied,hard,6,Stroke,Spouse,Yes,True,Pre-existing condition,99.5,Medical records
+3237,LP00237,accidental_death,100000,180405.55,B00237,2023-10-14,38,under_review,easy,12,Car accident,Child,Grace period,True,None,180.4,Death certificate
+3238,LP00238,death_benefit,250000,245227.09,B00238,2023-10-15,41,approved,easy,60,Cancer,Sibling,Yes,False,None,98.1,None
+3239,LP00239,accidental_death,1000000,1833781.49,B00239,2023-10-16,47,approved,medium,36,Drowning,Spouse,Yes,False,None,183.4,None
+3240,LP00240,death_benefit,500000,492753.58,B00240,2023-10-18,75,under_review,easy,120,Heart attack,Spouse,Grace period,False,None,98.6,Death certificate
+3241,LP00241,accidental_death,1000000,1967014.81,B00241,2023-10-19,53,denied,medium,18,Car accident,Spouse,Grace period,False,Pre-existing condition,196.7,None
+3242,LP00242,death_benefit,250000,245108.91,B00242,2023-10-20,82,denied,hard,24,Cancer,Child,Yes,True,Pre-existing condition,98.0,None
+3243,LP00243,death_benefit,250000,247611.65,B00243,2023-10-21,80,approved,hard,30,Stroke,Child,Yes,False,None,99.0,None
+3244,LP00244,death_benefit,250000,246390.9,B00244,2023-10-22,40,approved,hard,30,Cancer,Spouse,Yes,False,None,98.6,None
+3245,LP00245,death_benefit,100000,99486.99,B00245,2023-10-24,58,denied,hard,60,Stroke,Spouse,Yes,False,Pre-existing condition,99.5,Police report
+3246,LP00246,death_benefit,100000,98579.78,B00246,2023-10-25,38,denied,medium,18,Heart attack,Parent,Grace period,False,Pre-existing condition,98.6,None
+3247,LP00247,death_benefit,500000,497746.22,B00247,2023-10-26,73,denied,hard,120,Natural causes,Spouse,Yes,False,Pre-existing condition,99.5,Medical records
+3248,LP00248,accidental_death,250000,483011.72,B00248,2023-10-27,56,denied,medium,18,Fall,Spouse,Grace period,False,Pre-existing condition,193.2,None
+3249,LP00249,death_benefit,1000000,990746.03,B00249,2023-10-28,45,denied,medium,18,Stroke,Spouse,Grace period,False,Pre-existing condition,99.1,None
+3250,LP00250,accidental_death,500000,973105.82,B00250,2023-10-30,68,denied,medium,18,Drowning,Spouse,Grace period,False,Pre-existing condition,194.6,Medical records
+3251,LP00251,death_benefit,500000,490107.4,B00251,2023-10-31,38,denied,hard,36,Natural causes,Spouse,No,False,Pre-existing condition,98.0,None
+3252,LP00252,death_benefit,1000000,991333.07,B00252,2023-11-01,35,under_review,easy,120,Heart attack,Other,Grace period,False,None,99.1,Death certificate
+3253,LP00253,death_benefit,1000000,984870.87,B00253,2023-11-02,48,denied,hard,36,Stroke,Spouse,Yes,False,Pre-existing condition,98.5,None
+3254,LP00254,terminal_illness,1000000,616431.12,B00254,2023-11-03,87,under_review,medium,24,Heart disease,Child,Yes,True,None,61.6,Medical records
+3255,LP00255,death_benefit,100000,99061.71,B00255,2023-11-05,65,approved,medium,36,Natural causes,Spouse,Yes,False,None,99.1,None
+3256,LP00256,death_benefit,250000,245760.18,B00256,2023-11-06,76,under_review,easy,36,Natural causes,Spouse,Grace period,False,None,98.3,Death certificate
+3257,LP00257,terminal_illness,250000,176464.79,B00257,2023-11-07,81,denied,easy,2,Cancer,Spouse,No,True,Suicide clause,70.6,Death certificate
+3258,LP00258,death_benefit,500000,491679.42,B00258,2023-11-08,53,denied,hard,60,Natural causes,Spouse,Yes,False,Pre-existing condition,98.3,Police report
+3259,LP00259,death_benefit,100000,98664.0,B00259,2023-11-09,58,denied,easy,2,Heart attack,Child,No,True,Suicide clause,98.7,Death certificate
+3260,LP00260,death_benefit,100000,98192.1,B00260,2023-11-11,83,under_review,easy,60,Natural causes,Spouse,Grace period,False,None,98.2,Death certificate
+3261,LP00261,death_benefit,250000,248040.48,B00261,2023-11-12,57,denied,medium,18,Heart attack,Spouse,Grace period,True,Pre-existing condition,99.2,None
+3262,LP00262,death_benefit,500000,497613.25,B00262,2023-11-13,62,under_review,medium,120,Stroke,Spouse,Yes,False,None,99.5,Medical records
+3263,LP00263,death_benefit,100000,99587.02,B00263,2023-11-14,53,denied,hard,24,Stroke,Spouse,Yes,True,Pre-existing condition,99.6,None
+3264,LP00264,death_benefit,500000,494409.1,B00264,2023-11-16,53,approved,medium,36,Natural causes,Child,Yes,True,None,98.9,None
+3265,LP00265,death_benefit,500000,493389.35,B00265,2023-11-17,38,denied,easy,2,Cancer,Spouse,No,False,Suicide clause,98.7,Death certificate
+3266,LP00266,death_benefit,250000,246719.22,B00266,2023-11-18,69,approved,easy,60,Cancer,Spouse,Yes,False,None,98.7,None
+3267,LP00267,death_benefit,250000,248014.16,B00267,2023-11-19,59,under_review,medium,36,Cancer,Child,Yes,False,None,99.2,Medical records
+3268,LP00268,death_benefit,500000,492305.55,B00268,2023-11-20,51,denied,medium,18,Natural causes,Spouse,Grace period,True,Pre-existing condition,98.5,Police report
+3269,LP00269,death_benefit,100000,98830.38,B00269,2023-11-22,42,under_review,hard,60,Heart attack,Spouse,Grace period,False,None,98.8,Police report
+3270,LP00270,terminal_illness,100000,52361.34,B00270,2023-11-23,62,approved,medium,36,Kidney failure,Child,Yes,False,None,52.4,None
+3271,LP00271,death_benefit,250000,249516.75,B00271,2023-11-24,61,denied,medium,18,Natural causes,Spouse,Grace period,False,Pre-existing condition,99.8,Death certificate
+3272,LP00272,death_benefit,250000,247944.38,B00272,2023-11-25,84,denied,medium,18,Stroke,Spouse,Grace period,True,Pre-existing condition,99.2,Death certificate
+3273,LP00273,death_benefit,250000,248510.09,B00273,2023-11-26,44,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,99.4,Death certificate
+3274,LP00274,death_benefit,500000,495174.88,B00274,2023-11-28,40,denied,easy,2,Stroke,Parent,No,True,Suicide clause,99.0,Death certificate
+3275,LP00275,death_benefit,100000,98119.68,B00275,2023-11-29,59,under_review,hard,120,Stroke,Spouse,Yes,False,None,98.1,Police report
+3276,LP00276,death_benefit,250000,245529.1,B00276,2023-11-30,83,denied,medium,18,Cancer,Spouse,Grace period,True,Pre-existing condition,98.2,None
+3277,LP00277,death_benefit,500000,499880.2,B00277,2023-12-01,45,under_review,medium,24,Cancer,Spouse,Yes,True,None,100.0,Medical records
+3278,LP00278,death_benefit,100000,99451.47,B00278,2023-12-02,45,denied,medium,18,Heart attack,Child,Grace period,False,Pre-existing condition,99.5,Death certificate
+3279,LP00279,death_benefit,1000000,992960.14,B00279,2023-12-04,82,under_review,hard,60,Natural causes,Child,Yes,False,None,99.3,Police report
+3280,LP00280,death_benefit,250000,249996.32,B00280,2023-12-05,57,approved,hard,30,Heart attack,Child,Yes,True,None,100.0,None
+3281,LP00281,death_benefit,250000,245918.75,B00281,2023-12-06,88,approved,easy,60,Stroke,Spouse,Yes,False,None,98.4,None
+3282,LP00282,accidental_death,250000,487868.39,B00282,2023-12-07,74,under_review,medium,60,Car accident,Spouse,Yes,False,None,195.1,Medical records
+3283,LP00283,death_benefit,250000,249691.71,B00283,2023-12-08,81,denied,medium,18,Natural causes,Child,Grace period,False,Pre-existing condition,99.9,None
+3284,LP00284,death_benefit,500000,491208.88,B00284,2023-12-10,66,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,98.2,Death certificate
+3285,LP00285,accidental_death,1000000,1819818.05,B00285,2023-12-11,68,under_review,easy,24,Fall,Child,Grace period,True,None,182.0,Death certificate
+3286,LP00286,terminal_illness,500000,333030.98,B00286,2023-12-12,83,under_review,easy,60,Cancer,Spouse,Grace period,False,None,66.6,Death certificate
+3287,LP00287,death_benefit,250000,247651.65,B00287,2023-12-13,41,approved,medium,36,Cancer,Spouse,Yes,True,None,99.1,None
+3288,LP00288,death_benefit,250000,247647.71,B00288,2023-12-15,61,denied,medium,18,Cancer,Spouse,Grace period,True,Pre-existing condition,99.1,None
+3289,LP00289,accidental_death,250000,480717.77,B00289,2023-12-16,88,denied,medium,18,Fall,Child,Grace period,True,Pre-existing condition,192.3,Death certificate
+3290,LP00290,death_benefit,500000,492480.76,B00290,2023-12-17,53,under_review,easy,24,Cancer,Child,Grace period,True,None,98.5,Death certificate
+3291,LP00291,death_benefit,250000,247250.98,B00291,2023-12-18,80,under_review,medium,60,Stroke,Parent,Grace period,False,None,98.9,Medical records
+3292,LP00292,death_benefit,1000000,995460.66,B00292,2023-12-19,63,approved,medium,36,Stroke,Spouse,Yes,True,None,99.5,None
+3293,LP00293,death_benefit,1000000,994657.23,B00293,2023-12-21,52,denied,hard,60,Heart attack,Spouse,Yes,False,Pre-existing condition,99.5,Medical records
+3294,LP00294,death_benefit,100000,99237.22,B00294,2023-12-22,51,denied,hard,60,Heart attack,Child,Yes,False,Pre-existing condition,99.2,None
+3295,LP00295,death_benefit,100000,99206.38,B00295,2023-12-23,70,approved,easy,60,Stroke,Child,Yes,False,None,99.2,None
+3296,LP00296,death_benefit,500000,492073.24,B00296,2023-12-24,89,under_review,medium,60,Natural causes,Child,Yes,False,None,98.4,Medical records
+3297,LP00297,death_benefit,1000000,993661.49,B00297,2023-12-25,53,under_review,easy,60,Natural causes,Spouse,Grace period,False,None,99.4,Death certificate
+3298,LP00298,accidental_death,100000,182814.74,B00298,2023-12-27,36,denied,hard,12,Fall,Spouse,Yes,True,Pre-existing condition,182.8,None
+3299,LP00299,accidental_death,100000,187040.5,B00299,2023-12-28,38,under_review,medium,120,Car accident,Spouse,Yes,False,None,187.0,Medical records
+3300,LP00300,death_benefit,1000000,999987.17,B00300,2023-12-29,64,approved,easy,60,Natural causes,Spouse,Yes,True,None,100.0,None
+3301,LP00301,accidental_death,100000,194707.61,B00301,2023-12-30,67,denied,hard,60,Drowning,Spouse,Yes,False,Pre-existing condition,194.7,None
+3302,LP00302,accidental_death,1000000,1802421.97,B00302,2023-12-31,78,denied,hard,60,Car accident,Spouse,No,False,Pre-existing condition,180.2,None
+3303,LP00303,death_benefit,250000,248305.99,B00303,2024-01-02,42,approved,medium,36,Heart attack,Spouse,Yes,True,None,99.3,None
+3304,LP00304,accidental_death,500000,910433.86,B00304,2024-01-03,77,approved,easy,60,Fall,Child,Yes,False,None,182.1,None
+3305,LP00305,death_benefit,500000,494835.43,B00305,2024-01-04,56,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,99.0,Medical records
+3306,LP00306,death_benefit,100000,98241.59,B00306,2024-01-05,43,under_review,easy,36,Stroke,Spouse,Grace period,False,None,98.2,Death certificate
+3307,LP00307,accidental_death,100000,186867.78,B00307,2024-01-06,40,denied,easy,2,Fall,Spouse,No,False,Suicide clause,186.9,Death certificate
+3308,LP00308,terminal_illness,500000,265000.32,B00308,2024-01-08,67,denied,easy,2,Kidney failure,Other,No,False,Suicide clause,53.0,Death certificate
+3309,LP00309,terminal_illness,250000,151074.85,B00309,2024-01-09,89,denied,easy,2,Kidney failure,Child,No,True,Suicide clause,60.4,Death certificate
+3310,LP00310,terminal_illness,100000,64778.94,B00310,2024-01-10,50,denied,medium,18,Kidney failure,Child,Grace period,False,Pre-existing condition,64.8,None
+3311,LP00311,terminal_illness,100000,54859.22,B00311,2024-01-11,54,denied,easy,2,Kidney failure,Child,No,False,Suicide clause,54.9,Death certificate
+3312,LP00312,death_benefit,250000,246002.1,B00312,2024-01-13,41,approved,hard,30,Heart attack,Other,Yes,False,None,98.4,None
+3313,LP00313,death_benefit,1000000,982801.18,B00313,2024-01-14,39,under_review,hard,36,Stroke,Spouse,Yes,False,None,98.3,Police report
+3314,LP00314,terminal_illness,100000,61191.78,B00314,2024-01-15,59,approved,easy,60,Cancer,Spouse,Yes,False,None,61.2,None
+3315,LP00315,accidental_death,500000,954245.56,B00315,2024-01-16,54,denied,easy,2,Fall,Spouse,No,False,Suicide clause,190.8,Death certificate
+3316,LP00316,accidental_death,100000,197257.24,B00316,2024-01-17,86,under_review,medium,12,Car accident,Child,No,True,None,197.3,Medical records
+3317,LP00317,death_benefit,100000,98437.22,B00317,2024-01-19,70,denied,hard,12,Natural causes,Spouse,Yes,True,Pre-existing condition,98.4,Death certificate
+3318,LP00318,death_benefit,100000,99267.08,B00318,2024-01-20,44,under_review,easy,120,Natural causes,Spouse,Grace period,False,None,99.3,Death certificate
+3319,LP00319,death_benefit,500000,497928.61,B00319,2024-01-21,72,approved,hard,30,Heart attack,Child,Yes,False,None,99.6,None
+3320,LP00320,death_benefit,500000,490236.4,B00320,2024-01-22,81,denied,easy,2,Heart attack,Child,No,True,Suicide clause,98.0,Death certificate
+3321,LP00321,accidental_death,500000,942644.07,B00321,2024-01-23,82,under_review,medium,12,Fall,Child,No,True,None,188.5,Medical records
+3322,LP00322,death_benefit,100000,99846.15,B00322,2024-01-25,67,denied,hard,36,Heart attack,Child,Yes,False,Pre-existing condition,99.8,Police report
+3323,LP00323,accidental_death,500000,969896.08,B00323,2024-01-26,56,approved,easy,60,Drowning,Sibling,Yes,False,None,194.0,None
+3324,LP00324,death_benefit,250000,247600.0,B00324,2024-01-27,70,approved,hard,30,Stroke,Spouse,Yes,True,None,99.0,None
+3325,LP00325,accidental_death,500000,917793.53,B00325,2024-01-28,89,denied,hard,120,Fall,Spouse,Yes,False,Pre-existing condition,183.6,Death certificate
+3326,LP00326,death_benefit,1000000,997820.57,B00326,2024-01-29,52,under_review,medium,120,Natural causes,Spouse,Yes,False,None,99.8,Medical records
+3327,LP00327,accidental_death,250000,492773.23,B00327,2024-01-31,80,under_review,hard,12,Car accident,Child,Yes,True,None,197.1,Police report
+3328,LP00328,death_benefit,500000,497717.48,B00328,2024-02-01,52,approved,medium,36,Natural causes,Spouse,Yes,True,None,99.5,None
+3329,LP00329,death_benefit,1000000,995944.88,B00329,2024-02-02,66,under_review,hard,60,Stroke,Spouse,Yes,False,None,99.6,Police report
+3330,LP00330,death_benefit,500000,498154.51,B00330,2024-02-03,71,denied,medium,18,Stroke,Sibling,Grace period,True,Pre-existing condition,99.6,None
+3331,LP00331,death_benefit,250000,245413.14,B00331,2024-02-04,54,denied,easy,2,Stroke,Child,No,False,Suicide clause,98.2,Death certificate
+3332,LP00332,death_benefit,100000,98916.92,B00332,2024-02-06,88,approved,medium,36,Natural causes,Spouse,Yes,True,None,98.9,None
+3333,LP00333,death_benefit,100000,98263.66,B00333,2024-02-07,36,approved,medium,36,Natural causes,Child,Yes,True,None,98.3,None
+3334,LP00334,accidental_death,100000,190111.56,B00334,2024-02-08,67,denied,easy,2,Car accident,Spouse,No,True,Suicide clause,190.1,Death certificate
+3335,LP00335,death_benefit,100000,98138.57,B00335,2024-02-09,55,denied,hard,24,Cancer,Sibling,Yes,True,Pre-existing condition,98.1,None
+3336,LP00336,death_benefit,100000,99130.11,B00336,2024-02-11,70,approved,hard,30,Cancer,Spouse,Yes,True,None,99.1,None
+3337,LP00337,death_benefit,1000000,996680.23,B00337,2024-02-12,56,under_review,hard,60,Natural causes,Spouse,Yes,False,None,99.7,Police report
+3338,LP00338,death_benefit,1000000,993545.47,B00338,2024-02-13,76,under_review,easy,120,Natural causes,Child,Grace period,False,None,99.4,Death certificate
+3339,LP00339,death_benefit,1000000,992603.39,B00339,2024-02-14,46,under_review,hard,120,Heart attack,Spouse,No,False,None,99.3,Police report
+3340,LP00340,death_benefit,500000,495847.53,B00340,2024-02-15,51,denied,hard,24,Heart attack,Spouse,Grace period,True,Pre-existing condition,99.2,None
+3341,LP00341,accidental_death,100000,186701.55,B00341,2024-02-17,57,under_review,hard,24,Fall,Spouse,Yes,True,None,186.7,Police report
+3342,LP00342,death_benefit,500000,496418.78,B00342,2024-02-18,86,denied,medium,18,Cancer,Parent,Grace period,True,Pre-existing condition,99.3,None
+3343,LP00343,terminal_illness,250000,141012.76,B00343,2024-02-19,74,approved,easy,60,Heart disease,Other,Yes,True,None,56.4,None
+3344,LP00344,accidental_death,500000,963484.68,B00344,2024-02-20,38,under_review,easy,120,Car accident,Spouse,Grace period,False,None,192.7,Death certificate
+3345,LP00345,death_benefit,100000,99892.87,B00345,2024-02-21,52,approved,hard,30,Cancer,Spouse,Yes,False,None,99.9,None
+3346,LP00346,accidental_death,100000,197310.51,B00346,2024-02-23,64,under_review,medium,24,Fall,Spouse,Yes,True,None,197.3,Medical records
+3347,LP00347,accidental_death,500000,999211.13,B00347,2024-02-24,70,denied,medium,18,Drowning,Spouse,Grace period,False,Pre-existing condition,199.8,None
+3348,LP00348,death_benefit,1000000,997165.18,B00348,2024-02-25,48,approved,hard,30,Stroke,Spouse,Yes,False,None,99.7,None
+3349,LP00349,death_benefit,100000,99637.35,B00349,2024-02-26,77,under_review,hard,36,Cancer,Spouse,Yes,False,None,99.6,Police report
+3350,LP00350,death_benefit,1000000,988731.26,B00350,2024-02-27,77,approved,medium,36,Heart attack,Spouse,Yes,True,None,98.9,None
+3351,LP00351,death_benefit,250000,249900.93,B00351,2024-02-29,41,approved,hard,30,Cancer,Spouse,Yes,False,None,100.0,None
+3352,LP00352,death_benefit,1000000,991316.35,B00352,2024-03-01,69,under_review,medium,12,Cancer,Spouse,Yes,True,None,99.1,Medical records
+3353,LP00353,death_benefit,250000,249005.84,B00353,2024-03-02,89,approved,easy,60,Stroke,Spouse,Yes,True,None,99.6,None
+3354,LP00354,death_benefit,100000,99391.64,B00354,2024-03-03,67,denied,hard,60,Cancer,Spouse,Yes,False,Pre-existing condition,99.4,None
+3355,LP00355,terminal_illness,500000,315229.41,B00355,2024-03-04,49,approved,medium,36,Cancer,Spouse,Yes,True,None,63.0,None
+3356,LP00356,death_benefit,500000,494711.08,B00356,2024-03-06,71,approved,hard,30,Cancer,Sibling,Yes,True,None,98.9,None
+3357,LP00357,death_benefit,100000,99944.11,B00357,2024-03-07,81,denied,medium,18,Natural causes,Spouse,Grace period,True,Pre-existing condition,99.9,None
+3358,LP00358,death_benefit,500000,496516.14,B00358,2024-03-08,41,under_review,medium,120,Natural causes,Spouse,No,False,None,99.3,Medical records
+3359,LP00359,death_benefit,1000000,992025.25,B00359,2024-03-09,35,approved,hard,30,Heart attack,Child,Yes,False,None,99.2,None
+3360,LP00360,death_benefit,500000,490202.75,B00360,2024-03-11,58,under_review,hard,60,Natural causes,Parent,Yes,False,None,98.0,Police report
+3361,LP00361,death_benefit,100000,99236.15,B00361,2024-03-12,78,approved,easy,60,Stroke,Spouse,Yes,True,None,99.2,None
+3362,LP00362,death_benefit,500000,496006.83,B00362,2024-03-13,38,denied,easy,2,Natural causes,Spouse,No,False,Suicide clause,99.2,Death certificate
+3363,LP00363,death_benefit,250000,248436.25,B00363,2024-03-14,80,under_review,easy,60,Cancer,Child,Grace period,False,None,99.4,Death certificate
+3364,LP00364,death_benefit,1000000,982567.51,B00364,2024-03-15,50,under_review,hard,12,Natural causes,Spouse,Yes,True,None,98.3,Police report
+3365,LP00365,death_benefit,100000,99877.52,B00365,2024-03-17,63,denied,easy,2,Stroke,Child,No,True,Suicide clause,99.9,Death certificate
+3366,LP00366,death_benefit,1000000,992096.72,B00366,2024-03-18,45,under_review,medium,120,Cancer,Child,Yes,False,None,99.2,Medical records
+3367,LP00367,death_benefit,250000,245387.85,B00367,2024-03-19,88,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,98.2,Police report
+3368,LP00368,accidental_death,1000000,1832942.52,B00368,2024-03-20,57,under_review,easy,120,Car accident,Parent,Grace period,False,None,183.3,Death certificate
+3369,LP00369,accidental_death,1000000,1972262.69,B00369,2024-03-21,47,denied,medium,18,Car accident,Spouse,Grace period,False,Pre-existing condition,197.2,None
+3370,LP00370,death_benefit,1000000,997255.9,B00370,2024-03-23,37,under_review,hard,36,Heart attack,Spouse,Yes,False,None,99.7,Police report
+3371,LP00371,death_benefit,100000,98257.96,B00371,2024-03-24,42,approved,medium,36,Stroke,Child,Yes,True,None,98.3,None
+3372,LP00372,death_benefit,250000,247941.01,B00372,2024-03-25,78,denied,medium,18,Stroke,Other,Grace period,False,Pre-existing condition,99.2,Medical records
+3373,LP00373,death_benefit,1000000,983104.71,B00373,2024-03-26,50,denied,hard,120,Cancer,Child,Yes,False,Pre-existing condition,98.3,Police report
+3374,LP00374,terminal_illness,1000000,642952.24,B00374,2024-03-27,37,denied,easy,2,Kidney failure,Spouse,No,False,Suicide clause,64.3,Death certificate
+3375,LP00375,death_benefit,1000000,989197.62,B00375,2024-03-29,63,under_review,hard,120,Heart attack,Spouse,Yes,False,None,98.9,Police report
+3376,LP00376,death_benefit,250000,245480.19,B00376,2024-03-30,89,approved,hard,30,Heart attack,Spouse,Yes,True,None,98.2,None
+3377,LP00377,accidental_death,100000,196884.1,B00377,2024-03-31,88,denied,hard,240,Car accident,Spouse,Yes,False,Pre-existing condition,196.9,None
+3378,LP00378,accidental_death,1000000,1862201.95,B00378,2024-04-01,75,under_review,medium,24,Drowning,Child,Yes,True,Pre-existing condition,186.2,Medical records
+3379,LP00379,death_benefit,1000000,993126.38,B00379,2024-04-02,89,denied,easy,2,Natural causes,Child,No,True,Suicide clause,99.3,Death certificate
+3380,LP00380,death_benefit,250000,247056.73,B00380,2024-04-04,63,approved,easy,60,Cancer,Child,Yes,False,None,98.8,None
+3381,LP00381,terminal_illness,250000,159177.21,B00381,2024-04-05,82,denied,medium,18,Cancer,Child,Grace period,False,Pre-existing condition,63.7,Death certificate
+3382,LP00382,death_benefit,100000,99530.15,B00382,2024-04-06,63,approved,hard,30,Stroke,Child,Yes,False,None,99.5,None
+3383,LP00383,death_benefit,250000,249653.23,B00383,2024-04-07,88,under_review,hard,60,Heart attack,Spouse,Yes,False,None,99.9,Police report
+3384,LP00384,terminal_illness,500000,377601.94,B00384,2024-04-09,38,approved,easy,60,Cancer,Child,Yes,False,None,75.5,None
+3385,LP00385,death_benefit,250000,249906.43,B00385,2024-04-10,46,denied,hard,120,Natural causes,Spouse,Yes,False,Pre-existing condition,100.0,Death certificate
+3386,LP00386,death_benefit,1000000,982641.16,B00386,2024-04-11,59,under_review,easy,60,Natural causes,Spouse,Grace period,False,None,98.3,Death certificate
+3387,LP00387,terminal_illness,500000,312592.61,B00387,2024-04-12,77,denied,medium,18,Heart disease,Spouse,Grace period,False,Pre-existing condition,62.5,None
+3388,LP00388,death_benefit,1000000,984621.88,B00388,2024-04-13,36,under_review,medium,24,Stroke,Spouse,Yes,True,None,98.5,Medical records
+3389,LP00389,death_benefit,500000,493956.35,B00389,2024-04-15,80,under_review,medium,12,Heart attack,Spouse,Yes,True,None,98.8,Medical records
+3390,LP00390,death_benefit,1000000,998660.21,B00390,2024-04-16,39,denied,easy,2,Natural causes,Sibling,No,False,Suicide clause,99.9,Death certificate
+3391,LP00391,death_benefit,250000,245094.27,B00391,2024-04-17,86,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,98.0,Death certificate
+3392,LP00392,death_benefit,1000000,997510.51,B00392,2024-04-18,67,under_review,easy,60,Natural causes,Spouse,Grace period,False,None,99.8,Death certificate
+3393,LP00393,death_benefit,500000,496765.9,B00393,2024-04-19,59,approved,medium,36,Heart attack,Child,Yes,False,None,99.4,None
+3394,LP00394,accidental_death,500000,944575.52,B00394,2024-04-21,72,approved,medium,36,Fall,Spouse,Yes,False,None,188.9,None
+3395,LP00395,death_benefit,100000,99104.32,B00395,2024-04-22,86,approved,hard,30,Cancer,Spouse,Yes,False,None,99.1,None
+3396,LP00396,death_benefit,250000,246357.01,B00396,2024-04-23,57,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,98.5,None
+3397,LP00397,death_benefit,250000,249075.0,B00397,2024-04-24,57,approved,hard,30,Cancer,Child,Yes,True,None,99.6,None
+3398,LP00398,death_benefit,500000,499860.8,B00398,2024-04-25,82,approved,easy,60,Heart attack,Child,Yes,False,None,100.0,None
+3399,LP00399,death_benefit,250000,249949.68,B00399,2024-04-27,68,denied,hard,60,Natural causes,Spouse,Yes,False,Pre-existing condition,100.0,None
+3400,LP00400,terminal_illness,1000000,615542.54,B00400,2024-04-28,68,denied,easy,2,Cancer,Spouse,No,False,Suicide clause,61.6,Death certificate
+3401,LP00401,death_benefit,250000,246058.12,B00401,2024-04-29,59,approved,medium,36,Natural causes,Spouse,Yes,True,None,98.4,None
+3402,LP00402,death_benefit,250000,245850.51,B00402,2024-04-30,40,under_review,medium,60,Natural causes,Child,Yes,False,None,98.3,Medical records
+3403,LP00403,death_benefit,250000,246685.25,B00403,2024-05-01,77,denied,hard,60,Heart attack,Child,No,False,Pre-existing condition,98.7,None
+3404,LP00404,death_benefit,250000,246324.56,B00404,2024-05-03,55,approved,easy,60,Natural causes,Spouse,Yes,False,None,98.5,None
+3405,LP00405,death_benefit,1000000,997315.25,B00405,2024-05-04,64,denied,medium,18,Heart attack,Spouse,Grace period,True,Pre-existing condition,99.7,None
+3406,LP00406,death_benefit,100000,98674.11,B00406,2024-05-05,83,approved,medium,36,Cancer,Sibling,Yes,False,None,98.7,None
+3407,LP00407,accidental_death,250000,457205.04,B00407,2024-05-06,44,denied,hard,120,Car accident,Spouse,Yes,False,Pre-existing condition,182.9,None
+3408,LP00408,accidental_death,250000,470012.35,B00408,2024-05-08,87,approved,medium,36,Drowning,Parent,Yes,True,None,188.0,None
+3409,LP00409,death_benefit,250000,248130.62,B00409,2024-05-09,43,under_review,easy,60,Natural causes,Spouse,Grace period,False,None,99.3,Death certificate
+3410,LP00410,death_benefit,100000,98654.06,B00410,2024-05-10,42,approved,easy,60,Stroke,Spouse,Yes,True,None,98.7,None
+3411,LP00411,death_benefit,250000,246231.83,B00411,2024-05-11,47,approved,medium,36,Heart attack,Spouse,Yes,False,None,98.5,None
+3412,LP00412,death_benefit,500000,497759.43,B00412,2024-05-12,81,approved,easy,60,Stroke,Spouse,Yes,False,None,99.6,None
+3413,LP00413,death_benefit,250000,245666.42,B00413,2024-05-14,67,denied,medium,18,Stroke,Spouse,Grace period,False,Pre-existing condition,98.3,None
+3414,LP00414,accidental_death,100000,198656.06,B00414,2024-05-15,45,under_review,medium,36,Car accident,Spouse,Yes,False,None,198.7,Medical records
+3415,LP00415,terminal_illness,250000,169195.26,B00415,2024-05-16,52,under_review,hard,24,Kidney failure,Child,Yes,True,None,67.7,Police report
+3416,LP00416,death_benefit,250000,245328.56,B00416,2024-05-17,66,approved,easy,60,Heart attack,Spouse,Yes,False,None,98.1,None
+3417,LP00417,death_benefit,1000000,980243.28,B00417,2024-05-18,59,approved,easy,60,Heart attack,Child,Yes,False,None,98.0,None
+3418,LP00418,terminal_illness,500000,301906.84,B00418,2024-05-20,82,under_review,hard,60,Kidney failure,Sibling,Yes,False,None,60.4,Police report
+3419,LP00419,accidental_death,100000,194996.21,B00419,2024-05-21,57,approved,hard,30,Drowning,Spouse,Yes,False,None,195.0,None
+3420,LP00420,accidental_death,500000,960628.37,B00420,2024-05-22,39,approved,hard,30,Fall,Spouse,Yes,True,None,192.1,None
+3421,LP00421,death_benefit,1000000,986923.18,B00421,2024-05-23,77,denied,hard,24,Cancer,Spouse,Yes,True,Pre-existing condition,98.7,None
+3422,LP00422,death_benefit,250000,249952.22,B00422,2024-05-24,62,denied,hard,36,Natural causes,Parent,Yes,False,Pre-existing condition,100.0,None
+3423,LP00423,death_benefit,100000,98202.82,B00423,2024-05-26,56,denied,medium,18,Heart attack,Spouse,Grace period,True,Pre-existing condition,98.2,None
+3424,LP00424,death_benefit,100000,98232.33,B00424,2024-05-27,49,approved,hard,30,Heart attack,Child,Yes,False,None,98.2,None
+3425,LP00425,death_benefit,250000,249760.13,B00425,2024-05-28,57,under_review,easy,60,Natural causes,Other,Grace period,False,None,99.9,Death certificate
+3426,LP00426,accidental_death,100000,196426.51,B00426,2024-05-29,73,under_review,hard,60,Fall,Spouse,Yes,False,None,196.4,Police report
+3427,LP00427,accidental_death,250000,488275.73,B00427,2024-05-30,87,denied,hard,24,Car accident,Sibling,Grace period,True,Pre-existing condition,195.3,None
+3428,LP00428,death_benefit,500000,495249.23,B00428,2024-06-01,78,approved,easy,60,Natural causes,Spouse,Yes,True,None,99.0,None
+3429,LP00429,death_benefit,500000,498797.65,B00429,2024-06-02,36,under_review,medium,60,Heart attack,Child,Yes,False,None,99.8,Medical records
+3430,LP00430,accidental_death,1000000,1939483.55,B00430,2024-06-03,74,under_review,easy,240,Fall,Other,Grace period,False,None,193.9,Death certificate
+3431,LP00431,death_benefit,500000,490448.03,B00431,2024-06-04,42,denied,medium,18,Stroke,Spouse,Grace period,True,Pre-existing condition,98.1,None
+3432,LP00432,death_benefit,500000,498169.85,B00432,2024-06-06,40,denied,hard,36,Heart attack,Spouse,No,False,Pre-existing condition,99.6,None
+3433,LP00433,accidental_death,500000,939582.48,B00433,2024-06-07,81,denied,easy,2,Drowning,Sibling,No,True,Suicide clause,187.9,Death certificate
+3434,LP00434,death_benefit,1000000,981541.7,B00434,2024-06-08,77,approved,easy,60,Cancer,Other,Yes,False,None,98.2,None
+3435,LP00435,terminal_illness,100000,66692.75,B00435,2024-06-09,76,approved,hard,30,Heart disease,Spouse,Yes,True,None,66.7,None
+3436,LP00436,death_benefit,100000,98585.95,B00436,2024-06-10,48,approved,hard,30,Heart attack,Parent,Yes,False,None,98.6,None
+3437,LP00437,death_benefit,250000,246138.17,B00437,2024-06-12,60,approved,hard,30,Cancer,Spouse,Yes,True,None,98.5,None
+3438,LP00438,death_benefit,100000,99654.77,B00438,2024-06-13,83,approved,hard,30,Cancer,Spouse,Yes,False,None,99.7,None
+3439,LP00439,death_benefit,100000,98938.06,B00439,2024-06-14,48,under_review,hard,240,Heart attack,Spouse,Yes,False,None,98.9,Police report
+3440,LP00440,terminal_illness,500000,263345.99,B00440,2024-06-15,70,approved,medium,36,Kidney failure,Child,Yes,False,None,52.7,None
+3441,LP00441,death_benefit,100000,98800.97,B00441,2024-06-16,83,approved,hard,30,Natural causes,Child,Yes,False,None,98.8,None
+3442,LP00442,terminal_illness,250000,194320.21,B00442,2024-06-18,67,under_review,easy,120,Cancer,Other,Grace period,False,None,77.7,Death certificate
+3443,LP00443,accidental_death,250000,454116.32,B00443,2024-06-19,49,approved,hard,30,Fall,Spouse,Yes,False,None,181.6,None
+3444,LP00444,death_benefit,100000,99690.32,B00444,2024-06-20,61,under_review,hard,120,Heart attack,Spouse,No,False,None,99.7,Police report
+3445,LP00445,death_benefit,500000,491417.29,B00445,2024-06-21,50,denied,hard,120,Heart attack,Spouse,Yes,False,Pre-existing condition,98.3,None
+3446,LP00446,death_benefit,1000000,983182.67,B00446,2024-06-22,80,approved,easy,60,Natural causes,Child,Yes,False,None,98.3,None
+3447,LP00447,accidental_death,500000,935552.97,B00447,2024-06-24,51,under_review,hard,3,Car accident,Spouse,Yes,True,None,187.1,Police report
+3448,LP00448,terminal_illness,500000,294418.19,B00448,2024-06-25,35,under_review,hard,60,Heart disease,Parent,Yes,False,None,58.9,Police report
+3449,LP00449,death_benefit,1000000,982029.96,B00449,2024-06-26,49,approved,medium,36,Cancer,Spouse,Yes,False,None,98.2,None
+3450,LP00450,accidental_death,500000,938029.7,B00450,2024-06-27,40,approved,medium,36,Drowning,Child,Yes,False,None,187.6,None
+3451,LP00451,death_benefit,500000,491879.67,B00451,2024-06-28,57,approved,hard,30,Heart attack,Child,Yes,True,None,98.4,None
+3452,LP00452,death_benefit,250000,248378.03,B00452,2024-06-30,84,under_review,easy,36,Stroke,Spouse,Grace period,False,None,99.4,Death certificate
+3453,LP00453,death_benefit,500000,493036.24,B00453,2024-07-01,54,under_review,easy,24,Heart attack,Spouse,Grace period,True,None,98.6,Death certificate
+3454,LP00454,accidental_death,100000,190829.7,B00454,2024-07-02,48,approved,easy,60,Drowning,Spouse,Yes,False,None,190.8,None
+3455,LP00455,death_benefit,1000000,988078.53,B00455,2024-07-03,47,under_review,medium,60,Heart attack,Other,Yes,False,None,98.8,Medical records
+3456,LP00456,death_benefit,100000,98892.33,B00456,2024-07-05,64,denied,easy,2,Heart attack,Other,No,True,Suicide clause,98.9,Death certificate
+3457,LP00457,terminal_illness,1000000,732713.92,B00457,2024-07-06,69,denied,medium,18,Cancer,Spouse,Grace period,False,Pre-existing condition,73.3,None
+3458,LP00458,death_benefit,250000,248708.75,B00458,2024-07-07,76,under_review,hard,12,Natural causes,Spouse,Yes,True,None,99.5,Police report
+3459,LP00459,death_benefit,250000,249347.84,B00459,2024-07-08,77,denied,hard,36,Natural causes,Child,No,False,Pre-existing condition,99.7,None
+3460,LP00460,accidental_death,1000000,1883528.38,B00460,2024-07-09,88,denied,easy,2,Drowning,Parent,No,True,Suicide clause,188.4,Death certificate
+3461,LP00461,death_benefit,1000000,980208.07,B00461,2024-07-11,75,approved,hard,30,Heart attack,Parent,Yes,True,None,98.0,None
+3462,LP00462,death_benefit,1000000,994276.48,B00462,2024-07-12,55,denied,hard,36,Stroke,Other,Yes,False,Pre-existing condition,99.4,None
+3463,LP00463,death_benefit,250000,247977.2,B00463,2024-07-13,71,denied,medium,18,Cancer,Other,Grace period,False,Pre-existing condition,99.2,None
+3464,LP00464,accidental_death,1000000,1840289.32,B00464,2024-07-14,64,approved,medium,36,Car accident,Spouse,Yes,False,None,184.0,None
+3465,LP00465,death_benefit,1000000,983539.06,B00465,2024-07-15,38,under_review,medium,36,Cancer,Spouse,Yes,False,None,98.4,Medical records
+3466,LP00466,death_benefit,500000,494130.71,B00466,2024-07-17,87,denied,medium,18,Natural causes,Spouse,Grace period,False,Pre-existing condition,98.8,None
+3467,LP00467,accidental_death,250000,461633.62,B00467,2024-07-18,54,approved,hard,30,Drowning,Child,Yes,True,None,184.7,None
+3468,LP00468,terminal_illness,250000,154806.94,B00468,2024-07-19,39,under_review,medium,120,Kidney failure,Child,Yes,False,None,61.9,Medical records
+3469,LP00469,death_benefit,1000000,993322.59,B00469,2024-07-20,67,denied,medium,18,Cancer,Spouse,Grace period,False,Pre-existing condition,99.3,Death certificate
+3470,LP00470,death_benefit,100000,98354.98,B00470,2024-07-21,79,approved,easy,60,Stroke,Spouse,Yes,True,None,98.4,None
+3471,LP00471,death_benefit,100000,98217.68,B00471,2024-07-23,68,approved,easy,60,Stroke,Spouse,Yes,True,None,98.2,None
+3472,LP00472,accidental_death,1000000,1888889.09,B00472,2024-07-24,39,approved,easy,60,Drowning,Parent,Yes,False,None,188.9,None
+3473,LP00473,death_benefit,1000000,990872.41,B00473,2024-07-25,81,denied,medium,18,Cancer,Spouse,Grace period,False,Pre-existing condition,99.1,None
+3474,LP00474,death_benefit,100000,98537.53,B00474,2024-07-26,74,denied,hard,24,Heart attack,Spouse,Yes,True,Pre-existing condition,98.5,None
+3475,LP00475,accidental_death,1000000,1967404.85,B00475,2024-07-27,77,under_review,easy,12,Car accident,Spouse,Grace period,True,Pre-existing condition,196.7,Death certificate
+3476,LP00476,death_benefit,250000,246180.42,B00476,2024-07-29,41,under_review,easy,60,Heart attack,Other,Grace period,False,None,98.5,Death certificate
+3477,LP00477,terminal_illness,500000,250141.46,B00477,2024-07-30,68,approved,hard,30,Cancer,Spouse,Yes,False,None,50.0,None
+3478,LP00478,death_benefit,250000,245789.38,B00478,2024-07-31,67,approved,easy,60,Natural causes,Child,Yes,True,None,98.3,None
+3479,LP00479,death_benefit,500000,494502.11,B00479,2024-08-01,54,denied,hard,120,Cancer,Sibling,Yes,False,Pre-existing condition,98.9,None
+3480,LP00480,terminal_illness,250000,198404.41,B00480,2024-08-03,68,denied,medium,18,Kidney failure,Spouse,Grace period,False,Pre-existing condition,79.4,None
+3481,LP00481,accidental_death,250000,485068.65,B00481,2024-08-04,61,denied,hard,60,Car accident,Spouse,Yes,False,Pre-existing condition,194.0,Death certificate
+3482,LP00482,death_benefit,500000,492146.79,B00482,2024-08-05,62,denied,medium,18,Stroke,Spouse,Grace period,True,Pre-existing condition,98.4,Police report
+3483,LP00483,death_benefit,500000,499847.87,B00483,2024-08-06,64,under_review,hard,36,Cancer,Spouse,Yes,False,None,100.0,Police report
+3484,LP00484,death_benefit,1000000,987563.11,B00484,2024-08-07,89,denied,hard,60,Cancer,Child,Yes,False,Pre-existing condition,98.8,Police report
+3485,LP00485,death_benefit,500000,499635.05,B00485,2024-08-09,73,approved,hard,30,Cancer,Spouse,Yes,False,None,99.9,None
+3486,LP00486,death_benefit,250000,248015.27,B00486,2024-08-10,40,under_review,easy,120,Heart attack,Parent,Grace period,False,None,99.2,Death certificate
+3487,LP00487,death_benefit,500000,490541.76,B00487,2024-08-11,87,denied,hard,24,Natural causes,Spouse,Yes,True,Pre-existing condition,98.1,None
+3488,LP00488,death_benefit,250000,245128.48,B00488,2024-08-12,56,under_review,hard,60,Natural causes,Parent,Yes,False,None,98.1,Police report
+3489,LP00489,death_benefit,500000,494842.87,B00489,2024-08-13,69,approved,hard,30,Cancer,Spouse,Yes,False,None,99.0,None
+3490,LP00490,death_benefit,1000000,991068.75,B00490,2024-08-15,58,denied,easy,2,Stroke,Child,No,False,Suicide clause,99.1,Death certificate
+3491,LP00491,death_benefit,1000000,990836.07,B00491,2024-08-16,76,denied,hard,24,Cancer,Spouse,Yes,True,Pre-existing condition,99.1,None
+3492,LP00492,accidental_death,1000000,1917286.16,B00492,2024-08-17,57,denied,easy,2,Drowning,Child,No,True,Suicide clause,191.7,Death certificate
+3493,LP00493,accidental_death,100000,190548.49,B00493,2024-08-18,48,under_review,medium,24,Fall,Child,Yes,True,Pre-existing condition,190.5,Medical records
+3494,LP00494,terminal_illness,1000000,525554.12,B00494,2024-08-19,72,denied,easy,2,Cancer,Parent,No,False,Suicide clause,52.6,Death certificate
+3495,LP00495,death_benefit,250000,245396.77,B00495,2024-08-21,81,approved,medium,36,Heart attack,Spouse,Yes,True,None,98.2,None
+3496,LP00496,death_benefit,1000000,994697.43,B00496,2024-08-22,74,under_review,easy,120,Natural causes,Child,Grace period,False,None,99.5,Death certificate
+3497,LP00497,accidental_death,100000,196249.09,B00497,2024-08-23,67,approved,hard,30,Car accident,Spouse,Yes,True,None,196.2,None
+3498,LP00498,accidental_death,250000,454907.7,B00498,2024-08-24,84,under_review,hard,6,Fall,Other,Yes,True,None,182.0,Police report
+3499,LP00499,accidental_death,250000,454046.69,B00499,2024-08-25,44,under_review,easy,60,Drowning,Parent,Grace period,False,None,181.6,Death certificate
+3500,LP00500,accidental_death,1000000,1839791.52,B00500,2024-08-27,68,denied,easy,2,Fall,Spouse,No,False,Suicide clause,184.0,Death certificate
+3501,LP00501,death_benefit,1000000,980585.35,B00501,2024-08-28,59,under_review,easy,24,Cancer,Spouse,Grace period,True,None,98.1,Death certificate
+3502,LP00502,accidental_death,500000,981522.01,B00502,2024-08-29,85,under_review,medium,24,Drowning,Child,Yes,True,None,196.3,Medical records
+3503,LP00503,accidental_death,1000000,1913443.12,B00503,2024-08-30,59,denied,hard,12,Fall,Spouse,Yes,True,Pre-existing condition,191.3,None
+3504,LP00504,death_benefit,250000,245574.15,B00504,2024-09-01,62,approved,hard,30,Heart attack,Spouse,Yes,False,None,98.2,None
+3505,LP00505,death_benefit,1000000,985351.71,B00505,2024-09-02,75,denied,medium,18,Stroke,Child,Grace period,False,Pre-existing condition,98.5,None
+3506,LP00506,death_benefit,100000,98011.07,B00506,2024-09-03,71,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,98.0,Death certificate
+3507,LP00507,accidental_death,100000,183356.44,B00507,2024-09-04,79,denied,hard,60,Car accident,Spouse,Yes,False,Pre-existing condition,183.4,None
+3508,LP00508,accidental_death,500000,919527.14,B00508,2024-09-05,61,approved,medium,36,Drowning,Child,Yes,False,None,183.9,None
+3509,LP00509,death_benefit,100000,99915.37,B00509,2024-09-07,47,approved,hard,30,Cancer,Spouse,Yes,False,None,99.9,None
+3510,LP00510,accidental_death,1000000,1888798.38,B00510,2024-09-08,61,approved,easy,60,Car accident,Spouse,Yes,True,None,188.9,None
+3511,LP00511,accidental_death,500000,904023.85,B00511,2024-09-09,75,denied,easy,2,Drowning,Spouse,No,False,Suicide clause,180.8,Death certificate
+3512,LP00512,terminal_illness,500000,324309.14,B00512,2024-09-10,75,under_review,easy,120,Kidney failure,Child,Grace period,False,None,64.9,Death certificate
+3513,LP00513,death_benefit,1000000,988582.86,B00513,2024-09-11,61,approved,easy,60,Stroke,Spouse,Yes,False,None,98.9,None
+3514,LP00514,death_benefit,100000,98630.91,B00514,2024-09-13,61,under_review,easy,120,Stroke,Spouse,Grace period,False,None,98.6,Death certificate
+3515,LP00515,accidental_death,1000000,1941841.51,B00515,2024-09-14,56,under_review,hard,36,Fall,Child,Yes,False,None,194.2,Police report
+3516,LP00516,death_benefit,250000,247463.44,B00516,2024-09-15,48,approved,easy,60,Stroke,Spouse,Yes,True,None,99.0,None
+3517,LP00517,death_benefit,100000,99511.02,B00517,2024-09-16,46,under_review,medium,24,Heart attack,Child,Yes,True,None,99.5,Medical records
+3518,LP00518,death_benefit,1000000,981784.28,B00518,2024-09-17,50,approved,hard,30,Heart attack,Child,Yes,True,None,98.2,None
+3519,LP00519,death_benefit,500000,499413.39,B00519,2024-09-19,85,approved,medium,36,Heart attack,Child,Yes,False,None,99.9,None
+3520,LP00520,death_benefit,500000,496405.54,B00520,2024-09-20,45,approved,hard,30,Heart attack,Spouse,Yes,True,None,99.3,None
+3521,LP00521,death_benefit,1000000,988849.57,B00521,2024-09-21,39,under_review,medium,60,Heart attack,Spouse,Yes,False,None,98.9,Medical records
+3522,LP00522,death_benefit,100000,98636.25,B00522,2024-09-22,37,denied,hard,120,Natural causes,Child,Yes,False,Pre-existing condition,98.6,None
+3523,LP00523,death_benefit,250000,245756.87,B00523,2024-09-23,57,approved,medium,36,Stroke,Spouse,Yes,True,None,98.3,None
+3524,LP00524,accidental_death,500000,935558.44,B00524,2024-09-25,63,denied,easy,2,Fall,Child,No,True,Suicide clause,187.1,Death certificate
+3525,LP00525,death_benefit,500000,491925.14,B00525,2024-09-26,79,under_review,medium,120,Heart attack,Child,Yes,False,None,98.4,Medical records
+3526,LP00526,accidental_death,100000,182668.1,B00526,2024-09-27,47,approved,easy,60,Fall,Child,Yes,True,None,182.7,None
+3527,LP00527,death_benefit,500000,492331.88,B00527,2024-09-28,71,under_review,medium,60,Cancer,Child,Yes,False,None,98.5,Medical records
+3528,LP00528,death_benefit,1000000,982437.8,B00528,2024-09-30,57,approved,hard,30,Heart attack,Spouse,Yes,False,None,98.2,None
+3529,LP00529,death_benefit,1000000,986505.69,B00529,2024-10-01,71,approved,medium,36,Stroke,Spouse,Yes,False,None,98.7,None
+3530,LP00530,death_benefit,500000,494697.24,B00530,2024-10-02,65,denied,hard,12,Heart attack,Spouse,Yes,True,Pre-existing condition,98.9,Medical records
+3531,LP00531,accidental_death,1000000,1946096.59,B00531,2024-10-03,86,approved,medium,36,Drowning,Spouse,Yes,False,None,194.6,None
+3532,LP00532,death_benefit,1000000,999168.1,B00532,2024-10-04,86,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,99.9,Medical records
+3533,LP00533,death_benefit,1000000,997434.46,B00533,2024-10-06,72,under_review,easy,12,Natural causes,Child,Grace period,True,None,99.7,Death certificate
+3534,LP00534,death_benefit,250000,245305.94,B00534,2024-10-07,70,under_review,hard,24,Stroke,Spouse,No,True,None,98.1,Police report
+3535,LP00535,death_benefit,100000,98415.5,B00535,2024-10-08,63,approved,easy,60,Cancer,Spouse,Yes,False,None,98.4,None
+3536,LP00536,death_benefit,250000,247073.94,B00536,2024-10-09,72,approved,easy,60,Natural causes,Other,Yes,False,None,98.8,None
+3537,LP00537,death_benefit,1000000,981873.7,B00537,2024-10-10,41,under_review,easy,240,Cancer,Other,Grace period,False,None,98.2,Death certificate
+3538,LP00538,death_benefit,250000,248261.91,B00538,2024-10-12,62,approved,easy,60,Cancer,Spouse,Yes,False,None,99.3,None
+3539,LP00539,death_benefit,250000,248982.7,B00539,2024-10-13,58,denied,hard,120,Cancer,Child,Yes,False,Pre-existing condition,99.6,Death certificate
+3540,LP00540,terminal_illness,500000,258998.26,B00540,2024-10-14,44,approved,easy,60,Heart disease,Child,Yes,False,None,51.8,None
+3541,LP00541,death_benefit,250000,246975.9,B00541,2024-10-15,74,approved,hard,30,Cancer,Spouse,Yes,True,None,98.8,None
+3542,LP00542,accidental_death,500000,979050.05,B00542,2024-10-16,44,under_review,hard,120,Car accident,Spouse,Yes,False,None,195.8,Police report
+3543,LP00543,death_benefit,100000,98029.19,B00543,2024-10-18,80,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,98.0,Death certificate
+3544,LP00544,death_benefit,100000,99082.67,B00544,2024-10-19,39,approved,medium,36,Stroke,Child,Yes,False,None,99.1,None
+3545,LP00545,death_benefit,500000,497912.99,B00545,2024-10-20,53,approved,easy,60,Cancer,Spouse,Yes,False,None,99.6,None
+3546,LP00546,death_benefit,100000,99588.24,B00546,2024-10-21,55,denied,hard,24,Natural causes,Sibling,No,True,Pre-existing condition,99.6,None
+3547,LP00547,death_benefit,100000,98745.99,B00547,2024-10-22,54,under_review,medium,60,Cancer,Spouse,Yes,False,None,98.7,Medical records
+3548,LP00548,death_benefit,100000,99310.65,B00548,2024-10-24,49,under_review,easy,240,Cancer,Child,Grace period,False,None,99.3,Death certificate
+3549,LP00549,death_benefit,1000000,983072.73,B00549,2024-10-25,37,approved,medium,36,Stroke,Other,Yes,False,None,98.3,None
+3550,LP00550,death_benefit,250000,248516.25,B00550,2024-10-26,45,under_review,hard,120,Stroke,Spouse,No,False,None,99.4,Police report
+3551,LP00551,accidental_death,100000,191774.38,B00551,2024-10-27,43,approved,medium,36,Fall,Child,Yes,False,None,191.8,None
+3552,LP00552,terminal_illness,100000,76606.64,B00552,2024-10-29,80,under_review,hard,6,Kidney failure,Spouse,Yes,True,None,76.6,Police report
+3553,LP00553,accidental_death,250000,497836.49,B00553,2024-10-30,48,approved,hard,30,Fall,Child,Yes,True,None,199.1,None
+3554,LP00554,accidental_death,500000,909305.91,B00554,2024-10-31,51,under_review,easy,36,Fall,Spouse,Grace period,False,None,181.9,Death certificate
+3555,LP00555,accidental_death,500000,982857.28,B00555,2024-11-01,89,under_review,easy,36,Drowning,Parent,Grace period,False,None,196.6,Death certificate
+3556,LP00556,death_benefit,500000,494236.23,B00556,2024-11-02,35,approved,easy,60,Heart attack,Spouse,Yes,False,None,98.8,None
+3557,LP00557,terminal_illness,1000000,755471.43,B00557,2024-11-04,67,denied,easy,2,Heart disease,Child,No,True,Suicide clause,75.5,Death certificate
+3558,LP00558,death_benefit,100000,98242.97,B00558,2024-11-05,52,under_review,easy,3,Natural causes,Spouse,Grace period,True,None,98.2,Death certificate
+3559,LP00559,death_benefit,500000,495052.8,B00559,2024-11-06,40,approved,hard,30,Heart attack,Spouse,Yes,True,None,99.0,None
+3560,LP00560,death_benefit,500000,498617.47,B00560,2024-11-07,37,under_review,easy,12,Natural causes,Spouse,Grace period,True,None,99.7,Death certificate
+3561,LP00561,death_benefit,1000000,981431.14,B00561,2024-11-08,56,denied,medium,18,Stroke,Other,Grace period,False,Pre-existing condition,98.1,None
+3562,LP00562,death_benefit,100000,99068.99,B00562,2024-11-10,37,approved,easy,60,Heart attack,Spouse,Yes,True,None,99.1,None
+3563,LP00563,death_benefit,250000,247472.6,B00563,2024-11-11,43,approved,easy,60,Heart attack,Spouse,Yes,False,None,99.0,None
+3564,LP00564,accidental_death,500000,902724.56,B00564,2024-11-12,51,under_review,hard,36,Car accident,Child,Yes,False,None,180.5,Police report
+3565,LP00565,death_benefit,100000,98428.95,B00565,2024-11-13,57,approved,hard,30,Cancer,Spouse,Yes,True,None,98.4,None
+3566,LP00566,death_benefit,100000,98529.76,B00566,2024-11-14,71,approved,hard,30,Cancer,Spouse,Yes,True,None,98.5,None
+3567,LP00567,death_benefit,250000,247786.65,B00567,2024-11-16,55,denied,hard,12,Natural causes,Spouse,Yes,True,Pre-existing condition,99.1,Medical records
+3568,LP00568,accidental_death,250000,469632.05,B00568,2024-11-17,71,denied,medium,18,Car accident,Other,Grace period,True,Pre-existing condition,187.9,Death certificate
+3569,LP00569,terminal_illness,250000,175758.29,B00569,2024-11-18,63,approved,easy,60,Cancer,Spouse,Yes,True,None,70.3,None
+3570,LP00570,accidental_death,500000,937323.66,B00570,2024-11-19,64,denied,hard,24,Fall,Spouse,Yes,True,Pre-existing condition,187.5,None
+3571,LP00571,death_benefit,250000,249944.67,B00571,2024-11-20,49,denied,easy,2,Natural causes,Child,No,False,Suicide clause,100.0,Death certificate
+3572,LP00572,accidental_death,1000000,1913621.21,B00572,2024-11-22,80,denied,easy,2,Fall,Spouse,No,True,Suicide clause,191.4,Death certificate
+3573,LP00573,death_benefit,100000,98917.37,B00573,2024-11-23,70,denied,easy,2,Cancer,Child,No,True,Suicide clause,98.9,Death certificate
+3574,LP00574,death_benefit,100000,99645.88,B00574,2024-11-24,51,denied,hard,36,Stroke,Parent,Yes,False,Pre-existing condition,99.6,None
+3575,LP00575,accidental_death,250000,468851.51,B00575,2024-11-25,55,approved,easy,60,Drowning,Child,Yes,True,None,187.5,None
+3576,LP00576,death_benefit,500000,490412.82,B00576,2024-11-27,65,approved,medium,36,Heart attack,Spouse,Yes,True,None,98.1,None
+3577,LP00577,death_benefit,250000,247934.72,B00577,2024-11-28,55,under_review,hard,60,Heart attack,Child,Yes,False,None,99.2,Police report
+3578,LP00578,death_benefit,100000,98384.99,B00578,2024-11-29,38,approved,hard,30,Stroke,Other,Yes,True,None,98.4,None
+3579,LP00579,death_benefit,500000,498273.81,B00579,2024-11-30,51,approved,easy,60,Stroke,Spouse,Yes,False,None,99.7,None
+3580,LP00580,death_benefit,1000000,998681.53,B00580,2024-12-01,45,under_review,hard,36,Heart attack,Spouse,Yes,False,None,99.9,Police report
+3581,LP00581,death_benefit,1000000,991460.51,B00581,2024-12-03,55,denied,hard,24,Natural causes,Child,No,True,Pre-existing condition,99.1,None
+3582,LP00582,death_benefit,500000,492938.06,B00582,2024-12-04,63,approved,medium,36,Heart attack,Child,Yes,False,None,98.6,None
+3583,LP00583,accidental_death,500000,964131.09,B00583,2024-12-05,86,under_review,medium,60,Drowning,Spouse,Yes,False,None,192.8,Medical records
+3584,LP00584,death_benefit,500000,495885.92,B00584,2024-12-06,80,approved,hard,30,Heart attack,Child,Yes,False,None,99.2,None
+3585,LP00585,terminal_illness,500000,331350.02,B00585,2024-12-07,72,denied,hard,60,Heart disease,Spouse,Yes,False,Pre-existing condition,66.3,None
+3586,LP00586,accidental_death,100000,188534.31,B00586,2024-12-09,60,under_review,medium,36,Car accident,Other,Yes,False,None,188.5,Medical records
+3587,LP00587,accidental_death,250000,492581.91,B00587,2024-12-10,57,denied,easy,2,Drowning,Child,No,True,Suicide clause,197.0,Death certificate
+3588,LP00588,accidental_death,250000,451754.12,B00588,2024-12-11,79,denied,hard,240,Fall,Parent,Yes,False,Pre-existing condition,180.7,None
+3589,LP00589,death_benefit,1000000,991388.31,B00589,2024-12-12,68,approved,hard,30,Stroke,Child,Yes,False,None,99.1,None
+3590,LP00590,death_benefit,1000000,981898.43,B00590,2024-12-13,76,approved,easy,60,Natural causes,Parent,Yes,True,None,98.2,None
+3591,LP00591,death_benefit,100000,99551.79,B00591,2024-12-15,61,denied,hard,36,Heart attack,Spouse,Yes,False,Pre-existing condition,99.6,Police report
+3592,LP00592,accidental_death,250000,476914.33,B00592,2024-12-16,41,denied,easy,2,Car accident,Spouse,No,False,Suicide clause,190.8,Death certificate
+3593,LP00593,death_benefit,1000000,989496.67,B00593,2024-12-17,67,approved,easy,60,Cancer,Spouse,Yes,False,None,98.9,None
+3594,LP00594,terminal_illness,250000,137926.62,B00594,2024-12-18,85,denied,easy,2,Cancer,Spouse,No,False,Suicide clause,55.2,Death certificate
+3595,LP00595,death_benefit,1000000,993277.24,B00595,2024-12-19,64,approved,easy,60,Cancer,Spouse,Yes,False,None,99.3,None
+3596,LP00596,accidental_death,500000,997103.22,B00596,2024-12-21,51,approved,easy,60,Drowning,Child,Yes,False,None,199.4,None
+3597,LP00597,accidental_death,250000,466226.93,B00597,2024-12-22,41,denied,hard,60,Car accident,Spouse,Yes,False,Pre-existing condition,186.5,None
+3598,LP00598,death_benefit,500000,492589.51,B00598,2024-12-23,76,approved,hard,30,Cancer,Spouse,Yes,False,None,98.5,None
+3599,LP00599,terminal_illness,1000000,692015.35,B00599,2024-12-24,60,under_review,medium,60,Kidney failure,Spouse,Yes,False,None,69.2,Medical records
+3600,LP00600,death_benefit,500000,491254.4,B00600,2024-12-26,89,under_review,hard,24,Natural causes,Parent,Yes,True,None,98.3,Police report
+3601,LP00601,accidental_death,100000,186282.88,B00601,2024-12-27,73,approved,easy,60,Fall,Spouse,Yes,False,None,186.3,None
+3602,LP00602,death_benefit,250000,249698.8,B00602,2024-12-28,44,denied,hard,60,Natural causes,Sibling,Yes,False,Pre-existing condition,99.9,None
+3603,LP00603,death_benefit,1000000,993679.69,B00603,2024-12-29,58,under_review,hard,60,Heart attack,Child,No,False,None,99.4,Police report
+3604,LP00604,death_benefit,250000,249005.13,B00604,2024-12-30,83,denied,easy,2,Heart attack,Child,No,False,Suicide clause,99.6,Death certificate
+3605,LP00605,death_benefit,500000,499451.91,B00605,2025-01-01,39,denied,medium,18,Cancer,Sibling,Grace period,False,Pre-existing condition,99.9,None
+3606,LP00606,death_benefit,1000000,983822.04,B00606,2025-01-02,60,under_review,medium,60,Cancer,Spouse,Yes,False,None,98.4,Medical records
+3607,LP00607,death_benefit,1000000,982435.67,B00607,2025-01-03,55,denied,hard,36,Heart attack,Spouse,Yes,False,Pre-existing condition,98.2,None
+3608,LP00608,death_benefit,100000,99960.87,B00608,2025-01-04,78,under_review,hard,60,Stroke,Spouse,Yes,False,None,100.0,Police report
+3609,LP00609,death_benefit,250000,249112.06,B00609,2025-01-05,57,under_review,easy,12,Stroke,Child,Grace period,True,Pre-existing condition,99.6,Death certificate
+3610,LP00610,death_benefit,1000000,983798.34,B00610,2025-01-07,64,denied,medium,18,Cancer,Spouse,Grace period,True,Pre-existing condition,98.4,None
+3611,LP00611,death_benefit,100000,99290.43,B00611,2025-01-08,76,approved,easy,60,Natural causes,Spouse,Yes,False,None,99.3,None
+3612,LP00612,accidental_death,100000,199849.45,B00612,2025-01-09,45,denied,medium,18,Drowning,Child,Grace period,False,Pre-existing condition,199.8,None
+3613,LP00613,death_benefit,1000000,990230.75,B00613,2025-01-10,87,under_review,hard,36,Natural causes,Spouse,Yes,False,None,99.0,Police report
+3614,LP00614,death_benefit,1000000,988156.36,B00614,2025-01-11,62,approved,hard,30,Heart attack,Spouse,Yes,False,None,98.8,None
+3615,LP00615,terminal_illness,250000,145404.09,B00615,2025-01-13,73,denied,medium,18,Cancer,Spouse,Grace period,False,Pre-existing condition,58.2,Police report
+3616,LP00616,accidental_death,250000,485964.12,B00616,2025-01-14,84,under_review,medium,36,Car accident,Spouse,Yes,False,None,194.4,Medical records
+3617,LP00617,death_benefit,1000000,986366.81,B00617,2025-01-15,60,approved,hard,30,Heart attack,Child,Yes,True,None,98.6,None
+3618,LP00618,accidental_death,500000,988701.87,B00618,2025-01-16,60,under_review,hard,24,Car accident,Spouse,Yes,True,None,197.7,Police report
+3619,LP00619,death_benefit,1000000,995422.82,B00619,2025-01-17,46,approved,medium,36,Cancer,Spouse,Yes,True,None,99.5,None
+3620,LP00620,terminal_illness,1000000,764611.56,B00620,2025-01-19,68,denied,hard,60,Kidney failure,Spouse,Grace period,False,Pre-existing condition,76.5,Death certificate
+3621,LP00621,terminal_illness,100000,61989.5,B00621,2025-01-20,51,denied,medium,18,Kidney failure,Spouse,Grace period,True,Pre-existing condition,62.0,None
+3622,LP00622,terminal_illness,250000,146228.62,B00622,2025-01-21,70,approved,medium,36,Kidney failure,Child,Yes,False,None,58.5,None
+3623,LP00623,death_benefit,1000000,992103.94,B00623,2025-01-22,70,denied,easy,2,Stroke,Spouse,No,False,Suicide clause,99.2,Death certificate
+3624,LP00624,death_benefit,100000,99439.94,B00624,2025-01-24,52,approved,easy,60,Cancer,Spouse,Yes,False,None,99.4,None
+3625,LP00625,death_benefit,250000,246524.43,B00625,2025-01-25,56,denied,hard,12,Stroke,Child,Yes,True,Pre-existing condition,98.6,None
+3626,LP00626,terminal_illness,250000,130749.72,B00626,2025-01-26,37,denied,hard,60,Heart disease,Spouse,Yes,False,Pre-existing condition,52.3,None
+3627,LP00627,death_benefit,100000,98426.28,B00627,2025-01-27,44,under_review,hard,60,Cancer,Child,Yes,False,None,98.4,Police report
+3628,LP00628,death_benefit,250000,248209.81,B00628,2025-01-28,54,under_review,medium,60,Cancer,Spouse,Yes,False,None,99.3,Medical records
+3629,LP00629,terminal_illness,100000,73815.32,B00629,2025-01-30,78,under_review,easy,24,Kidney failure,Child,Grace period,True,None,73.8,Death certificate
+3630,LP00630,death_benefit,500000,490002.86,B00630,2025-01-31,81,under_review,easy,12,Stroke,Spouse,Grace period,True,None,98.0,Death certificate
+3631,LP00631,accidental_death,100000,191420.99,B00631,2025-02-01,62,approved,hard,30,Car accident,Other,Yes,False,None,191.4,None
+3632,LP00632,death_benefit,1000000,993060.44,B00632,2025-02-02,38,under_review,hard,120,Natural causes,Spouse,No,False,None,99.3,Police report
+3633,LP00633,death_benefit,500000,499612.91,B00633,2025-02-03,69,approved,easy,60,Natural causes,Spouse,Yes,False,None,99.9,None
+3634,LP00634,accidental_death,500000,992950.22,B00634,2025-02-05,76,denied,easy,2,Drowning,Spouse,No,False,Suicide clause,198.6,Death certificate
+3635,LP00635,death_benefit,250000,245508.43,B00635,2025-02-06,70,denied,medium,18,Stroke,Child,Grace period,False,Pre-existing condition,98.2,None
+3636,LP00636,accidental_death,250000,485072.48,B00636,2025-02-07,40,under_review,easy,12,Drowning,Spouse,Grace period,True,None,194.0,Death certificate
+3637,LP00637,death_benefit,500000,499252.16,B00637,2025-02-08,57,denied,easy,2,Stroke,Sibling,No,False,Suicide clause,99.9,Death certificate
+3638,LP00638,death_benefit,250000,246650.07,B00638,2025-02-09,68,approved,hard,30,Stroke,Parent,Yes,False,None,98.7,None
+3639,LP00639,death_benefit,100000,98182.39,B00639,2025-02-11,72,under_review,hard,60,Natural causes,Sibling,Yes,False,None,98.2,Police report
+3640,LP00640,death_benefit,250000,248764.05,B00640,2025-02-12,89,approved,easy,60,Heart attack,Parent,Yes,False,None,99.5,None
+3641,LP00641,terminal_illness,1000000,534037.03,B00641,2025-02-13,49,approved,hard,30,Kidney failure,Spouse,Yes,False,None,53.4,None
+3642,LP00642,terminal_illness,100000,64320.74,B00642,2025-02-14,46,under_review,hard,60,Heart disease,Spouse,Yes,False,None,64.3,Police report
+3643,LP00643,accidental_death,1000000,1963734.27,B00643,2025-02-15,75,approved,easy,60,Car accident,Spouse,Yes,True,None,196.4,None
+3644,LP00644,death_benefit,100000,99115.66,B00644,2025-02-17,60,denied,easy,2,Heart attack,Spouse,No,True,Suicide clause,99.1,Death certificate
+3645,LP00645,death_benefit,1000000,994112.24,B00645,2025-02-18,69,approved,easy,60,Natural causes,Sibling,Yes,True,None,99.4,None
+3646,LP00646,death_benefit,1000000,995690.38,B00646,2025-02-19,88,under_review,medium,12,Cancer,Spouse,Yes,True,None,99.6,Medical records
+3647,LP00647,death_benefit,1000000,981322.5,B00647,2025-02-20,84,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,98.1,Death certificate
+3648,LP00648,death_benefit,500000,492925.77,B00648,2025-02-22,57,under_review,hard,60,Heart attack,Spouse,Yes,False,None,98.6,Police report
+3649,LP00649,accidental_death,100000,181671.82,B00649,2025-02-23,77,under_review,hard,36,Drowning,Child,Yes,False,None,181.7,Police report
+3650,LP00650,death_benefit,100000,98135.77,B00650,2025-02-24,47,approved,medium,36,Natural causes,Parent,Yes,False,None,98.1,None
+3651,LP00651,death_benefit,100000,98347.24,B00651,2025-02-25,63,under_review,medium,24,Heart attack,Spouse,Yes,True,None,98.3,Medical records
+3652,LP00652,death_benefit,500000,496142.17,B00652,2025-02-26,61,under_review,medium,36,Stroke,Child,Yes,False,None,99.2,Medical records
+3653,LP00653,death_benefit,100000,98738.6,B00653,2025-02-28,76,under_review,medium,36,Heart attack,Child,No,False,None,98.7,Medical records
+3654,LP00654,death_benefit,100000,98724.13,B00654,2025-03-01,69,denied,hard,24,Cancer,Other,Yes,True,Pre-existing condition,98.7,Police report
+3655,LP00655,death_benefit,250000,249498.7,B00655,2025-03-02,71,under_review,medium,36,Natural causes,Spouse,No,False,None,99.8,Medical records
+3656,LP00656,accidental_death,250000,456161.36,B00656,2025-03-03,37,approved,easy,60,Car accident,Spouse,Yes,True,None,182.5,None
+3657,LP00657,death_benefit,500000,497037.56,B00657,2025-03-04,37,denied,easy,2,Stroke,Spouse,No,True,Suicide clause,99.4,Death certificate
+3658,LP00658,death_benefit,100000,98316.82,B00658,2025-03-06,38,under_review,hard,120,Stroke,Spouse,Yes,False,None,98.3,Police report
+3659,LP00659,accidental_death,500000,999566.25,B00659,2025-03-07,72,denied,hard,60,Drowning,Child,Yes,False,Pre-existing condition,199.9,None
+3660,LP00660,accidental_death,1000000,1982268.3,B00660,2025-03-08,81,under_review,hard,60,Car accident,Child,Yes,False,None,198.2,Police report
+3661,LP00661,death_benefit,100000,99980.35,B00661,2025-03-09,88,denied,medium,18,Natural causes,Child,Grace period,False,Pre-existing condition,100.0,None
+3662,LP00662,death_benefit,500000,491996.77,B00662,2025-03-10,83,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,98.4,Police report
+3663,LP00663,death_benefit,1000000,996228.76,B00663,2025-03-12,46,approved,easy,60,Heart attack,Child,Yes,False,None,99.6,None
+3664,LP00664,death_benefit,1000000,996787.76,B00664,2025-03-13,66,approved,easy,60,Natural causes,Spouse,Yes,False,None,99.7,None
+3665,LP00665,death_benefit,100000,99783.27,B00665,2025-03-14,50,denied,medium,18,Natural causes,Spouse,Grace period,True,Pre-existing condition,99.8,None
+3666,LP00666,death_benefit,1000000,997195.92,B00666,2025-03-15,56,approved,hard,30,Cancer,Child,Yes,True,None,99.7,None
+3667,LP00667,terminal_illness,250000,146067.1,B00667,2025-03-16,71,denied,hard,120,Heart disease,Child,Yes,False,Pre-existing condition,58.4,None
+3668,LP00668,terminal_illness,1000000,648744.68,B00668,2025-03-18,56,under_review,hard,3,Kidney failure,Spouse,Yes,True,Pre-existing condition,64.9,Police report
+3669,LP00669,death_benefit,250000,245787.09,B00669,2025-03-19,48,approved,medium,36,Natural causes,Spouse,Yes,False,None,98.3,None
+3670,LP00670,accidental_death,250000,480051.8,B00670,2025-03-20,53,approved,easy,60,Fall,Spouse,Yes,False,None,192.0,None
+3671,LP00671,death_benefit,100000,98455.4,B00671,2025-03-21,85,denied,hard,6,Stroke,Spouse,Yes,True,Pre-existing condition,98.5,None
+3672,LP00672,death_benefit,1000000,988741.58,B00672,2025-03-23,56,approved,hard,30,Stroke,Spouse,Yes,False,None,98.9,None
+3673,LP00673,death_benefit,100000,99313.27,B00673,2025-03-24,69,denied,medium,18,Heart attack,Spouse,Grace period,True,Pre-existing condition,99.3,None
+3674,LP00674,death_benefit,100000,98000.48,B00674,2025-03-25,83,approved,medium,36,Heart attack,Child,Yes,True,None,98.0,None
+3675,LP00675,accidental_death,500000,940414.49,B00675,2025-03-26,75,denied,easy,2,Drowning,Spouse,No,True,Suicide clause,188.1,Death certificate
+3676,LP00676,terminal_illness,500000,278846.2,B00676,2025-03-27,88,under_review,easy,36,Heart disease,Child,Grace period,False,None,55.8,Death certificate
+3677,LP00677,accidental_death,250000,476687.85,B00677,2025-03-29,70,under_review,medium,60,Fall,Spouse,Yes,False,None,190.7,Medical records
+3678,LP00678,accidental_death,100000,194160.91,B00678,2025-03-30,59,approved,easy,60,Fall,Spouse,Yes,False,None,194.2,None
+3679,LP00679,terminal_illness,1000000,526338.01,B00679,2025-03-31,63,under_review,hard,6,Heart disease,Spouse,Yes,True,None,52.6,Police report
+3680,LP00680,accidental_death,1000000,1979991.37,B00680,2025-04-01,74,approved,hard,30,Car accident,Spouse,Yes,False,None,198.0,None
+3681,LP00681,death_benefit,1000000,981598.15,B00681,2025-04-02,46,approved,hard,30,Stroke,Spouse,Yes,True,None,98.2,None
+3682,LP00682,death_benefit,250000,247980.0,B00682,2025-04-04,38,denied,medium,18,Cancer,Child,Grace period,True,Pre-existing condition,99.2,None
+3683,LP00683,death_benefit,1000000,985098.03,B00683,2025-04-05,43,under_review,medium,12,Natural causes,Spouse,Yes,True,None,98.5,Medical records
+3684,LP00684,death_benefit,500000,495286.04,B00684,2025-04-06,77,under_review,easy,3,Natural causes,Spouse,Grace period,True,None,99.1,Death certificate
+3685,LP00685,accidental_death,1000000,1983346.36,B00685,2025-04-07,50,denied,hard,12,Fall,Child,Yes,True,Pre-existing condition,198.3,Death certificate
+3686,LP00686,accidental_death,100000,182176.74,B00686,2025-04-08,71,denied,hard,36,Fall,Spouse,Yes,False,Pre-existing condition,182.2,Death certificate
+3687,LP00687,death_benefit,250000,247634.87,B00687,2025-04-10,85,approved,hard,30,Heart attack,Spouse,Yes,False,None,99.1,None
+3688,LP00688,death_benefit,100000,98212.75,B00688,2025-04-11,68,under_review,medium,24,Cancer,Spouse,No,True,None,98.2,Medical records
+3689,LP00689,death_benefit,100000,98353.41,B00689,2025-04-12,64,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,98.4,Death certificate
+3690,LP00690,death_benefit,1000000,993481.03,B00690,2025-04-13,75,approved,easy,60,Heart attack,Spouse,Yes,False,None,99.3,None
+3691,LP00691,death_benefit,250000,246838.21,B00691,2025-04-14,61,under_review,medium,240,Stroke,Spouse,Yes,False,None,98.7,Medical records
+3692,LP00692,accidental_death,250000,479378.98,B00692,2025-04-16,63,under_review,easy,240,Fall,Spouse,Grace period,False,None,191.8,Death certificate
+3693,LP00693,death_benefit,250000,248867.7,B00693,2025-04-17,71,denied,hard,120,Cancer,Child,Yes,False,Pre-existing condition,99.5,None
+3694,LP00694,death_benefit,250000,246814.53,B00694,2025-04-18,42,approved,hard,30,Heart attack,Spouse,Yes,False,None,98.7,None
+3695,LP00695,death_benefit,250000,245099.31,B00695,2025-04-19,44,denied,easy,2,Stroke,Spouse,No,False,Suicide clause,98.0,Death certificate
+3696,LP00696,death_benefit,1000000,980877.49,B00696,2025-04-21,86,denied,hard,60,Stroke,Child,Yes,False,Pre-existing condition,98.1,None
+3697,LP00697,death_benefit,100000,98941.87,B00697,2025-04-22,86,approved,medium,36,Cancer,Spouse,Yes,False,None,98.9,None
+3698,LP00698,death_benefit,1000000,990511.04,B00698,2025-04-23,39,denied,easy,2,Heart attack,Sibling,No,False,Suicide clause,99.1,Death certificate
+3699,LP00699,death_benefit,100000,98819.79,B00699,2025-04-24,57,approved,medium,36,Cancer,Other,Yes,True,None,98.8,None
+3700,LP00700,death_benefit,500000,491078.52,B00700,2025-04-25,47,approved,medium,36,Cancer,Spouse,Yes,True,None,98.2,None
+3701,LP00701,accidental_death,1000000,1942707.59,B00701,2025-04-27,82,approved,hard,30,Drowning,Sibling,Yes,False,None,194.3,None
+3702,LP00702,death_benefit,100000,99796.74,B00702,2025-04-28,68,approved,hard,30,Cancer,Child,Yes,False,None,99.8,None
+3703,LP00703,accidental_death,100000,191743.04,B00703,2025-04-29,37,denied,hard,60,Fall,Spouse,Yes,False,Pre-existing condition,191.7,None
+3704,LP00704,death_benefit,1000000,987861.6,B00704,2025-04-30,55,approved,hard,30,Stroke,Spouse,Yes,False,None,98.8,None
+3705,LP00705,death_benefit,500000,499115.6,B00705,2025-05-01,54,denied,medium,18,Stroke,Child,Grace period,True,Pre-existing condition,99.8,Medical records
+3706,LP00706,death_benefit,500000,490087.94,B00706,2025-05-03,64,denied,medium,18,Stroke,Child,Grace period,False,Pre-existing condition,98.0,Death certificate
+3707,LP00707,death_benefit,1000000,983888.62,B00707,2025-05-04,59,denied,medium,18,Natural causes,Spouse,Grace period,False,Pre-existing condition,98.4,None
+3708,LP00708,death_benefit,100000,98644.36,B00708,2025-05-05,58,under_review,easy,120,Natural causes,Child,Grace period,False,None,98.6,Death certificate
+3709,LP00709,death_benefit,1000000,997536.03,B00709,2025-05-06,35,under_review,medium,120,Cancer,Spouse,Yes,False,None,99.8,Medical records
+3710,LP00710,terminal_illness,500000,291917.67,B00710,2025-05-07,39,denied,hard,120,Kidney failure,Spouse,Yes,False,Pre-existing condition,58.4,Police report
+3711,LP00711,death_benefit,1000000,992491.87,B00711,2025-05-09,57,under_review,medium,3,Natural causes,Spouse,Yes,True,None,99.2,Medical records
+3712,LP00712,death_benefit,500000,498274.22,B00712,2025-05-10,70,denied,medium,18,Cancer,Child,Grace period,False,Pre-existing condition,99.7,Death certificate
+3713,LP00713,accidental_death,250000,450294.79,B00713,2025-05-11,61,denied,hard,240,Car accident,Spouse,Yes,False,Pre-existing condition,180.1,Death certificate
+3714,LP00714,death_benefit,1000000,998865.23,B00714,2025-05-12,54,approved,medium,36,Heart attack,Child,Yes,True,None,99.9,None
+3715,LP00715,death_benefit,250000,248442.31,B00715,2025-05-13,67,under_review,medium,3,Natural causes,Spouse,Yes,True,Pre-existing condition,99.4,Medical records
+3716,LP00716,death_benefit,100000,98218.59,B00716,2025-05-15,62,denied,hard,36,Natural causes,Child,Yes,False,Pre-existing condition,98.2,None
+3717,LP00717,death_benefit,250000,248642.07,B00717,2025-05-16,82,denied,hard,120,Stroke,Spouse,No,False,Pre-existing condition,99.5,None
+3718,LP00718,accidental_death,1000000,1820548.92,B00718,2025-05-17,64,under_review,hard,24,Drowning,Spouse,Yes,True,Pre-existing condition,182.1,Police report
+3719,LP00719,death_benefit,500000,494864.47,B00719,2025-05-18,70,denied,hard,60,Natural causes,Spouse,Yes,False,Pre-existing condition,99.0,None
+3720,LP00720,death_benefit,100000,99080.13,B00720,2025-05-20,44,under_review,medium,24,Cancer,Spouse,Yes,True,None,99.1,Medical records
+3721,LP00721,death_benefit,250000,248828.63,B00721,2025-05-21,65,approved,medium,36,Stroke,Child,Yes,False,None,99.5,None
+3722,LP00722,accidental_death,250000,467201.96,B00722,2025-05-22,55,under_review,easy,24,Fall,Spouse,Grace period,True,None,186.9,Death certificate
+3723,LP00723,death_benefit,250000,245314.51,B00723,2025-05-23,77,approved,hard,30,Stroke,Child,Yes,True,None,98.1,None
+3724,LP00724,death_benefit,1000000,986722.1,B00724,2025-05-24,80,denied,hard,60,Cancer,Spouse,Yes,False,Pre-existing condition,98.7,None
+3725,LP00725,death_benefit,1000000,983466.28,B00725,2025-05-26,46,under_review,medium,60,Stroke,Other,Yes,False,None,98.3,Medical records
+3726,LP00726,accidental_death,100000,198959.2,B00726,2025-05-27,65,under_review,easy,6,Drowning,Other,Grace period,True,None,199.0,Death certificate
+3727,LP00727,accidental_death,500000,995012.31,B00727,2025-05-28,62,approved,easy,60,Car accident,Child,Yes,False,None,199.0,None
+3728,LP00728,death_benefit,500000,490418.44,B00728,2025-05-29,78,under_review,easy,12,Heart attack,Spouse,Grace period,True,None,98.1,Death certificate
+3729,LP00729,death_benefit,500000,492780.19,B00729,2025-05-30,58,under_review,hard,12,Heart attack,Spouse,Yes,True,None,98.6,Police report
+3730,LP00730,death_benefit,1000000,986144.83,B00730,2025-06-01,51,under_review,medium,120,Stroke,Spouse,Yes,False,None,98.6,Medical records
+3731,LP00731,death_benefit,500000,492054.76,B00731,2025-06-02,78,under_review,easy,24,Natural causes,Spouse,Grace period,True,None,98.4,Death certificate
+3732,LP00732,accidental_death,500000,933246.46,B00732,2025-06-03,79,denied,hard,120,Drowning,Spouse,Yes,False,Pre-existing condition,186.6,None
+3733,LP00733,accidental_death,500000,905537.87,B00733,2025-06-04,39,approved,easy,60,Car accident,Spouse,Yes,False,None,181.1,None
+3734,LP00734,accidental_death,250000,468110.96,B00734,2025-06-05,46,denied,hard,60,Drowning,Child,Yes,False,Pre-existing condition,187.2,None
+3735,LP00735,death_benefit,100000,99890.55,B00735,2025-06-07,75,approved,hard,30,Heart attack,Child,Yes,True,None,99.9,None
+3736,LP00736,death_benefit,100000,99391.22,B00736,2025-06-08,37,denied,medium,18,Natural causes,Spouse,Grace period,False,Pre-existing condition,99.4,None
+3737,LP00737,death_benefit,100000,98848.46,B00737,2025-06-09,51,under_review,medium,60,Heart attack,Spouse,Yes,False,None,98.8,Medical records
+3738,LP00738,terminal_illness,1000000,671541.79,B00738,2025-06-10,88,under_review,easy,60,Kidney failure,Spouse,Grace period,False,None,67.2,Death certificate
+3739,LP00739,death_benefit,1000000,993244.33,B00739,2025-06-11,78,approved,medium,36,Stroke,Child,Yes,True,None,99.3,None
+3740,LP00740,death_benefit,1000000,998031.84,B00740,2025-06-13,74,under_review,hard,36,Natural causes,Spouse,Yes,False,None,99.8,Police report
+3741,LP00741,accidental_death,1000000,1840360.16,B00741,2025-06-14,78,under_review,hard,24,Fall,Spouse,Yes,True,None,184.0,Police report
+3742,LP00742,death_benefit,500000,495335.96,B00742,2025-06-15,76,approved,hard,30,Natural causes,Spouse,Yes,True,None,99.1,None
+3743,LP00743,death_benefit,100000,99554.88,B00743,2025-06-16,87,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,99.6,Death certificate
+3744,LP00744,death_benefit,100000,99046.85,B00744,2025-06-18,74,approved,medium,36,Cancer,Spouse,Yes,True,None,99.0,None
+3745,LP00745,accidental_death,100000,182973.46,B00745,2025-06-19,57,under_review,medium,24,Car accident,Spouse,Yes,True,None,183.0,Medical records
+3746,LP00746,death_benefit,500000,492546.32,B00746,2025-06-20,77,denied,medium,18,Cancer,Sibling,Grace period,False,Pre-existing condition,98.5,None
+3747,LP00747,death_benefit,1000000,999227.41,B00747,2025-06-21,75,under_review,medium,60,Cancer,Spouse,Yes,False,None,99.9,Medical records
+3748,LP00748,death_benefit,250000,248111.05,B00748,2025-06-22,77,under_review,medium,36,Cancer,Spouse,Yes,False,None,99.2,Medical records
+3749,LP00749,death_benefit,1000000,997817.04,B00749,2025-06-24,83,approved,medium,36,Cancer,Child,Yes,False,None,99.8,None
+3750,LP00750,accidental_death,100000,185960.24,B00750,2025-06-25,40,denied,easy,2,Drowning,Spouse,No,True,Suicide clause,186.0,Death certificate
+3751,LP00751,death_benefit,250000,246979.22,B00751,2025-06-26,58,under_review,hard,36,Natural causes,Spouse,Yes,False,None,98.8,Police report
+3752,LP00752,death_benefit,500000,497599.27,B00752,2025-06-27,89,approved,medium,36,Stroke,Spouse,Yes,True,None,99.5,None
+3753,LP00753,death_benefit,500000,492081.15,B00753,2025-06-28,88,denied,easy,2,Heart attack,Spouse,No,True,Suicide clause,98.4,Death certificate
+3754,LP00754,death_benefit,500000,490740.81,B00754,2025-06-30,40,under_review,easy,60,Stroke,Spouse,Grace period,False,None,98.1,Death certificate
+3755,LP00755,death_benefit,250000,247422.94,B00755,2025-07-01,78,approved,hard,30,Cancer,Sibling,Yes,False,None,99.0,None
+3756,LP00756,death_benefit,500000,491537.93,B00756,2025-07-02,58,under_review,medium,24,Natural causes,Child,Yes,True,Pre-existing condition,98.3,Medical records
+3757,LP00757,death_benefit,100000,99647.87,B00757,2025-07-03,79,under_review,easy,6,Natural causes,Spouse,Grace period,True,None,99.6,Death certificate
+3758,LP00758,death_benefit,500000,492183.89,B00758,2025-07-04,40,under_review,hard,60,Heart attack,Spouse,Yes,False,None,98.4,Police report
+3759,LP00759,death_benefit,250000,246025.78,B00759,2025-07-06,62,under_review,medium,3,Heart attack,Spouse,Yes,True,Pre-existing condition,98.4,Medical records
+3760,LP00760,accidental_death,100000,198343.27,B00760,2025-07-07,76,under_review,medium,36,Drowning,Spouse,Yes,False,None,198.3,Medical records
+3761,LP00761,terminal_illness,1000000,681065.62,B00761,2025-07-08,41,under_review,hard,60,Kidney failure,Spouse,Yes,False,None,68.1,Police report
+3762,LP00762,death_benefit,500000,495355.82,B00762,2025-07-09,69,denied,hard,60,Heart attack,Spouse,Yes,False,Pre-existing condition,99.1,Death certificate
+3763,LP00763,accidental_death,500000,995664.53,B00763,2025-07-10,38,denied,hard,36,Car accident,Other,Yes,False,Pre-existing condition,199.1,None
+3764,LP00764,death_benefit,250000,245919.23,B00764,2025-07-12,35,approved,hard,30,Stroke,Sibling,Yes,True,None,98.4,None
+3765,LP00765,accidental_death,250000,490565.57,B00765,2025-07-13,35,denied,medium,18,Fall,Spouse,Grace period,True,Pre-existing condition,196.2,None
+3766,LP00766,death_benefit,100000,99133.01,B00766,2025-07-14,43,under_review,medium,24,Natural causes,Sibling,Yes,True,None,99.1,Medical records
+3767,LP00767,death_benefit,250000,249781.69,B00767,2025-07-15,62,approved,easy,60,Natural causes,Child,Yes,False,None,99.9,None
+3768,LP00768,death_benefit,1000000,988132.6,B00768,2025-07-17,60,under_review,easy,240,Heart attack,Spouse,Grace period,False,None,98.8,Death certificate
+3769,LP00769,death_benefit,500000,492411.11,B00769,2025-07-18,42,approved,medium,36,Cancer,Spouse,Yes,False,None,98.5,None
+3770,LP00770,death_benefit,500000,496626.61,B00770,2025-07-19,61,under_review,easy,24,Natural causes,Spouse,Grace period,True,None,99.3,Death certificate
+3771,LP00771,death_benefit,1000000,997524.52,B00771,2025-07-20,61,denied,easy,2,Natural causes,Spouse,No,True,Suicide clause,99.8,Death certificate
+3772,LP00772,accidental_death,1000000,1929957.0,B00772,2025-07-21,55,denied,medium,18,Car accident,Child,Grace period,False,Pre-existing condition,193.0,None
+3773,LP00773,death_benefit,100000,98920.97,B00773,2025-07-23,62,under_review,hard,24,Natural causes,Spouse,Yes,True,None,98.9,Police report
+3774,LP00774,death_benefit,100000,99891.04,B00774,2025-07-24,78,under_review,hard,36,Cancer,Spouse,Yes,False,None,99.9,Police report
+3775,LP00775,death_benefit,500000,490619.37,B00775,2025-07-25,60,under_review,medium,36,Natural causes,Child,Yes,False,None,98.1,Medical records
+3776,LP00776,accidental_death,1000000,1836219.5,B00776,2025-07-26,50,approved,hard,30,Fall,Child,Yes,False,None,183.6,None
+3777,LP00777,accidental_death,1000000,1989595.29,B00777,2025-07-27,68,under_review,hard,3,Drowning,Child,Yes,True,None,199.0,Police report
+3778,LP00778,death_benefit,100000,99145.37,B00778,2025-07-29,48,approved,hard,30,Natural causes,Spouse,Yes,False,None,99.1,None
+3779,LP00779,death_benefit,500000,490558.24,B00779,2025-07-30,86,approved,medium,36,Heart attack,Sibling,Yes,False,None,98.1,None
+3780,LP00780,terminal_illness,100000,69575.36,B00780,2025-07-31,51,under_review,hard,12,Cancer,Spouse,Yes,True,None,69.6,Police report
+3781,LP00781,death_benefit,500000,496696.54,B00781,2025-08-01,35,denied,easy,2,Stroke,Spouse,No,True,Suicide clause,99.3,Death certificate
+3782,LP00782,terminal_illness,250000,142774.84,B00782,2025-08-02,74,under_review,hard,12,Kidney failure,Child,Yes,True,Pre-existing condition,57.1,Police report
+3783,LP00783,accidental_death,100000,184812.72,B00783,2025-08-04,78,denied,medium,18,Fall,Spouse,Grace period,False,Pre-existing condition,184.8,None
+3784,LP00784,accidental_death,250000,462234.91,B00784,2025-08-05,72,denied,medium,18,Fall,Spouse,Grace period,False,Pre-existing condition,184.9,None
+3785,LP00785,death_benefit,1000000,983308.65,B00785,2025-08-06,80,under_review,medium,36,Heart attack,Child,Yes,False,None,98.3,Medical records
+3786,LP00786,death_benefit,500000,498871.36,B00786,2025-08-07,76,approved,easy,60,Stroke,Child,Yes,False,None,99.8,None
+3787,LP00787,death_benefit,100000,98784.87,B00787,2025-08-08,38,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,98.8,None
+3788,LP00788,death_benefit,250000,249787.69,B00788,2025-08-10,86,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,99.9,Death certificate
+3789,LP00789,death_benefit,500000,494723.79,B00789,2025-08-11,51,approved,medium,36,Heart attack,Parent,Yes,False,None,98.9,None
+3790,LP00790,death_benefit,1000000,982957.64,B00790,2025-08-12,50,under_review,medium,3,Natural causes,Spouse,Yes,True,None,98.3,Medical records
+3791,LP00791,accidental_death,500000,966118.32,B00791,2025-08-13,86,denied,easy,2,Fall,Spouse,No,False,Suicide clause,193.2,Death certificate
+3792,LP00792,death_benefit,500000,492298.94,B00792,2025-08-15,79,denied,easy,2,Stroke,Spouse,No,True,Suicide clause,98.5,Death certificate
+3793,LP00793,death_benefit,1000000,990880.98,B00793,2025-08-16,88,under_review,hard,120,Stroke,Parent,Yes,False,None,99.1,Police report
+3794,LP00794,death_benefit,100000,99569.32,B00794,2025-08-17,52,denied,medium,18,Stroke,Sibling,Grace period,True,Pre-existing condition,99.6,None
+3795,LP00795,death_benefit,100000,98517.85,B00795,2025-08-18,83,denied,easy,2,Natural causes,Spouse,No,False,Suicide clause,98.5,Death certificate
+3796,LP00796,death_benefit,100000,98463.35,B00796,2025-08-19,41,under_review,easy,120,Heart attack,Child,Grace period,False,None,98.5,Death certificate
+3797,LP00797,death_benefit,1000000,982304.29,B00797,2025-08-21,40,denied,hard,24,Natural causes,Spouse,Yes,True,Pre-existing condition,98.2,None
+3798,LP00798,death_benefit,100000,98479.55,B00798,2025-08-22,37,approved,medium,36,Cancer,Child,Yes,True,None,98.5,None
+3799,LP00799,accidental_death,100000,183788.75,B00799,2025-08-23,35,under_review,easy,24,Car accident,Child,Grace period,True,None,183.8,Death certificate
+3800,LP00800,accidental_death,100000,187363.76,B00800,2025-08-24,48,denied,hard,3,Fall,Child,Yes,True,Pre-existing condition,187.4,None
+3801,LP00801,death_benefit,500000,499140.85,B00801,2025-08-25,86,approved,hard,30,Heart attack,Spouse,Yes,False,None,99.8,None
+3802,LP00802,death_benefit,250000,245935.22,B00802,2025-08-27,54,under_review,easy,36,Stroke,Spouse,Grace period,False,None,98.4,Death certificate
+3803,LP00803,death_benefit,500000,491539.98,B00803,2025-08-28,87,denied,medium,18,Heart attack,Child,Grace period,True,Pre-existing condition,98.3,None
+3804,LP00804,death_benefit,500000,492618.64,B00804,2025-08-29,58,approved,hard,30,Stroke,Spouse,Yes,False,None,98.5,None
+3805,LP00805,terminal_illness,250000,131129.68,B00805,2025-08-30,82,denied,easy,2,Kidney failure,Parent,No,False,Suicide clause,52.5,Death certificate
+3806,LP00806,death_benefit,1000000,995346.78,B00806,2025-08-31,74,under_review,medium,60,Stroke,Spouse,Yes,False,None,99.5,Medical records
+3807,LP00807,accidental_death,250000,485318.75,B00807,2025-09-02,53,approved,medium,36,Car accident,Spouse,Yes,True,None,194.1,None
+3808,LP00808,accidental_death,100000,187466.27,B00808,2025-09-03,59,denied,hard,60,Drowning,Child,Yes,False,Pre-existing condition,187.5,None
+3809,LP00809,death_benefit,500000,496641.34,B00809,2025-09-04,36,approved,medium,36,Natural causes,Spouse,Yes,False,None,99.3,None
+3810,LP00810,death_benefit,1000000,998087.39,B00810,2025-09-05,61,under_review,medium,120,Cancer,Spouse,Grace period,False,None,99.8,Medical records
+3811,LP00811,terminal_illness,100000,59145.43,B00811,2025-09-06,37,denied,hard,60,Cancer,Spouse,Yes,False,Pre-existing condition,59.1,None
+3812,LP00812,death_benefit,250000,246203.48,B00812,2025-09-08,64,approved,hard,30,Stroke,Spouse,Yes,False,None,98.5,None
+3813,LP00813,accidental_death,100000,195115.66,B00813,2025-09-09,78,under_review,easy,36,Fall,Spouse,Grace period,False,None,195.1,Death certificate
+3814,LP00814,accidental_death,1000000,1878154.63,B00814,2025-09-10,88,under_review,easy,24,Fall,Spouse,Grace period,True,None,187.8,Death certificate
+3815,LP00815,death_benefit,100000,98113.38,B00815,2025-09-11,43,approved,easy,60,Cancer,Spouse,Yes,False,None,98.1,None
+3816,LP00816,death_benefit,1000000,988432.19,B00816,2025-09-13,63,denied,easy,2,Cancer,Parent,No,True,Suicide clause,98.8,Death certificate
+3817,LP00817,accidental_death,1000000,1916776.94,B00817,2025-09-14,49,under_review,easy,60,Car accident,Spouse,Grace period,False,None,191.7,Death certificate
+3818,LP00818,accidental_death,500000,911698.7,B00818,2025-09-15,58,denied,easy,2,Car accident,Parent,No,True,Suicide clause,182.3,Death certificate
+3819,LP00819,death_benefit,250000,247902.21,B00819,2025-09-16,40,approved,hard,30,Natural causes,Child,Yes,True,None,99.2,None
+3820,LP00820,death_benefit,100000,98908.53,B00820,2025-09-17,87,denied,easy,2,Cancer,Child,No,True,Suicide clause,98.9,Death certificate
+3821,LP00821,accidental_death,1000000,1988524.64,B00821,2025-09-19,55,denied,medium,18,Car accident,Child,Grace period,False,Pre-existing condition,198.9,Medical records
+3822,LP00822,accidental_death,500000,974153.63,B00822,2025-09-20,68,under_review,medium,240,Drowning,Child,No,False,None,194.8,Medical records
+3823,LP00823,death_benefit,250000,245152.54,B00823,2025-09-21,54,denied,easy,2,Cancer,Spouse,No,False,Suicide clause,98.1,Death certificate
+3824,LP00824,terminal_illness,100000,72304.05,B00824,2025-09-22,42,under_review,hard,60,Heart disease,Other,Yes,False,None,72.3,Police report
+3825,LP00825,death_benefit,500000,496179.05,B00825,2025-09-23,43,under_review,medium,120,Stroke,Sibling,Yes,False,None,99.2,Medical records
+3826,LP00826,death_benefit,500000,495439.61,B00826,2025-09-25,82,denied,medium,18,Cancer,Spouse,Grace period,False,Pre-existing condition,99.1,None
+3827,LP00827,terminal_illness,100000,63851.63,B00827,2025-09-26,58,under_review,easy,3,Cancer,Child,Grace period,True,None,63.9,Death certificate
+3828,LP00828,death_benefit,250000,249640.92,B00828,2025-09-27,61,denied,hard,3,Stroke,Spouse,Yes,True,Pre-existing condition,99.9,None
+3829,LP00829,death_benefit,1000000,986614.59,B00829,2025-09-28,52,denied,medium,18,Stroke,Child,Grace period,False,Pre-existing condition,98.7,None
+3830,LP00830,death_benefit,500000,498794.3,B00830,2025-09-29,52,approved,hard,30,Cancer,Spouse,Yes,False,None,99.8,None
+3831,LP00831,death_benefit,100000,99008.86,B00831,2025-10-01,35,approved,easy,60,Natural causes,Child,Yes,False,None,99.0,None
+3832,LP00832,death_benefit,250000,246550.2,B00832,2025-10-02,76,under_review,medium,6,Heart attack,Spouse,Yes,True,None,98.6,Medical records
+3833,LP00833,death_benefit,500000,493926.51,B00833,2025-10-03,45,denied,medium,18,Stroke,Spouse,Grace period,False,Pre-existing condition,98.8,None
+3834,LP00834,death_benefit,100000,99684.38,B00834,2025-10-04,68,approved,medium,36,Cancer,Spouse,Yes,False,None,99.7,None
+3835,LP00835,accidental_death,250000,469603.49,B00835,2025-10-05,48,denied,hard,120,Drowning,Child,Grace period,False,Pre-existing condition,187.8,None
+3836,LP00836,death_benefit,500000,497204.5,B00836,2025-10-07,87,approved,medium,36,Heart attack,Spouse,Yes,False,None,99.4,None
+3837,LP00837,accidental_death,250000,495148.52,B00837,2025-10-08,50,approved,medium,36,Fall,Spouse,Yes,True,None,198.1,None
+3838,LP00838,death_benefit,500000,493164.78,B00838,2025-10-09,78,approved,medium,36,Natural causes,Spouse,Yes,False,None,98.6,None
+3839,LP00839,death_benefit,1000000,980808.97,B00839,2025-10-10,51,under_review,medium,24,Stroke,Child,Yes,True,None,98.1,Medical records
+3840,LP00840,death_benefit,500000,494055.91,B00840,2025-10-12,49,denied,easy,2,Cancer,Child,No,False,Suicide clause,98.8,Death certificate
+3841,LP00841,death_benefit,250000,249664.03,B00841,2025-10-13,64,denied,easy,2,Natural causes,Spouse,No,False,Suicide clause,99.9,Death certificate
+3842,LP00842,death_benefit,500000,490543.37,B00842,2025-10-14,69,under_review,easy,36,Heart attack,Sibling,Grace period,False,None,98.1,Death certificate
+3843,LP00843,death_benefit,250000,247182.15,B00843,2025-10-15,36,denied,medium,18,Natural causes,Spouse,Grace period,False,Pre-existing condition,98.9,None
+3844,LP00844,death_benefit,100000,98738.0,B00844,2025-10-16,44,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,98.7,Death certificate
+3845,LP00845,accidental_death,1000000,1875993.8,B00845,2025-10-18,68,denied,hard,24,Drowning,Spouse,Yes,True,Pre-existing condition,187.6,None
+3846,LP00846,accidental_death,500000,980413.48,B00846,2025-10-19,74,approved,hard,30,Drowning,Sibling,Yes,False,None,196.1,None
+3847,LP00847,accidental_death,250000,451363.91,B00847,2025-10-20,52,denied,easy,2,Car accident,Other,No,False,Suicide clause,180.5,Death certificate
+3848,LP00848,death_benefit,1000000,996340.83,B00848,2025-10-21,47,under_review,medium,36,Natural causes,Spouse,Yes,False,None,99.6,Medical records
+3849,LP00849,death_benefit,500000,497717.02,B00849,2025-10-22,59,approved,hard,30,Stroke,Spouse,Yes,False,None,99.5,None
+3850,LP00850,death_benefit,500000,490838.28,B00850,2025-10-24,46,under_review,hard,120,Natural causes,Spouse,Yes,False,None,98.2,Police report
+3851,LP00851,terminal_illness,250000,188345.96,B00851,2025-10-25,60,approved,medium,36,Cancer,Spouse,Yes,True,None,75.3,None
+3852,LP00852,death_benefit,500000,497396.05,B00852,2025-10-26,73,approved,hard,30,Cancer,Parent,Yes,False,None,99.5,None
+3853,LP00853,death_benefit,250000,247476.97,B00853,2025-10-27,38,denied,medium,18,Heart attack,Child,Grace period,False,Pre-existing condition,99.0,None
+3854,LP00854,death_benefit,1000000,993739.9,B00854,2025-10-28,83,denied,hard,12,Cancer,Spouse,No,True,Pre-existing condition,99.4,None
+3855,LP00855,death_benefit,100000,98994.1,B00855,2025-10-30,43,approved,medium,36,Cancer,Spouse,Yes,True,None,99.0,None
+3856,LP00856,death_benefit,100000,99035.11,B00856,2025-10-31,71,approved,easy,60,Cancer,Child,Yes,True,None,99.0,None
+3857,LP00857,death_benefit,100000,98780.76,B00857,2025-11-01,87,approved,hard,30,Stroke,Child,Yes,True,None,98.8,None
+3858,LP00858,death_benefit,100000,99325.05,B00858,2025-11-02,47,under_review,hard,60,Cancer,Spouse,Yes,False,None,99.3,Police report
+3859,LP00859,death_benefit,100000,99278.9,B00859,2025-11-03,68,approved,easy,60,Stroke,Child,Yes,False,None,99.3,None
+3860,LP00860,death_benefit,1000000,993361.29,B00860,2025-11-05,50,under_review,easy,60,Heart attack,Spouse,Grace period,False,None,99.3,Death certificate
+3861,LP00861,death_benefit,250000,249879.98,B00861,2025-11-06,38,under_review,hard,60,Natural causes,Child,Yes,False,None,100.0,Police report
+3862,LP00862,death_benefit,100000,99523.49,B00862,2025-11-07,43,approved,easy,60,Stroke,Child,Yes,False,None,99.5,None
+3863,LP00863,death_benefit,100000,98123.48,B00863,2025-11-08,42,approved,medium,36,Heart attack,Spouse,Yes,False,None,98.1,None
+3864,LP00864,death_benefit,100000,99352.23,B00864,2025-11-10,81,denied,easy,2,Natural causes,Other,No,False,Suicide clause,99.4,Death certificate
+3865,LP00865,death_benefit,500000,498186.51,B00865,2025-11-11,80,under_review,medium,12,Heart attack,Spouse,Yes,True,None,99.6,Medical records
+3866,LP00866,death_benefit,100000,98493.55,B00866,2025-11-12,48,denied,easy,2,Natural causes,Spouse,No,False,Suicide clause,98.5,Death certificate
+3867,LP00867,accidental_death,100000,183246.82,B00867,2025-11-13,53,denied,medium,18,Car accident,Spouse,Grace period,False,Pre-existing condition,183.2,None
+3868,LP00868,death_benefit,250000,246570.53,B00868,2025-11-14,64,denied,hard,240,Heart attack,Spouse,No,False,Pre-existing condition,98.6,None
+3869,LP00869,death_benefit,250000,247174.58,B00869,2025-11-16,47,approved,medium,36,Stroke,Sibling,Yes,True,None,98.9,None
+3870,LP00870,death_benefit,100000,99631.83,B00870,2025-11-17,52,under_review,easy,60,Stroke,Parent,Grace period,False,None,99.6,Death certificate
+3871,LP00871,terminal_illness,250000,179746.54,B00871,2025-11-18,58,under_review,hard,60,Cancer,Child,Yes,False,None,71.9,Police report
+3872,LP00872,death_benefit,250000,249782.95,B00872,2025-11-19,35,under_review,easy,36,Cancer,Child,Grace period,False,None,99.9,Death certificate
+3873,LP00873,death_benefit,500000,492939.55,B00873,2025-11-20,83,approved,medium,36,Natural causes,Child,Yes,False,None,98.6,None
+3874,LP00874,death_benefit,100000,98993.78,B00874,2025-11-22,89,under_review,easy,60,Cancer,Spouse,Grace period,False,None,99.0,Death certificate
+3875,LP00875,death_benefit,250000,245594.13,B00875,2025-11-23,88,under_review,hard,60,Cancer,Child,Yes,False,None,98.2,Police report
+3876,LP00876,terminal_illness,500000,290347.42,B00876,2025-11-24,56,under_review,hard,60,Kidney failure,Child,No,False,None,58.1,Police report
+3877,LP00877,accidental_death,250000,493920.89,B00877,2025-11-25,50,denied,hard,24,Fall,Spouse,Yes,True,Pre-existing condition,197.6,None
+3878,LP00878,death_benefit,500000,492279.07,B00878,2025-11-26,85,denied,easy,2,Heart attack,Other,No,False,Suicide clause,98.5,Death certificate
+3879,LP00879,terminal_illness,100000,55157.19,B00879,2025-11-28,86,approved,hard,30,Heart disease,Child,Yes,False,None,55.2,None
+3880,LP00880,death_benefit,500000,499004.13,B00880,2025-11-29,50,approved,easy,60,Stroke,Spouse,Yes,False,None,99.8,None
+3881,LP00881,accidental_death,500000,969090.01,B00881,2025-11-30,66,under_review,medium,240,Fall,Other,Yes,False,None,193.8,Medical records
+3882,LP00882,death_benefit,250000,248067.17,B00882,2025-12-01,65,denied,easy,2,Heart attack,Sibling,No,False,Suicide clause,99.2,Death certificate
+3883,LP00883,death_benefit,100000,98005.38,B00883,2025-12-02,88,under_review,medium,120,Stroke,Spouse,Yes,False,None,98.0,Medical records
+3884,LP00884,death_benefit,250000,249000.69,B00884,2025-12-04,88,under_review,easy,6,Natural causes,Spouse,Grace period,True,None,99.6,Death certificate
+3885,LP00885,death_benefit,100000,98475.86,B00885,2025-12-05,56,approved,medium,36,Heart attack,Child,Yes,True,None,98.5,None
+3886,LP00886,death_benefit,250000,245397.36,B00886,2025-12-06,35,approved,easy,60,Natural causes,Child,Yes,False,None,98.2,None
+3887,LP00887,accidental_death,250000,481352.17,B00887,2025-12-07,64,under_review,medium,120,Drowning,Child,Yes,False,None,192.5,Medical records
+3888,LP00888,death_benefit,250000,248511.85,B00888,2025-12-09,83,under_review,hard,60,Stroke,Spouse,Yes,False,None,99.4,Police report
+3889,LP00889,death_benefit,100000,99955.18,B00889,2025-12-10,49,approved,easy,60,Stroke,Spouse,Yes,False,None,100.0,None
+3890,LP00890,death_benefit,250000,248070.83,B00890,2025-12-11,68,approved,hard,30,Natural causes,Spouse,Yes,False,None,99.2,None
+3891,LP00891,death_benefit,250000,249806.72,B00891,2025-12-12,76,approved,hard,30,Heart attack,Spouse,Yes,False,None,99.9,None
+3892,LP00892,death_benefit,250000,247441.64,B00892,2025-12-13,44,approved,hard,30,Natural causes,Spouse,Yes,False,None,99.0,None
+3893,LP00893,death_benefit,250000,248740.06,B00893,2025-12-15,50,approved,hard,30,Cancer,Spouse,Yes,True,None,99.5,None
+3894,LP00894,death_benefit,100000,98814.74,B00894,2025-12-16,83,approved,hard,30,Stroke,Spouse,Yes,False,None,98.8,None
+3895,LP00895,death_benefit,250000,245741.77,B00895,2025-12-17,78,denied,medium,18,Heart attack,Spouse,Grace period,False,Pre-existing condition,98.3,None
+3896,LP00896,death_benefit,500000,491323.57,B00896,2025-12-18,83,under_review,hard,24,Natural causes,Child,Yes,True,None,98.3,Police report
+3897,LP00897,death_benefit,1000000,989155.24,B00897,2025-12-19,74,under_review,hard,6,Natural causes,Spouse,Yes,True,Pre-existing condition,98.9,Police report
+3898,LP00898,terminal_illness,500000,307933.19,B00898,2025-12-21,72,under_review,easy,24,Kidney failure,Child,Grace period,True,None,61.6,Death certificate
+3899,LP00899,death_benefit,1000000,992237.13,B00899,2025-12-22,46,denied,hard,240,Cancer,Spouse,Yes,False,Pre-existing condition,99.2,None
+3900,LP00900,death_benefit,250000,249685.57,B00900,2025-12-23,53,approved,hard,30,Stroke,Sibling,Yes,True,None,99.9,None
+3901,LP00901,death_benefit,250000,248773.63,B00901,2025-12-24,69,under_review,hard,24,Heart attack,Child,Yes,True,None,99.5,Police report
+3902,LP00902,death_benefit,100000,99114.91,B00902,2025-12-25,78,under_review,medium,12,Heart attack,Spouse,Yes,True,None,99.1,Medical records
+3903,LP00903,death_benefit,500000,495525.95,B00903,2025-12-27,77,under_review,easy,60,Cancer,Spouse,Grace period,False,None,99.1,Death certificate
+3904,LP00904,terminal_illness,1000000,556274.71,B00904,2025-12-28,89,under_review,hard,120,Cancer,Spouse,Yes,False,None,55.6,Police report
+3905,LP00905,death_benefit,100000,99802.15,B00905,2025-12-29,54,approved,hard,30,Stroke,Spouse,Yes,True,None,99.8,None
+3906,LP00906,death_benefit,250000,247910.93,B00906,2025-12-30,81,denied,easy,2,Cancer,Spouse,No,True,Suicide clause,99.2,Death certificate
+3907,LP00907,death_benefit,1000000,984841.63,B00907,2025-12-31,37,denied,medium,18,Cancer,Spouse,Grace period,False,Pre-existing condition,98.5,Death certificate
+3908,LP00908,death_benefit,250000,247313.91,B00908,2026-01-02,52,under_review,medium,12,Stroke,Other,Grace period,True,None,98.9,Medical records
+3909,LP00909,death_benefit,1000000,983179.92,B00909,2026-01-03,81,denied,easy,2,Cancer,Spouse,No,False,Suicide clause,98.3,Death certificate
+3910,LP00910,death_benefit,100000,99134.82,B00910,2026-01-04,67,under_review,easy,60,Natural causes,Spouse,Grace period,False,None,99.1,Death certificate
+3911,LP00911,death_benefit,100000,98079.53,B00911,2026-01-05,51,approved,hard,30,Stroke,Spouse,Yes,False,None,98.1,None
+3912,LP00912,death_benefit,1000000,998461.5,B00912,2026-01-07,46,denied,easy,2,Cancer,Sibling,No,False,Suicide clause,99.8,Death certificate
+3913,LP00913,death_benefit,1000000,994707.08,B00913,2026-01-08,85,under_review,medium,120,Stroke,Spouse,Yes,False,None,99.5,Medical records
+3914,LP00914,death_benefit,500000,491297.84,B00914,2026-01-09,61,approved,hard,30,Cancer,Child,Yes,False,None,98.3,None
+3915,LP00915,death_benefit,500000,497450.96,B00915,2026-01-10,73,denied,hard,60,Heart attack,Spouse,Yes,False,Pre-existing condition,99.5,None
+3916,LP00916,death_benefit,100000,98864.49,B00916,2026-01-11,38,under_review,easy,36,Cancer,Child,Grace period,False,None,98.9,Death certificate
+3917,LP00917,accidental_death,250000,467611.94,B00917,2026-01-13,80,under_review,hard,60,Drowning,Spouse,Grace period,False,None,187.0,Police report
+3918,LP00918,death_benefit,100000,98922.16,B00918,2026-01-14,57,denied,hard,36,Cancer,Spouse,No,False,Pre-existing condition,98.9,None
+3919,LP00919,death_benefit,1000000,996078.91,B00919,2026-01-15,39,approved,easy,60,Cancer,Spouse,Yes,False,None,99.6,None
+3920,LP00920,death_benefit,250000,247277.62,B00920,2026-01-16,43,denied,medium,18,Cancer,Child,Grace period,True,Pre-existing condition,98.9,Death certificate
+3921,LP00921,death_benefit,250000,248990.79,B00921,2026-01-17,78,denied,hard,120,Natural causes,Spouse,Grace period,False,Pre-existing condition,99.6,None
+3922,LP00922,death_benefit,1000000,997869.8,B00922,2026-01-19,47,under_review,medium,60,Natural causes,Spouse,Grace period,False,None,99.8,Medical records
+3923,LP00923,death_benefit,500000,492233.34,B00923,2026-01-20,86,under_review,medium,120,Stroke,Spouse,Yes,False,None,98.4,Medical records
+3924,LP00924,death_benefit,250000,246810.35,B00924,2026-01-21,60,approved,easy,60,Cancer,Parent,Yes,False,None,98.7,None
+3925,LP00925,death_benefit,250000,245810.13,B00925,2026-01-22,43,approved,hard,30,Stroke,Spouse,Yes,False,None,98.3,None
+3926,LP00926,death_benefit,250000,247428.72,B00926,2026-01-23,77,under_review,hard,24,Stroke,Spouse,Yes,True,None,99.0,Police report
+3927,LP00927,accidental_death,250000,493181.57,B00927,2026-01-25,72,denied,easy,2,Drowning,Spouse,No,False,Suicide clause,197.3,Death certificate
+3928,LP00928,death_benefit,500000,498566.13,B00928,2026-01-26,36,denied,medium,18,Heart attack,Spouse,Grace period,True,Pre-existing condition,99.7,Death certificate
+3929,LP00929,terminal_illness,100000,67818.85,B00929,2026-01-27,70,under_review,hard,120,Kidney failure,Sibling,Yes,False,None,67.8,Police report
+3930,LP00930,death_benefit,500000,492652.5,B00930,2026-01-28,64,approved,hard,30,Heart attack,Child,Yes,False,None,98.5,None
+3931,LP00931,death_benefit,500000,494420.21,B00931,2026-01-29,60,denied,easy,2,Natural causes,Child,No,False,Suicide clause,98.9,Death certificate
+3932,LP00932,death_benefit,250000,248643.81,B00932,2026-01-31,85,denied,easy,2,Cancer,Child,No,False,Suicide clause,99.5,Death certificate
+3933,LP00933,death_benefit,250000,249118.38,B00933,2026-02-01,59,approved,hard,30,Cancer,Parent,Yes,False,None,99.6,None
+3934,LP00934,death_benefit,1000000,989875.31,B00934,2026-02-02,76,denied,hard,60,Natural causes,Spouse,Yes,False,Pre-existing condition,99.0,Police report
+3935,LP00935,death_benefit,250000,248148.03,B00935,2026-02-03,49,approved,easy,60,Natural causes,Child,Yes,True,None,99.3,None
+3936,LP00936,death_benefit,100000,98543.23,B00936,2026-02-05,55,approved,easy,60,Heart attack,Spouse,Yes,False,None,98.5,None
+3937,LP00937,death_benefit,100000,98126.4,B00937,2026-02-06,35,under_review,hard,36,Heart attack,Child,Yes,False,None,98.1,Police report
+3938,LP00938,accidental_death,100000,187080.37,B00938,2026-02-07,55,denied,easy,2,Car accident,Spouse,No,True,Suicide clause,187.1,Death certificate
+3939,LP00939,accidental_death,100000,180623.51,B00939,2026-02-08,63,denied,easy,2,Car accident,Spouse,No,False,Suicide clause,180.6,Death certificate
+3940,LP00940,death_benefit,500000,493388.19,B00940,2026-02-09,80,denied,medium,18,Cancer,Spouse,Grace period,True,Pre-existing condition,98.7,None
+3941,LP00941,death_benefit,250000,248356.04,B00941,2026-02-11,43,denied,medium,18,Natural causes,Child,Grace period,True,Pre-existing condition,99.3,None
+3942,LP00942,death_benefit,1000000,991305.7,B00942,2026-02-12,59,under_review,medium,12,Heart attack,Spouse,Yes,True,Pre-existing condition,99.1,Medical records
+3943,LP00943,death_benefit,500000,497004.35,B00943,2026-02-13,41,under_review,hard,12,Natural causes,Spouse,Yes,True,None,99.4,Police report
+3944,LP00944,terminal_illness,250000,165506.67,B00944,2026-02-14,45,under_review,hard,36,Heart disease,Spouse,No,False,None,66.2,Police report
+3945,LP00945,death_benefit,500000,499187.84,B00945,2026-02-15,89,under_review,easy,60,Heart attack,Child,Grace period,False,None,99.8,Death certificate
+3946,LP00946,death_benefit,250000,245093.92,B00946,2026-02-17,35,under_review,hard,6,Stroke,Sibling,Yes,True,None,98.0,Police report
+3947,LP00947,death_benefit,1000000,985447.27,B00947,2026-02-18,58,approved,medium,36,Stroke,Child,Yes,False,None,98.5,None
+3948,LP00948,death_benefit,250000,248756.96,B00948,2026-02-19,66,under_review,easy,60,Cancer,Spouse,Grace period,False,None,99.5,Death certificate
+3949,LP00949,death_benefit,500000,492033.91,B00949,2026-02-20,62,approved,hard,30,Stroke,Spouse,Yes,False,None,98.4,None
+3950,LP00950,death_benefit,100000,98728.58,B00950,2026-02-21,76,approved,easy,60,Natural causes,Spouse,Yes,False,None,98.7,None
+3951,LP00951,death_benefit,500000,493991.19,B00951,2026-02-23,86,approved,easy,60,Natural causes,Spouse,Yes,False,None,98.8,None
+3952,LP00952,death_benefit,1000000,999153.67,B00952,2026-02-24,73,denied,medium,18,Stroke,Child,Grace period,True,Pre-existing condition,99.9,None
+3953,LP00953,death_benefit,1000000,995473.51,B00953,2026-02-25,36,denied,medium,18,Stroke,Sibling,Grace period,True,Pre-existing condition,99.5,Medical records
+3954,LP00954,death_benefit,500000,493663.89,B00954,2026-02-26,48,under_review,easy,60,Natural causes,Child,Grace period,False,None,98.7,Death certificate
+3955,LP00955,terminal_illness,100000,79666.21,B00955,2026-02-27,86,under_review,medium,3,Cancer,Other,No,True,None,79.7,Medical records
+3956,LP00956,death_benefit,1000000,997966.12,B00956,2026-03-01,52,under_review,hard,120,Stroke,Child,Yes,False,None,99.8,Police report
+3957,LP00957,death_benefit,100000,99672.54,B00957,2026-03-02,50,denied,hard,60,Heart attack,Spouse,Yes,False,Pre-existing condition,99.7,None
+3958,LP00958,accidental_death,100000,182654.09,B00958,2026-03-03,73,denied,easy,2,Drowning,Spouse,No,False,Suicide clause,182.7,Death certificate
+3959,LP00959,death_benefit,500000,496318.09,B00959,2026-03-04,82,approved,medium,36,Heart attack,Child,Yes,True,None,99.3,None
+3960,LP00960,death_benefit,500000,490378.29,B00960,2026-03-06,66,under_review,easy,12,Natural causes,Spouse,Grace period,True,None,98.1,Death certificate
+3961,LP00961,accidental_death,1000000,1805069.18,B00961,2026-03-07,83,under_review,medium,24,Car accident,Child,Yes,True,None,180.5,Medical records
+3962,LP00962,death_benefit,250000,246820.55,B00962,2026-03-08,69,denied,medium,18,Natural causes,Child,Grace period,False,Pre-existing condition,98.7,None
+3963,LP00963,accidental_death,250000,450918.23,B00963,2026-03-09,42,denied,hard,24,Drowning,Spouse,Yes,True,Pre-existing condition,180.4,Death certificate
+3964,LP00964,accidental_death,500000,966932.15,B00964,2026-03-10,46,denied,hard,6,Drowning,Spouse,Yes,True,Pre-existing condition,193.4,Police report
+3965,LP00965,accidental_death,250000,471660.84,B00965,2026-03-12,65,under_review,easy,120,Fall,Parent,Grace period,False,None,188.7,Death certificate
+3966,LP00966,death_benefit,100000,98877.43,B00966,2026-03-13,83,approved,hard,30,Cancer,Spouse,Yes,False,None,98.9,None
+3967,LP00967,death_benefit,500000,491916.9,B00967,2026-03-14,36,under_review,medium,60,Heart attack,Spouse,Yes,False,None,98.4,Medical records
+3968,LP00968,death_benefit,1000000,987149.4,B00968,2026-03-15,74,denied,easy,2,Heart attack,Spouse,No,False,Suicide clause,98.7,Death certificate
+3969,LP00969,accidental_death,1000000,1922416.57,B00969,2026-03-16,80,under_review,hard,12,Fall,Spouse,Yes,True,None,192.2,Police report
+3970,LP00970,terminal_illness,250000,157316.98,B00970,2026-03-18,50,approved,medium,36,Kidney failure,Spouse,Yes,False,None,62.9,None
+3971,LP00971,death_benefit,100000,98938.88,B00971,2026-03-19,59,approved,easy,60,Cancer,Spouse,Yes,False,None,98.9,None
+3972,LP00972,accidental_death,250000,466437.2,B00972,2026-03-20,51,denied,hard,60,Fall,Child,Yes,False,Pre-existing condition,186.6,None
+3973,LP00973,terminal_illness,500000,278754.38,B00973,2026-03-21,38,approved,medium,36,Heart disease,Sibling,Yes,False,None,55.8,None
+3974,LP00974,accidental_death,1000000,1905014.86,B00974,2026-03-22,87,approved,hard,30,Fall,Spouse,Yes,False,None,190.5,None
+3975,LP00975,terminal_illness,250000,126486.22,B00975,2026-03-24,46,under_review,hard,60,Kidney failure,Spouse,Yes,False,None,50.6,Police report
+3976,LP00976,accidental_death,250000,460548.85,B00976,2026-03-25,85,denied,hard,36,Fall,Spouse,Yes,False,Pre-existing condition,184.2,None
+3977,LP00977,death_benefit,250000,247238.83,B00977,2026-03-26,49,approved,hard,30,Heart attack,Spouse,Yes,True,None,98.9,None
+3978,LP00978,accidental_death,250000,453599.01,B00978,2026-03-27,35,under_review,hard,24,Drowning,Parent,Yes,True,None,181.4,Police report
+3979,LP00979,death_benefit,1000000,989514.41,B00979,2026-03-28,43,denied,hard,3,Natural causes,Spouse,Yes,True,Pre-existing condition,99.0,Death certificate
+3980,LP00980,death_benefit,1000000,986491.84,B00980,2026-03-30,40,denied,easy,2,Stroke,Spouse,No,False,Suicide clause,98.6,Death certificate
+3981,LP00981,terminal_illness,1000000,731371.27,B00981,2026-03-31,80,approved,easy,60,Heart disease,Child,Yes,False,None,73.1,None
+3982,LP00982,death_benefit,1000000,994962.58,B00982,2026-04-01,88,under_review,easy,120,Stroke,Spouse,Grace period,False,None,99.5,Death certificate
+3983,LP00983,death_benefit,100000,99860.48,B00983,2026-04-02,67,approved,easy,60,Natural causes,Child,Yes,True,None,99.9,None
+3984,LP00984,death_benefit,100000,99954.98,B00984,2026-04-04,67,approved,medium,36,Cancer,Spouse,Yes,False,None,100.0,None
+3985,LP00985,death_benefit,500000,496328.57,B00985,2026-04-05,53,under_review,medium,120,Stroke,Spouse,Yes,False,None,99.3,Medical records
+3986,LP00986,death_benefit,1000000,999019.22,B00986,2026-04-06,49,approved,medium,36,Stroke,Child,Yes,False,None,99.9,None
+3987,LP00987,death_benefit,250000,245367.18,B00987,2026-04-07,79,denied,easy,2,Cancer,Child,No,False,Suicide clause,98.1,Death certificate
+3988,LP00988,death_benefit,100000,99575.96,B00988,2026-04-08,88,under_review,easy,60,Cancer,Spouse,Grace period,False,None,99.6,Death certificate
+3989,LP00989,death_benefit,100000,99149.45,B00989,2026-04-10,63,under_review,medium,60,Cancer,Parent,Yes,False,None,99.1,Medical records
+3990,LP00990,death_benefit,100000,99082.78,B00990,2026-04-11,40,under_review,medium,36,Natural causes,Spouse,Yes,False,None,99.1,Medical records
+3991,LP00991,accidental_death,100000,198363.96,B00991,2026-04-12,53,denied,easy,2,Drowning,Parent,No,True,Suicide clause,198.4,Death certificate
+3992,LP00992,death_benefit,500000,492414.61,B00992,2026-04-13,84,denied,medium,18,Cancer,Spouse,Grace period,False,Pre-existing condition,98.5,Death certificate
+3993,LP00993,death_benefit,500000,497294.06,B00993,2026-04-14,88,denied,medium,18,Stroke,Child,Grace period,True,Pre-existing condition,99.5,None
+3994,LP00994,accidental_death,500000,901625.87,B00994,2026-04-16,68,denied,hard,24,Drowning,Child,Yes,True,Pre-existing condition,180.3,None
+3995,LP00995,death_benefit,500000,496276.56,B00995,2026-04-17,36,denied,hard,120,Heart attack,Parent,Yes,False,Pre-existing condition,99.3,None
+3996,LP00996,death_benefit,500000,493949.78,B00996,2026-04-18,67,denied,hard,120,Cancer,Spouse,Yes,False,Pre-existing condition,98.8,Medical records
+3997,LP00997,death_benefit,100000,99011.14,B00997,2026-04-19,89,denied,easy,2,Cancer,Spouse,No,True,Suicide clause,99.0,Death certificate
+3998,LP00998,death_benefit,1000000,985140.48,B00998,2026-04-20,88,under_review,medium,240,Stroke,Child,Yes,False,None,98.5,Medical records
+3999,LP00999,accidental_death,500000,938989.27,B00999,2026-04-22,48,under_review,hard,60,Drowning,Child,Yes,False,None,187.8,Police report

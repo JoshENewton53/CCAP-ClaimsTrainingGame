@@ -1,0 +1,37 @@
+# Node
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+env/
+venv/
+*.pyc
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# AI Models (too large for GitHub)
+ai_models/models/
+*.pkl
+*.pt
+*.safetensors
+*.bin
+
+# VS Code
+.vscode/
+
+# IDE
+.idea/
+
+# Misc
+.DS_Store
+.env
+
+# Build
+build/
+dist/
+*.egg-info/

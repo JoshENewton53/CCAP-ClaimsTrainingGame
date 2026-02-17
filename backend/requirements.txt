@@ -1,0 +1,8 @@
+flask
+flask-cors
+pandas
+numpy
+transformers
+torch
+scikit-learn
+# sqlite3 is included in the Python standard library; no pip package required

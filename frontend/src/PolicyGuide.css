@@ -1,0 +1,107 @@
+.policy-guide {
+  background: #1a1a2e;
+  border: 1px solid #00d4ff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 212, 255, 0.3);
+  max-width: 350px;
+  margin-bottom: 20px;
+}
+
+.policy-header {
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #00d4ff;
+  background: #0f3460;
+  border-radius: 8px 8px 0 0;
+}
+
+.policy-header:hover {
+  background: #1a4d7a;
+}
+
+.policy-header h3 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.expand-icon {
+  color: #00d4ff;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+}
+
+.expand-icon.expanded {
+  transform: rotate(180deg);
+}
+
+.policy-content {
+  padding: 0;
+}
+
+.policy-tabs {
+  display: flex;
+  border-bottom: 1px solid #00d4ff;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 8px;
+  border: none;
+  background: #0f3460;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-right: 1px solid #00d4ff;
+}
+
+.tab-button:last-child {
+  border-right: none;
+}
+
+.tab-button:hover {
+  background: #1a4d7a;
+}
+
+.tab-button.active {
+  background: #00d4ff;
+  color: #000000;
+}
+
+.tab-content {
+  padding: 16px;
+}
+
+.policy-list {
+  margin: 0;
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.policy-list li {
+  padding: 4px 0;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .policy-guide {
+    max-width: 100%;
+  }
+  
+  .tab-button {
+    font-size: 11px;
+    padding: 10px 6px;
+  }
+  
+  .policy-list {
+    font-size: 13px;
+  }
+}
