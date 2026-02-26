@@ -27,7 +27,9 @@ def create_tables(db_path: str = DB_PATH):
         username TEXT UNIQUE NOT NULL,
         password_hash TEXT NOT NULL,
         score INTEGER DEFAULT 0,
-        current_streak INTEGER DEFAULT 0
+        current_streak INTEGER DEFAULT 0,
+        xp INTEGER DEFAULT 0,
+        level INTEGER DEFAULT 1
     )
     """)
 
@@ -67,6 +69,17 @@ def create_tables(db_path: str = DB_PATH):
         UNIQUE(user_id, achievement_key)
     )
     """)
+    
+    # Add xp and level columns if they don't exist (migration)
+    try:
+        cur.execute('ALTER TABLE users ADD COLUMN xp INTEGER DEFAULT 0')
+    except sqlite3.OperationalError:
+        pass
+    
+    try:
+        cur.execute('ALTER TABLE users ADD COLUMN level INTEGER DEFAULT 1')
+    except sqlite3.OperationalError:
+        pass
     
     # Create admin account
     admin_hash = hashlib.sha256('Password'.encode()).hexdigest()

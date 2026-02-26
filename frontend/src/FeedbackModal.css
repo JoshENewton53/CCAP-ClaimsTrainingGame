@@ -48,6 +48,20 @@
   font-weight: 600;
 }
 
+.result-header .xp {
+  margin: 5px 0 0 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00ff88;
+}
+
+.result-header .level {
+  margin: 5px 0 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffd700;
+}
+
 .achievements-unlocked {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;

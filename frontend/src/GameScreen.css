@@ -308,3 +308,58 @@
 .btn-invalid:hover:not(:disabled) {
   background: #ee5a6f;
 }
+
+.cert-warning {
+  text-align: center;
+  color: #856404;
+  background: #fff3cd;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.death-certificate-section {
+  background: #0a2540;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px solid #00d4ff;
+}
+
+.death-certificate-section h4 {
+  color: #00d4ff;
+  margin-bottom: 10px;
+}
+
+.cert-image-container {
+  margin: 10px 0;
+  text-align: center;
+}
+
+.cert-thumbnail {
+  max-width: 100%;
+  max-height: 300px;
+  border: 2px solid #00d4ff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.policy-data {
+  margin: 10px 0;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.policy-data p {
+  margin: 5px 0;
+}
+
+.cert-result {
+  background: #d4edda;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  color: #155724;
+  font-weight: bold;
+}

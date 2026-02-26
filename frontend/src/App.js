@@ -38,22 +38,29 @@ function App() {
   };
 
   const handleComplete = (result) => {
-    setUser({ ...user, score: result.total_score, current_streak: result.current_streak });
+    setUser({ ...user, score: result.total_score, current_streak: result.current_streak, 
+             xp: result.xp, level: result.level });
     setScenario(null);
   };
 
+  const xpToNextLevel = user ? ((user.level || 1) * 100) : 100;
+  const currentLevelXp = user ? (user.xp || 0) % 100 : 0;
+  const xpProgress = (currentLevelXp / 100) * 100;
+
   if (!user) {
     return (
-      <div className="app">
-        <header className="app-header">
-          <img 
-            src="/PrincipalLogo3.png" 
-            alt="Principal Logo" 
-            className="principal-logo"
-          />
-          <h1>CCAP Claims Training Game</h1>
+      <div className="min-h-screen bg-gradient-to-br from-black via-principal-dark to-principal-darker flex flex-col items-center">
+        <header className="mt-10 text-center w-full max-w-3xl px-6">
+          <div className="flex items-center justify-center gap-4 mb-2">
+            <h1 className="text-4xl font-bold text-white">Claims Training Buddy</h1>
+            <img 
+              src="/PrincipalLogo3.png" 
+              alt="Principal Logo" 
+              className="h-12 w-auto"
+            />
+          </div>
         </header>
-        <main className="app-main">
+        <main className="w-full max-w-3xl px-6 py-8">
           <Login onLogin={handleLogin} />
         </main>
       </div>
@@ -61,31 +68,84 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <img 
-          src="/PrincipalLogo3.png" 
-          alt="Principal Logo" 
-          className="principal-logo"
-        />
-        <h1>CCAP Claims Training Game</h1>
-        <div className="user-info">
-          <span className="username">{user.username}</span>
-          <span className="score-display">Score: {user.score}</span>
-          <span className={`streak-display ${user.current_streak >= 0 ? 'positive' : 'negative'}`}>
-            Streak: {user.current_streak}
-          </span>
-          <button className="achievements-btn" onClick={() => setShowAchievements(true)}>🏆</button>
-          <button className="logout-btn" onClick={handleLogout}>Logout</button>
+    <div className="min-h-screen bg-gradient-to-br from-black via-principal-dark to-principal-darker flex flex-col items-center">
+      <header className="mt-10 text-center w-full max-w-7xl px-6">
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <h1 className="text-4xl font-bold text-white">Claims Training Buddy</h1>
+          <img 
+            src="/PrincipalLogo3.png" 
+            alt="Principal Logo" 
+            className="h-12 w-auto"
+          />
+        </div>
+        
+        <div className="bg-principal-dark/50 backdrop-blur-sm rounded-xl p-4 border border-principal-blue/30 shadow-xl">
+          <div className="flex items-center justify-between gap-6 flex-wrap">
+            <div className="flex items-center gap-4">
+              <span className="text-white font-bold text-xl">{user.username}</span>
+              <div className="h-8 w-px bg-principal-blue/30"></div>
+              <div className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-5 py-2 rounded-lg font-bold text-lg border-2 border-yellow-300 shadow-lg">
+                Level {user.level || 1}
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-6">
+              <div className="flex flex-col items-start min-w-[160px]">
+                <span className="text-green-400 font-semibold text-sm mb-1">XP: {user.xp || 0} / {xpToNextLevel}</span>
+                <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden border border-green-400/30">
+                  <div 
+                    className="h-full bg-gradient-to-r from-green-400 to-green-600 transition-all duration-500"
+                    style={{ width: `${xpProgress}%` }}
+                  />
+                </div>
+              </div>
+              
+              <div className="bg-principal-blue/20 px-4 py-2 rounded-lg border border-principal-blue">
+                <div className="text-principal-blue text-xs font-semibold">SCORE</div>
+                <div className="text-white font-bold text-2xl">{user.score}</div>
+              </div>
+              
+              <div className={`px-4 py-2 rounded-lg border-2 ${
+                user.current_streak >= 0 
+                  ? 'bg-principal-blue/20 border-principal-blue' 
+                  : 'bg-red-500/20 border-red-500'
+              }`}>
+                <div className={`text-xs font-semibold ${
+                  user.current_streak >= 0 ? 'text-principal-blue' : 'text-red-400'
+                }`}>STREAK</div>
+                <div className={`font-bold text-2xl ${
+                  user.current_streak >= 0 ? 'text-white' : 'text-white'
+                }`}>{user.current_streak}</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <button 
+                className="bg-principal-blue hover:bg-blue-400 text-black px-4 py-2 rounded-lg font-bold text-2xl transition-colors shadow-lg"
+                onClick={() => setShowAchievements(true)}
+              >
+                🏆
+              </button>
+              
+              <button 
+                className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-semibold transition-colors shadow-lg"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
       </header>
-      <main className="app-main">
+      
+      <main className="w-full max-w-7xl px-6 py-8">
         {!scenario ? (
           <StartGame onGameStart={handleGameStart} />
         ) : (
           <GameScreen scenario={scenario} onComplete={handleComplete} />
         )}
       </main>
+      
       {showAchievements && <Achievements onClose={() => setShowAchievements(false)} />}
     </div>
   );

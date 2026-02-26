@@ -7,6 +7,11 @@ services:
     volumes:
       - ./backend:/app
       - ./ai_models:/ai_models
+      - ./blankdeathcert.jpg:/blankdeathcert.jpg
+      - ./FlorDeathCert.jpg:/FlorDeathCert.jpg
+      - ./TexasDeathCert.jpg:/TexasDeathCert.jpg
+      - ./DeathCert1.webp:/DeathCert1.webp
+      - ./deathcert2.jpg:/deathcert2.jpg
     ports:
       - "5000:5000"
     environment:

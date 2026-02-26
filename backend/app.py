@@ -5,6 +5,7 @@ import os
 import json
 import hashlib
 from ai_service import generate_scenario, classify_claim, generate_feedback, generate_client_profile
+from death_certificate_service import DeathCertificateService
 
 BASE_DIR = os.path.dirname(__file__)
 DATABASE = os.path.join(BASE_DIR, 'data.db')
@@ -25,7 +26,9 @@ def init_db():
             username TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL,
             score INTEGER DEFAULT 0,
-            current_streak INTEGER DEFAULT 0
+            current_streak INTEGER DEFAULT 0,
+            xp INTEGER DEFAULT 0,
+            level INTEGER DEFAULT 1
         )
     ''')
     cur.execute('''
@@ -65,8 +68,15 @@ def init_db():
     
     # Create admin account
     admin_hash = hashlib.sha256('Password'.encode()).hexdigest()
-    cur.execute('INSERT OR IGNORE INTO users (username, password_hash, score, current_streak) VALUES (?, ?, ?, ?)',
-                ('Admin1', admin_hash, 0, 0))
+    cur.execute('INSERT OR IGNORE INTO users (username, password_hash, score, current_streak, xp, level) VALUES (?, ?, ?, ?, ?, ?)',
+                ('Admin1', admin_hash, 0, 0, 0, 1))
+    
+    # Add xp and level columns if they don't exist (migration)
+    try:
+        cur.execute('ALTER TABLE users ADD COLUMN xp INTEGER DEFAULT 0')
+        cur.execute('ALTER TABLE users ADD COLUMN level INTEGER DEFAULT 1')
+    except sqlite3.OperationalError:
+        pass
     
     conn.commit()
     conn.close()
@@ -77,6 +87,9 @@ CORS(app, supports_credentials=True)
 
 # Initialize DB on app startup
 init_db()
+
+# Initialize death certificate service
+death_cert_service = DeathCertificateService()
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -102,13 +115,13 @@ def register():
     db = get_db()
     cur = db.cursor()
     try:
-        cur.execute('INSERT INTO users (username, password_hash, score, current_streak) VALUES (?, ?, ?, ?)',
-                    (username, password_hash, 0, 0))
+        cur.execute('INSERT INTO users (username, password_hash, score, current_streak, xp, level) VALUES (?, ?, ?, ?, ?, ?)',
+                    (username, password_hash, 0, 0, 0, 1))
         db.commit()
         user_id = cur.lastrowid
         session['user_id'] = user_id
         session['username'] = username
-        return jsonify({'username': username, 'score': 0, 'current_streak': 0})
+        return jsonify({'username': username, 'score': 0, 'current_streak': 0, 'xp': 0, 'level': 1})
     except sqlite3.IntegrityError:
         return jsonify({'error': 'Username already exists'}), 400
 
@@ -132,7 +145,10 @@ def login():
     if user:
         session['user_id'] = user[0]
         session['username'] = user[1]
-        return jsonify({'username': user[1], 'score': user[2], 'current_streak': user[3]})
+        cur.execute('SELECT xp, level FROM users WHERE id = ?', (user[0],))
+        xp_level = cur.fetchone()
+        return jsonify({'username': user[1], 'score': user[2], 'current_streak': user[3], 
+                       'xp': xp_level[0] if xp_level else 0, 'level': xp_level[1] if xp_level else 1})
     else:
         return jsonify({'error': 'Invalid credentials'}), 401
 
@@ -146,10 +162,11 @@ def get_current_user():
     if 'user_id' in session:
         db = get_db()
         cur = db.cursor()
-        cur.execute('SELECT username, score, current_streak FROM users WHERE id = ?', (session['user_id'],))
+        cur.execute('SELECT username, score, current_streak, xp, level FROM users WHERE id = ?', (session['user_id'],))
         user = cur.fetchone()
         if user:
-            return jsonify({'username': user[0], 'score': user[1], 'current_streak': user[2]})
+            return jsonify({'username': user[0], 'score': user[1], 'current_streak': user[2], 
+                          'xp': user[3], 'level': user[4]})
     return jsonify({'error': 'Not authenticated'}), 401
 
 @app.route('/api/scenario/generate', methods=['POST'])
@@ -220,10 +237,29 @@ ACHIEVEMENTS = {
     'score_neg250': {'name': 'In Trouble', 'desc': 'Reached -250 points'},
     'score_neg500': {'name': 'Rock Bottom', 'desc': 'Reached -500 points'},
     'streak_3': {'name': 'On Fire', 'desc': '3 correct answers in a row'},
-    'fail_streak_3': {'name': 'Rough Patch', 'desc': '3 wrong answers in a row'}
+    'fail_streak_3': {'name': 'Rough Patch', 'desc': '3 wrong answers in a row'},
+    'level_5': {'name': 'Apprentice', 'desc': 'Reached level 5'},
+    'level_10': {'name': 'Professional', 'desc': 'Reached level 10'},
+    'level_15': {'name': 'Specialist', 'desc': 'Reached level 15'},
+    'level_20': {'name': 'Expert Adjuster', 'desc': 'Reached level 20'},
+    'level_30': {'name': 'Master Adjuster', 'desc': 'Reached level 30'},
+    'level_40': {'name': 'Legend', 'desc': 'Reached level 40'},
+    'level_50': {'name': 'Mythic', 'desc': 'Reached level 50'}
 }
 
-def check_achievements(user_id, score, streak, is_correct, difficulty):
+def calculate_xp(claim_type, difficulty, is_correct):
+    base_xp = {'easy': 20, 'medium': 50, 'hard': 100}
+    xp = base_xp.get(difficulty, 20)
+    if claim_type == 'life':
+        xp = int(xp * 0.7)
+    if not is_correct:
+        xp = int(xp * 0.5)
+    return xp
+
+def calculate_level(xp):
+    return max(1, xp // 100 + 1)
+
+def check_achievements(user_id, score, streak, is_correct, difficulty, level):
     db = get_db()
     cur = db.cursor()
     new_achievements = []
@@ -261,6 +297,17 @@ def check_achievements(user_id, score, streak, is_correct, difficulty):
         except sqlite3.IntegrityError:
             pass
     
+    # Check level achievements
+    level_checks = [(5, 'level_5'), (10, 'level_10'), (15, 'level_15'), (20, 'level_20'), 
+                    (30, 'level_30'), (40, 'level_40'), (50, 'level_50')]
+    for threshold, key in level_checks:
+        if level >= threshold:
+            try:
+                cur.execute('INSERT INTO achievements (user_id, achievement_key) VALUES (?, ?)', (user_id, key))
+                new_achievements.append(ACHIEVEMENTS[key])
+            except sqlite3.IntegrityError:
+                pass
+    
     db.commit()
     return new_achievements
 
@@ -280,7 +327,7 @@ def submit_scenario():
     
     db = get_db()
     cur = db.cursor()
-    cur.execute('SELECT scenario_json, correct_answer, difficulty FROM scenarios WHERE id = ?', (scenario_id,))
+    cur.execute('SELECT scenario_json, correct_answer, difficulty, claim_type FROM scenarios WHERE id = ?', (scenario_id,))
     row = cur.fetchone()
     
     if not row:
@@ -289,11 +336,14 @@ def submit_scenario():
     scenario = json.loads(row[0])
     correct_answer = row[1]
     difficulty = row[2]
+    claim_type = row[3]
     is_correct = user_answer == correct_answer
     
     difficulty_points = {'easy': 50, 'medium': 100, 'hard': 200}
     base_points = difficulty_points.get(difficulty, 50)
     points_earned = base_points if is_correct else -int(base_points / 2)
+    
+    xp_earned = calculate_xp(claim_type, difficulty, is_correct)
     
     feedback = generate_feedback(scenario, user_answer, correct_answer)
     feedback_text = f"{feedback['message']} {feedback['explanation']}"
@@ -301,8 +351,11 @@ def submit_scenario():
     user_id = session['user_id']
     
     # Update streak
-    cur.execute('SELECT current_streak FROM users WHERE id = ?', (user_id,))
-    current_streak = cur.fetchone()[0]
+    cur.execute('SELECT current_streak, xp, level FROM users WHERE id = ?', (user_id,))
+    user_data = cur.fetchone()
+    current_streak = user_data[0]
+    current_xp = user_data[1]
+    current_level = user_data[2]
     if is_correct:
         new_streak = current_streak + 1 if current_streak >= 0 else 1
     else:
@@ -313,22 +366,29 @@ def submit_scenario():
         (user_id, scenario_id, user_answer, 1 if is_correct else 0, feedback_text, points_earned)
     )
     
-    cur.execute('UPDATE users SET score = score + ?, current_streak = ? WHERE id = ?', (points_earned, new_streak, user_id))
+    new_xp = current_xp + xp_earned
+    new_level = calculate_level(new_xp)
+    
+    cur.execute('UPDATE users SET score = score + ?, current_streak = ?, xp = ?, level = ? WHERE id = ?', 
+                (points_earned, new_streak, new_xp, new_level, user_id))
     cur.execute('SELECT score FROM users WHERE id = ?', (user_id,))
     new_score = cur.fetchone()[0]
     
     db.commit()
     
     # Check for new achievements
-    new_achievements = check_achievements(user_id, new_score, new_streak, is_correct, difficulty)
+    new_achievements = check_achievements(user_id, new_score, new_streak, is_correct, difficulty, new_level)
     
     return jsonify({
         'is_correct': is_correct,
         'feedback_text': feedback_text,
         'correct_answer': correct_answer,
         'points_earned': points_earned,
+        'xp_earned': xp_earned,
         'total_score': new_score,
         'current_streak': new_streak,
+        'level': new_level,
+        'xp': new_xp,
         'new_achievements': new_achievements
     })
 
@@ -450,6 +510,105 @@ def get_reference_codes():
     except Exception as e:
         print(f"Error loading reference codes: {e}")
         return jsonify({'error': 'Failed to load reference codes'}), 500
+
+@app.route('/api/death-certificate/generate', methods=['POST'])
+def generate_death_certificate():
+    """Generate a death certificate review scenario for life insurance claims"""
+    try:
+        data = request.get_json()
+        difficulty = data.get('difficulty', 'medium')
+        client_profile = data.get('client_profile', {})
+        
+        if difficulty not in ['easy', 'medium', 'hard']:
+            return jsonify({'error': 'Invalid difficulty'}), 400
+        
+        scenario = death_cert_service.generate_scenario(difficulty, client_profile)
+        
+        return jsonify(scenario)
+        
+    except Exception as e:
+        print(f"Error generating death certificate: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/death-certificate/validate', methods=['POST'])
+def validate_death_certificate():
+    """Validate user's death certificate review"""
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not authenticated'}), 401
+    
+    try:
+        data = request.get_json()
+        user_findings = data.get('user_findings', [])
+        actual_errors = data.get('actual_errors', [])
+        difficulty = data.get('difficulty', 'medium')
+        
+        # Validate the review
+        result = death_cert_service.validate_review(user_findings, actual_errors)
+        
+        # Award points based on score
+        difficulty_multiplier = {'easy': 1, 'medium': 1.5, 'hard': 2}
+        base_points = result['score']
+        points_earned = int(base_points * difficulty_multiplier.get(difficulty, 1))
+        
+        # Update user score
+        user_id = session['user_id']
+        db = get_db()
+        cur = db.cursor()
+        
+        # Update streak
+        cur.execute('SELECT current_streak, xp, level FROM users WHERE id = ?', (user_id,))
+        user_data = cur.fetchone()
+        current_streak = user_data[0]
+        current_xp = user_data[1]
+        current_level = user_data[2]
+        is_correct = result['correct']
+        
+        if is_correct:
+            new_streak = current_streak + 1 if current_streak >= 0 else 1
+        else:
+            new_streak = current_streak - 1 if current_streak <= 0 else -1
+        
+        xp_earned = int(result['score'] * difficulty_multiplier.get(difficulty, 1) * 0.5)
+        new_xp = current_xp + xp_earned
+        new_level = calculate_level(new_xp)
+        
+        cur.execute('UPDATE users SET score = score + ?, current_streak = ?, xp = ?, level = ? WHERE id = ?', 
+                   (points_earned, new_streak, new_xp, new_level, user_id))
+        cur.execute('SELECT score FROM users WHERE id = ?', (user_id,))
+        new_score = cur.fetchone()[0]
+        db.commit()
+        
+        # Check for achievements
+        new_achievements = check_achievements(user_id, new_score, new_streak, is_correct, difficulty, new_level)
+        
+        return jsonify({
+            **result,
+            'points_earned': points_earned,
+            'xp_earned': xp_earned,
+            'total_score': new_score,
+            'current_streak': new_streak,
+            'level': new_level,
+            'xp': new_xp,
+            'new_achievements': new_achievements
+        })
+        
+    except Exception as e:
+        print(f"Error validating death certificate: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/death-certificate/error-options', methods=['GET'])
+def get_error_options():
+    """Get list of possible errors for death certificate review"""
+    try:
+        options = death_cert_service.get_error_options()
+        return jsonify({'error_options': options})
+    except Exception as e:
+        print(f"Error getting error options: {e}")
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
