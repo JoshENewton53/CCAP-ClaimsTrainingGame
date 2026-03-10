@@ -48,7 +48,7 @@ function StartGame({ onGameStart }) {
             >
               <option value="medical">Medical Insurance</option>
               <option value="dental">Dental Insurance</option>
-              <option value="life">Life Insurance (Less XP)</option>
+              <option value="life">Life Insurance</option>
             </select>
           </div>
 

@@ -16,7 +16,11 @@ function Achievements({ onClose }) {
       'level_10': '👑',
       'speed_demon': '⚡',
       'accuracy_master': '🎯',
-      'claim_master': '🏆'
+      'claim_master': '🏆',
+      'leaderboard_top25': '📊',
+      'leaderboard_top10': '🥉',
+      'leaderboard_top3': '🥈',
+      'leaderboard_rank1': '🥇'
     };
     return icons[key] || '🏆';
   };
@@ -26,7 +30,11 @@ function Achievements({ onClose }) {
       credentials: 'include'
     })
       .then(res => res.json())
-      .then(data => setAchievements(data.achievements))
+      .then(data => {
+        if (data.achievements) {
+          setAchievements(data.achievements);
+        }
+      })
       .catch(err => console.error(err));
   }, []);
 
@@ -38,7 +46,7 @@ function Achievements({ onClose }) {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
-          {achievements.map(ach => (
+          {achievements && achievements.length > 0 ? achievements.map(ach => (
             <div key={ach.key} className={`rounded-lg p-5 border-2 transition-all ${
               ach.unlocked 
                 ? 'bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border-yellow-500 shadow-lg shadow-yellow-500/20' 
@@ -53,7 +61,11 @@ function Achievements({ onClose }) {
                 </span>
               )}
             </div>
-          ))}
+          )) : (
+            <div className="col-span-full text-center text-gray-400 py-8">
+              Loading achievements...
+            </div>
+          )}
         </div>
         
         <div className="sticky bottom-0 bg-principal-dark p-6 border-t border-principal-blue/30">

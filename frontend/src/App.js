@@ -4,11 +4,15 @@ import Login from './Login';
 import StartGame from './StartGame';
 import GameScreen from './GameScreen';
 import Achievements from './Achievements';
+import Account from './Account';
+import Leaderboard from './Leaderboard';
 
 function App() {
   const [user, setUser] = useState(null);
   const [scenario, setScenario] = useState(null);
   const [showAchievements, setShowAchievements] = useState(false);
+  const [showAccount, setShowAccount] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -41,6 +45,16 @@ function App() {
     setUser({ ...user, score: result.total_score, current_streak: result.current_streak, 
              xp: result.xp, level: result.level });
     setScenario(null);
+  };
+
+  const handleAccountUpdate = () => {
+    // Refresh user data after profile update
+    fetch('http://localhost:5000/api/auth/me', {
+      credentials: 'include'
+    })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => data && setUser(data))
+      .catch(() => {});
   };
 
   const xpToNextLevel = user ? ((user.level || 1) * 100) : 100;
@@ -121,6 +135,20 @@ function App() {
             
             <div className="flex items-center gap-3">
               <button 
+                className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-lg"
+                onClick={() => setShowLeaderboard(true)}
+              >
+                🏆 Leaderboard
+              </button>
+              
+              <button 
+                className="bg-gray-600 hover:bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-lg"
+                onClick={() => setShowAccount(true)}
+              >
+                👤 Account
+              </button>
+              
+              <button 
                 className="bg-principal-blue hover:bg-blue-400 text-black px-4 py-2 rounded-lg font-bold text-2xl transition-colors shadow-lg"
                 onClick={() => setShowAchievements(true)}
               >
@@ -147,6 +175,8 @@ function App() {
       </main>
       
       {showAchievements && <Achievements onClose={() => setShowAchievements(false)} />}
+      {showAccount && <Account user={user} onClose={() => setShowAccount(false)} onUpdate={handleAccountUpdate} />}
+      {showLeaderboard && <Leaderboard onClose={() => setShowLeaderboard(false)} />}
     </div>
   );
 }

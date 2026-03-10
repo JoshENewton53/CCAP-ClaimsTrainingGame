@@ -5,6 +5,7 @@ import ClientProfile from './ClientProfile';
 import PolicyGuide from './PolicyGuide';
 import CodeMatcher from './CodeMatcher';
 import DeathCertificateReview from './DeathCertificateReview';
+import ReasonModal from './ReasonModal';
 
 function GameScreen({ scenario, onComplete }) {
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,10 @@ function GameScreen({ scenario, onComplete }) {
   const [showCodeMatcher, setShowCodeMatcher] = useState(false);
   const [deathCertScenario, setDeathCertScenario] = useState(null);
   const [deathCertResult, setDeathCertResult] = useState(null);
+  const [showReasonModal, setShowReasonModal] = useState(false);
+  const [pendingAnswer, setPendingAnswer] = useState(null);
+  const [aiHints, setAiHints] = useState([]);
+  const [attempts, setAttempts] = useState(0);
 
   // Load death certificate for life insurance claims
   React.useEffect(() => {
@@ -33,20 +38,47 @@ function GameScreen({ scenario, onComplete }) {
     }
   };
 
+  const getAiHint = async () => {
+    console.log('Getting AI hint for scenario:', scenario.id);
+    try {
+      const response = await axios.post('http://localhost:5000/api/ai/hint', {
+        scenario_id: scenario.id,
+        attempts: attempts
+      }, { withCredentials: true });
+      console.log('AI hint response:', response.data);
+      setAiHints(response.data.hints || []);
+      setAttempts(attempts + 1);
+    } catch (err) {
+      console.error('Failed to get AI hint:', err);
+      alert('Failed to get AI hint: ' + (err.response?.data?.error || err.message));
+    }
+  };
+
   const handleSubmit = async (answer) => {
+    if (answer === 'invalid' || answer === 'insufficient') {
+      setPendingAnswer(answer);
+      setShowReasonModal(true);
+    } else {
+      submitAnswer(answer, []);
+    }
+  };
+
+  const submitAnswer = async (answer, reasons) => {
     setLoading(true);
+    setShowReasonModal(false);
 
     try {
-      const response = await axios.post('/api/scenario/submit', {
+      const response = await axios.post('http://localhost:5000/api/scenario/submit', {
         scenario_id: scenario.id,
-        user_answer: answer
+        user_answer: answer,
+        reasons: reasons
       }, {
         withCredentials: true
       });
 
       setResult(response.data);
     } catch (err) {
-      console.error(err);
+      console.error('Submit error:', err.response?.data || err.message);
       alert('Failed to submit answer. Please try again.');
     } finally {
       setLoading(false);
@@ -56,6 +88,9 @@ function GameScreen({ scenario, onComplete }) {
   const handleNext = () => {
     onComplete(result);
   };
+
+  console.log('Scenario data:', scenario);
+  console.log('Has itemized_bill:', !!scenario.itemized_bill);
 
   return (
     <div className="flex gap-6">
@@ -67,6 +102,22 @@ function GameScreen({ scenario, onComplete }) {
         >
           View Code Reference
         </button>
+        <button 
+          className="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-lg transition-colors" 
+          onClick={getAiHint}
+        >
+          🤖 Get AI Hint
+        </button>
+        {aiHints.length > 0 && (
+          <div className="bg-purple-900/50 border border-purple-500 rounded-lg p-4">
+            <h4 className="text-purple-300 font-bold mb-2 flex items-center">
+              <span className="mr-2">🤖</span> AI Hints:
+            </h4>
+            {aiHints.map((hint, idx) => (
+              <p key={idx} className="text-gray-300 text-sm mb-1">{hint}</p>
+            ))}
+          </div>
+        )}
         <PolicyGuide />
       </div>
       
@@ -164,6 +215,53 @@ function GameScreen({ scenario, onComplete }) {
             </div>
           )}
           
+          {scenario.itemized_bill ? (
+            <div className="mb-4 bg-gray-800 p-4 rounded-lg">
+              <h4 className="text-lg font-semibold text-white mb-3">📄 Itemized Bill</h4>
+              <div className="bg-white text-black p-4 rounded">
+                <div className="text-center mb-3">
+                  <h5 className="font-bold text-lg">{scenario.itemized_bill.provider}</h5>
+                  <p className="text-sm">Service Date: {scenario.itemized_bill.service_date}</p>
+                </div>
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-black">
+                      <th className="text-left py-2">Code</th>
+                      <th className="text-left py-2">Description</th>
+                      <th className="text-center py-2">Qty</th>
+                      <th className="text-right py-2">Unit Cost</th>
+                      <th className="text-right py-2">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scenario.itemized_bill.items.map((item, idx) => (
+                      <tr key={idx} className="border-b border-gray-300">
+                        <td className="py-2 font-mono">{item.code}</td>
+                        <td className="py-2">{item.description}</td>
+                        <td className="text-center py-2">{item.quantity}</td>
+                        <td className="text-right py-2">${item.unit_cost.toFixed(2)}</td>
+                        <td className="text-right py-2">${item.total.toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr className="border-t-2 border-black font-bold">
+                      <td colSpan="4" className="text-right py-2">Total:</td>
+                      <td className="text-right py-2">${scenario.itemized_bill.total.toFixed(2)}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <p className="text-yellow-400 text-sm mt-2">⚠️ Review carefully for accuracy</p>
+            </div>
+          ) : (
+            scenario.claim_type === 'medical' && scenario.document_status.submitted.includes('Itemized bill with CPT codes') && (
+              <div className="mb-4 bg-gray-800 p-4 rounded-lg">
+                <p className="text-red-400">⚠️ Itemized bill failed to generate</p>
+              </div>
+            )
+          )}
+          
           <div className="mb-4">
             <h4 className="text-green-400 font-semibold mb-2">✓ Documents Submitted:</h4>
             <ul className="space-y-1">
@@ -224,6 +322,16 @@ function GameScreen({ scenario, onComplete }) {
       />
 
       {result && <FeedbackModal result={result} onNext={handleNext} />}
+      {showReasonModal && (
+        <ReasonModal
+          answer={pendingAnswer}
+          onSubmit={(reasons) => submitAnswer(pendingAnswer, reasons)}
+          onCancel={() => {
+            setShowReasonModal(false);
+            setPendingAnswer(null);
+          }}
+        />
+      )}
     </div>
   );
 }

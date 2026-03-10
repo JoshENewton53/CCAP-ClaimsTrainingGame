@@ -4,8 +4,9 @@ import sqlite3
 import os
 import json
 import hashlib
-from ai_service import generate_scenario, classify_claim, generate_feedback, generate_client_profile
+from ai_service import generate_scenario, classify_claim, generate_feedback, generate_client_profile, generate_ai_hint
 from death_certificate_service import DeathCertificateService
+from itemized_bill_service import ItemizedBillService
 
 BASE_DIR = os.path.dirname(__file__)
 DATABASE = os.path.join(BASE_DIR, 'data.db')
@@ -75,6 +76,8 @@ def init_db():
     try:
         cur.execute('ALTER TABLE users ADD COLUMN xp INTEGER DEFAULT 0')
         cur.execute('ALTER TABLE users ADD COLUMN level INTEGER DEFAULT 1')
+        cur.execute('ALTER TABLE users ADD COLUMN bio TEXT')
+        cur.execute('ALTER TABLE users ADD COLUMN profile_picture BLOB')
     except sqlite3.OperationalError:
         pass
     
@@ -90,6 +93,7 @@ init_db()
 
 # Initialize death certificate service
 death_cert_service = DeathCertificateService()
+bill_service = ItemizedBillService()
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -197,6 +201,31 @@ def generate_scenario_endpoint():
         classification = classify_claim(scenario)
         correct_answer = classification['prediction']
         
+        # Determine actual reasons for invalid/insufficient
+        actual_reasons = []
+        if correct_answer == 'insufficient':
+            actual_reasons = document_status.get('missing', [])
+        elif correct_answer == 'invalid':
+            if scenario.get('has_mismatch'):
+                actual_reasons.append('Procedure code does not match diagnosis')
+            if scenario.get('out_of_coverage'):
+                actual_reasons.append('Service date outside policy coverage period')
+            if len(document_status.get('missing', [])) > 0:
+                actual_reasons.append('Missing required documentation')
+        
+        scenario['actual_reasons'] = actual_reasons
+        
+        # Generate itemized bill for medical claims
+        itemized_bill = None
+        if claim_type == 'medical' and 'Itemized bill with CPT codes' in document_status.get('submitted', []):
+            try:
+                itemized_bill = bill_service.generate_bill(claim_type, scenario['procedure_code'], scenario['claim_amount'], difficulty, correct_answer)
+                scenario['itemized_bill'] = itemized_bill
+            except Exception as e:
+                print(f"Error generating bill: {e}")
+                import traceback
+                traceback.print_exc()
+        
         # Save to database
         db = get_db()
         cur = db.cursor()
@@ -208,7 +237,7 @@ def generate_scenario_endpoint():
         scenario_id = cur.lastrowid
         
         # Return response
-        return jsonify({
+        response_data = {
             'id': scenario_id,
             'claim_type': claim_type,
             'difficulty': difficulty,
@@ -220,7 +249,12 @@ def generate_scenario_endpoint():
             'document_status': document_status,
             'client_profile': client_profile,
             'max_points': {'easy': 50, 'medium': 100, 'hard': 200}[difficulty]
-        })
+        }
+        
+        if itemized_bill:
+            response_data['itemized_bill'] = itemized_bill
+        
+        return jsonify(response_data)
     except Exception as e:
         print(f"Error in generate_scenario: {e}")
         import traceback
@@ -464,6 +498,65 @@ def generate_submitted_documents(claim_type, difficulty):
         'all_required': all_documents
     }
 
+@app.route('/api/leaderboard', methods=['GET'])
+def get_leaderboard():
+    db = get_db()
+    cur = db.cursor()
+    cur.execute('SELECT username, score, level, profile_picture FROM users ORDER BY score DESC LIMIT 100')
+    users = cur.fetchall()
+    
+    import base64
+    leaderboard = []
+    for user in users:
+        leaderboard.append({
+            'username': user[0],
+            'score': user[1],
+            'level': user[2],
+            'profile_picture': base64.b64encode(user[3]).decode('utf-8') if user[3] else None
+        })
+    
+    return jsonify({'leaderboard': leaderboard})
+
+@app.route('/api/profile', methods=['GET'])
+def get_profile():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not authenticated'}), 401
+    
+    db = get_db()
+    cur = db.cursor()
+    cur.execute('SELECT bio, profile_picture FROM users WHERE id = ?', (session['user_id'],))
+    user = cur.fetchone()
+    
+    if user:
+        import base64
+        return jsonify({
+            'bio': user[0] or '',
+            'profile_picture': base64.b64encode(user[1]).decode('utf-8') if user[1] else None
+        })
+    return jsonify({'error': 'User not found'}), 404
+
+@app.route('/api/profile/update', methods=['POST'])
+def update_profile():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not authenticated'}), 401
+    
+    bio = request.form.get('bio', '')
+    profile_picture = request.files.get('profile_picture')
+    
+    db = get_db()
+    cur = db.cursor()
+    
+    if profile_picture:
+        picture_data = profile_picture.read()
+        cur.execute('UPDATE users SET bio = ?, profile_picture = ? WHERE id = ?',
+                   (bio, picture_data, session['user_id']))
+    else:
+        cur.execute('UPDATE users SET bio = ? WHERE id = ?',
+                   (bio, session['user_id']))
+    
+    db.commit()
+    return jsonify({'message': 'Profile updated successfully'})
+
 @app.route('/api/achievements', methods=['GET'])
 def get_achievements():
     if 'user_id' not in session:
@@ -510,6 +603,32 @@ def get_reference_codes():
     except Exception as e:
         print(f"Error loading reference codes: {e}")
         return jsonify({'error': 'Failed to load reference codes'}), 500
+
+@app.route('/api/ai/hint', methods=['POST'])
+def get_ai_hint():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not authenticated'}), 401
+    
+    try:
+        data = request.get_json()
+        scenario_id = data.get('scenario_id')
+        attempts = data.get('attempts', 0)
+        
+        db = get_db()
+        cur = db.cursor()
+        cur.execute('SELECT scenario_json FROM scenarios WHERE id = ?', (scenario_id,))
+        row = cur.fetchone()
+        
+        if not row:
+            return jsonify({'error': 'Scenario not found'}), 404
+        
+        scenario = json.loads(row[0])
+        hints = generate_ai_hint(scenario, attempts)
+        
+        return jsonify({'hints': hints})
+    except Exception as e:
+        print(f"Error generating hint: {e}")
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/api/death-certificate/generate', methods=['POST'])
 def generate_death_certificate():

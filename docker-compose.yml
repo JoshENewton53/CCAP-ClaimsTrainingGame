@@ -1,23 +1,23 @@
 version: '3.8'
 services:
   backend:
-    image: python:3.11-slim
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: ccap_backend
-    working_dir: /app
     volumes:
       - ./backend:/app
       - ./ai_models:/ai_models
-      - ./blankdeathcert.jpg:/blankdeathcert.jpg
-      - ./FlorDeathCert.jpg:/FlorDeathCert.jpg
-      - ./TexasDeathCert.jpg:/TexasDeathCert.jpg
-      - ./DeathCert1.webp:/DeathCert1.webp
-      - ./deathcert2.jpg:/deathcert2.jpg
+      - ./blankdeathcert.jpg:/app/blankdeathcert.jpg
+      - ./FlorDeathCert.jpg:/app/FlorDeathCert.jpg
+      - ./TexasDeathCert.jpg:/app/TexasDeathCert.jpg
+      - ./DeathCert1.webp:/app/DeathCert1.webp
+      - ./deathcert2.jpg:/app/deathcert2.jpg
     ports:
       - "5000:5000"
     environment:
       - FLASK_ENV=development
       - PYTHONUNBUFFERED=1
-    command: sh -c "pip install -r requirements.txt || true && python app.py"
     restart: unless-stopped
 
 # Frontend will run locally with `npm start` during development.
