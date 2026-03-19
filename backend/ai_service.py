@@ -16,12 +16,99 @@ GENERATOR_PATH = MODELS_DIR / "scenario_generator"
 # Global model storage
 _classifier = None
 _encoders = None
+_embedding_model = None
 _generator_model = None
 _generator_tokenizer = None
+_flan_model = None
+_flan_tokenizer = None
+
+FLAN_MODEL_NAME = 'google/flan-t5-base'
+
+def load_flan_t5():
+    """Load Flan-T5 model for natural language feedback generation"""
+    global _flan_model, _flan_tokenizer
+    from transformers import T5ForConditionalGeneration, T5Tokenizer
+    print("Loading Flan-T5 model (downloads ~250MB on first run)...")
+    _flan_tokenizer = T5Tokenizer.from_pretrained(FLAN_MODEL_NAME)
+    _flan_model = T5ForConditionalGeneration.from_pretrained(FLAN_MODEL_NAME)
+    print("Flan-T5 loaded successfully!")
+
+
+def generate_flan_feedback(scenario, user_answer, correct_answer, rule_explanation):
+    """Use Flan-T5 to generate natural language feedback for a claim decision"""
+    global _flan_model, _flan_tokenizer
+    if _flan_model is None or _flan_tokenizer is None:
+        try:
+            load_flan_t5()
+        except Exception as e:
+            print(f"[WARN] Flan-T5 lazy load failed: {e}")
+            return None
+    if _flan_model is None or _flan_tokenizer is None:
+        return None
+
+    is_correct = user_answer.lower() == correct_answer.lower()
+    claim_type = scenario.get('claim_type', 'medical')
+    procedure = scenario.get('procedure_code', '')
+    diagnosis = scenario.get('diagnosis_code', '')
+    amount = scenario.get('claim_amount', 0)
+
+    prompt = (
+        "You are an insurance claims training assistant.\n"
+        f"Claim type: {claim_type}\n"
+        f"Procedure: {procedure}\n"
+        f"Diagnosis: {diagnosis}\n"
+        f"Amount: ${amount:.2f}\n"
+        f"Trainee answer: {user_answer}\n"
+        f"Correct answer: {correct_answer}\n"
+        f"Key finding: {rule_explanation}\n\n"
+        "Task: Write 2-3 sentences of educational feedback for the trainee.\n"
+        "Constraints: Do NOT repeat the prompt or instructions. Return ONLY the feedback text.\n"
+        "Feedback:"
+    )
+
+    try:
+        inputs = _flan_tokenizer(prompt, return_tensors='pt', max_length=300, truncation=True)
+        outputs = _flan_model.generate(
+            **inputs,
+            max_new_tokens=120,
+            do_sample=True,
+            top_p=0.9,
+            temperature=0.7,
+            repetition_penalty=1.2,
+        )
+        text = _flan_tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+
+        # Guard: if the model echoes instructions/prompt, don't show it to the user.
+        lower = text.lower()
+        if (
+            "in 2-3 sentences" in lower
+            or "do not repeat the prompt" in lower
+            or "return only the feedback text" in lower
+            or "key finding:" in lower
+            or lower.startswith("you are an insurance claims training assistant")
+        ):
+            return None
+
+        # Keep it short and clean (2-3 sentences max).
+        sentences = [s.strip() for s in text.replace("\n", " ").split(".") if s.strip()]
+        if len(sentences) > 3:
+            text = ". ".join(sentences[:3]).strip() + "."
+        elif sentences and not text.endswith("."):
+            text = text + "."
+
+        # Too short/empty? Fall back to deterministic rule explanation.
+        if len(text) < 20:
+            return None
+
+        return text
+    except Exception as e:
+        print(f"Flan-T5 inference error: {e}")
+        return None
+
 
 def load_models():
     """Load all AI models on startup"""
-    global _classifier, _encoders, _generator_model, _generator_tokenizer
+    global _classifier, _encoders, _embedding_model, _generator_model, _generator_tokenizer
     
     if not CLASSIFIER_PATH.exists():
         raise FileNotFoundError(f"Classifier not found at {CLASSIFIER_PATH}")
@@ -33,6 +120,7 @@ def load_models():
         data = pickle.load(f)
         _classifier = data['model']
         _encoders = data['encoders']
+        _embedding_model = data.get('embedding_model')
     
     print("Loading generator model...")
     _generator_model = GPT2LMHeadModel.from_pretrained(str(GENERATOR_PATH))
@@ -41,10 +129,263 @@ def load_models():
     print("Models loaded successfully!")
 
 def generate_scenario(claim_type, difficulty):
-    """Generate a realistic claim scenario using fallback descriptions"""
-    # AI model generates poor quality output (repetitive text)
-    # Using hand-crafted scenarios for better training quality
-    return generate_fallback_scenario(claim_type, difficulty)
+    """Generate a realistic claim scenario with AI-written description"""
+    scenario = generate_fallback_scenario(claim_type, difficulty)
+    ai_desc = generate_scenario_description(scenario)
+    if ai_desc:
+        scenario['description'] = ai_desc
+    return scenario
+
+
+# Procedure/diagnosis human-readable labels for richer prompts
+_PROCEDURE_LABELS = {
+    # Medical
+    '99213': 'office visit (established patient, moderate complexity)',
+    '99214': 'office visit (established patient, high complexity)',
+    '99215': 'office visit (established patient, comprehensive)',
+    '99223': 'initial hospital care (high complexity)',
+    '99232': 'subsequent hospital care',
+    '45378': 'diagnostic colonoscopy',
+    '99291': 'critical care (first hour)',
+    '99292': 'critical care (additional 30 min)',
+    '33533': 'coronary artery bypass graft',
+    # Dental
+    'D1110': 'adult prophylaxis (teeth cleaning)',
+    'D2140': 'amalgam filling (one surface)',
+    'D0120': 'periodic oral evaluation',
+    'D2750': 'crown (porcelain fused to metal)',
+    'D7210': 'surgical extraction of erupted tooth',
+    'D4910': 'periodontal maintenance',
+    'D6010': 'endosteal implant',
+    'D7953': 'bone replacement graft',
+    'D4267': 'guided tissue regeneration',
+}
+
+_DIAGNOSIS_LABELS = {
+    'Z00.00': 'routine general medical exam',
+    'I10': 'essential hypertension',
+    'E78.5': 'hyperlipidemia',
+    'K92.2': 'gastrointestinal hemorrhage',
+    'N39.0': 'urinary tract infection',
+    'M17.11': 'primary osteoarthritis of right knee',
+    'I46.9': 'cardiac arrest',
+    'K85.9': 'acute pancreatitis',
+    'S72.001A': 'femur fracture',
+    'K02.9': 'dental caries',
+    'K05.10': 'chronic gingivitis',
+    'K04.7': 'periapical abscess',
+    'K04.5': 'chronic apical periodontitis',
+    'K08.101': 'complete tooth loss',
+    'K07.30': 'jaw deformity',
+    'K07.25': 'skeletal malocclusion',
+    'K10.21': 'osteitis of jaw',
+    'K05.31': 'aggressive periodontitis',
+}
+
+
+# NL mode: procedure categories shown in dropdowns (trainee-facing labels)
+NL_PROCEDURE_CATEGORIES = {
+    'medical': [
+        {'label': 'Preventive / Wellness Visit', 'codes': ['99385', '80053', '36415']},
+        {'label': 'Office Visit – Established Patient', 'codes': ['99213', '99214', '99215']},
+        {'label': 'Psychotherapy', 'codes': ['90834']},
+        {'label': 'Hospital Admission / Inpatient Care', 'codes': ['99223', '99232']},
+        {'label': 'Critical Care', 'codes': ['99291', '99292']},
+        {'label': 'Colonoscopy / GI Endoscopy', 'codes': ['45378', '43239']},
+        {'label': 'Imaging – MRI / Radiology', 'codes': ['73721']},
+        {'label': 'Cardiac Surgery', 'codes': ['33533']},
+        {'label': 'General Surgery', 'codes': ['47562']},
+        {'label': 'Orthopedic / Anesthesia', 'codes': ['01402']},
+    ]
+}
+
+NL_DIAGNOSIS_CATEGORIES = {
+    'medical': [
+        {'label': 'Hypertension', 'codes': ['I10']},
+        {'label': 'Diabetes', 'codes': ['E11.9']},
+        {'label': 'High Cholesterol / Hyperlipidemia', 'codes': ['E78.5']},
+        {'label': 'Routine / Preventive Exam', 'codes': ['Z00.00', 'Z00.01', 'Z01.812']},
+        {'label': 'Depression / Anxiety / PTSD', 'codes': ['F32.9', 'F33.1', 'F41.1', 'F43.10']},
+        {'label': 'Gastrointestinal Bleed / GI Issue', 'codes': ['K92.2', 'K25.9', 'K21.9', 'K63.5']},
+        {'label': 'Urinary Tract Infection', 'codes': ['N39.0']},
+        {'label': 'Cardiac / Coronary Artery Disease', 'codes': ['I25.10', 'I25.700', 'I21.9', 'I46.9']},
+        {'label': 'Respiratory / Pneumonia / COPD', 'codes': ['J18.9', 'J44.1', 'J96.00', 'J06.9']},
+        {'label': 'Knee / Joint / Orthopedic Condition', 'codes': ['M17.11', 'S83.209A', 'M23.90', 'S72.001A', 'M16.11']},
+        {'label': 'Kidney Disease / Renal Failure', 'codes': ['N18.6', 'N17.9']},
+        {'label': 'Anemia / Blood Disorder', 'codes': ['D64.9']},
+        {'label': 'Fever / Infection (unspecified)', 'codes': ['R50.9']},
+        {'label': 'Shock / Sepsis', 'codes': ['R57.0']},
+        {'label': 'Gallbladder / Pancreas', 'codes': ['K80.20', 'K85.9', 'K83.1']},
+    ]
+}
+
+
+def _get_nl_category(claim_type, field, code):
+    """Return the dropdown label for a given code, or None if not found."""
+    cats = NL_PROCEDURE_CATEGORIES if field == 'procedure' else NL_DIAGNOSIS_CATEGORIES
+    for cat in cats.get(claim_type, []):
+        if code in cat['codes']:
+            return cat['label']
+    return None
+
+
+def generate_nl_paragraph(scenario, red_flag_type=None):
+    """
+    Generate a plain-English claim submission paragraph for NL mode.
+    red_flag_type: None | 'pre_existing' | 'code_mismatch' | 'high_amount'
+    """
+    global _flan_model, _flan_tokenizer
+
+    claim_type = scenario['claim_type']
+    procedure = scenario['procedure_code']
+    diagnosis = scenario['diagnosis_code']
+    amount = scenario['claim_amount']
+    age = scenario['patient_age']
+    client = scenario.get('client_profile', {})
+    patient_name = client.get('name', 'the patient')
+
+    proc_label = _PROCEDURE_LABELS.get(procedure, procedure)
+    diag_label = _DIAGNOSIS_LABELS.get(diagnosis, diagnosis)
+
+    # Build red flag context string
+    red_flag_context = ''
+    if red_flag_type == 'pre_existing':
+        red_flag_context = (
+            ' The patient mentioned they have been managing this condition '
+            'for several years prior to obtaining coverage.'
+        )
+    elif red_flag_type == 'code_mismatch':
+        red_flag_context = (
+            ' Note: the billing department has flagged a possible discrepancy '
+            'between the listed procedure and the stated diagnosis.'
+        )
+    elif red_flag_type == 'high_amount':
+        red_flag_context = (
+            f' The total billed amount of ${amount:,.2f} is notably higher '
+            'than typical reimbursement rates for this service.'
+        )
+
+    if _flan_model and _flan_tokenizer:
+        prompt = (
+            f"Write a 3-sentence medical insurance claim submission note from a doctor's office. "
+            f"Patient: {patient_name}, age {age}. "
+            f"Service: {proc_label}. Reason: {diag_label}. "
+            f"Amount billed: ${amount:,.2f}. "
+            f"Do not mention CPT codes or ICD codes directly. "
+            f"Write in plain English as if a billing clerk wrote it."
+        )
+        try:
+            inputs = _flan_tokenizer(prompt, return_tensors='pt', max_length=220, truncation=True)
+            outputs = _flan_model.generate(
+                **inputs,
+                max_new_tokens=100,
+                num_beams=4,
+                no_repeat_ngram_size=3,
+                early_stopping=True,
+            )
+            text = _flan_tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+            lower = text.lower()
+            if (
+                len(text) >= 40
+                and 'write a' not in lower
+                and 'claim note' not in lower
+                and not text.startswith('{')
+            ):
+                sentences = [s.strip() for s in text.replace('\n', ' ').split('.') if s.strip()]
+                text = '. '.join(sentences[:3]) + '.'
+                return text + red_flag_context
+        except Exception as e:
+            print(f"[Flan-T5] NL paragraph error: {e}")
+
+    # Deterministic fallback
+    fallback = (
+        f"This claim is submitted on behalf of {patient_name}, a {age}-year-old patient "
+        f"who received {proc_label} services on the date of service. "
+        f"The treating physician documented {diag_label} as the primary reason for the visit. "
+        f"Total charges submitted for reimbursement amount to ${amount:,.2f}."
+    )
+    return fallback + red_flag_context
+
+
+def generate_scenario_description(scenario):
+    """Use Flan-T5 to write a unique scenario description from structured facts."""
+    global _flan_model, _flan_tokenizer
+    if _flan_model is None or _flan_tokenizer is None:
+        return None
+
+    claim_type = scenario['claim_type']
+    difficulty = scenario['difficulty']
+    procedure = scenario['procedure_code']
+    diagnosis = scenario['diagnosis_code']
+    amount = scenario['claim_amount']
+    age = scenario['patient_age']
+
+    proc_label = _PROCEDURE_LABELS.get(procedure, procedure)
+    diag_label = _DIAGNOSIS_LABELS.get(diagnosis, diagnosis)
+
+    # Life insurance uses a different prompt shape
+    if claim_type == 'life':
+        complexity = {
+            'easy': 'straightforward with clear documentation',
+            'medium': 'with a complicating factor such as a pre-existing condition or incomplete records',
+            'hard': 'with suspicious circumstances or potential fraud indicators',
+        }[difficulty]
+        prompt = (
+            f"Write a 2-sentence insurance claim note for a life insurance death benefit claim. "
+            f"The policyholder was {age} years old. The claim is {complexity}. "
+            f"Claim amount: ${amount:,.0f}. "
+            f"Write only the claim note, no headings or labels."
+        )
+    else:
+        complexity = {
+            'easy': 'routine and straightforward',
+            'medium': 'moderately complex',
+            'hard': 'complex with potential red flags',
+        }[difficulty]
+        prompt = (
+            f"Write a 2-sentence insurance claim note for a {claim_type} claim. "
+            f"Patient age: {age}. Procedure: {proc_label} ({procedure}). "
+            f"Diagnosis: {diag_label} ({diagnosis}). "
+            f"Claim amount: ${amount:,.2f}. Complexity: {complexity}. "
+            f"Write only the claim note, no headings or labels."
+        )
+
+    try:
+        inputs = _flan_tokenizer(
+            prompt, return_tensors='pt', max_length=200, truncation=True
+        )
+        outputs = _flan_model.generate(
+            **inputs,
+            max_new_tokens=80,
+            num_beams=4,
+            no_repeat_ngram_size=3,
+            early_stopping=True,
+        )
+        text = _flan_tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
+
+        # Reject if too short, echoes the prompt, or contains instruction artifacts
+        lower = text.lower()
+        if (
+            len(text) < 30
+            or 'write a' in lower
+            or 'claim note' in lower
+            or 'no headings' in lower
+            or text.startswith('{')
+        ):
+            return None
+
+        # Trim to 2 sentences max
+        sentences = [s.strip() for s in text.replace('\n', ' ').split('.') if s.strip()]
+        if len(sentences) > 2:
+            text = '. '.join(sentences[:2]) + '.'
+        elif sentences and not text.endswith('.'):
+            text += '.'
+
+        print(f"[Flan-T5] Generated description: {text}")
+        return text
+    except Exception as e:
+        print(f"[Flan-T5] Description generation error: {e}")
+        return None
 
 def extract_clean_description(generated_text, original_prompt):
     """Extract and clean the AI-generated description"""
@@ -426,7 +767,8 @@ def classify_claim(scenario_data):
             "prediction": "invalid",
             "confidence": 1.0,
             "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
-            "ai_reasoning": "Age mismatch detected by validation rules"
+            "ai_reasoning": "Age mismatch detected by validation rules",
+            "source": "rules_only"
         }
     
     if not validate_injury_date(scenario_data):
@@ -434,7 +776,8 @@ def classify_claim(scenario_data):
             "prediction": "invalid",
             "confidence": 1.0,
             "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
-            "ai_reasoning": "Pre-existing condition detected"
+            "ai_reasoning": "Pre-existing condition detected",
+            "source": "rules_only"
         }
     
     if not validate_code_matching(scenario_data):
@@ -442,7 +785,8 @@ def classify_claim(scenario_data):
             "prediction": "invalid",
             "confidence": 1.0,
             "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
-            "ai_reasoning": "Procedure-diagnosis code mismatch"
+            "ai_reasoning": "Procedure-diagnosis code mismatch",
+            "source": "rules_only"
         }
     
     doc_status = scenario_data.get('document_status', {})
@@ -452,23 +796,47 @@ def classify_claim(scenario_data):
             "prediction": "insufficient",
             "confidence": 1.0,
             "probabilities": {"valid": 0.0, "invalid": 0.0, "insufficient": 1.0},
-            "ai_reasoning": "Critical documents missing"
+            "ai_reasoning": "Critical documents missing",
+            "source": "rules_only"
         }
     
     # Use AI classifier for confidence scoring and reasoning
     if _classifier is not None and _encoders is not None:
         try:
+            # Check for unseen labels before transforming - LabelEncoder throws on unknown values
+            known_claim_types = set(_encoders['claim_type'].classes_)
+            known_procedures = set(_encoders['procedure_code'].classes_)
+            known_diagnoses = set(_encoders['diagnosis_code'].classes_)
+
+            if (scenario_data['claim_type'] not in known_claim_types or
+                    scenario_data['procedure_code'] not in known_procedures or
+                    scenario_data['diagnosis_code'] not in known_diagnoses):
+                print(f"[AI] Unseen label in scenario, skipping ML classifier")
+                return classify_with_rules(scenario_data)
+
             claim_type_enc = _encoders['claim_type'].transform([scenario_data['claim_type']])[0]
             procedure_code_enc = _encoders['procedure_code'].transform([scenario_data['procedure_code']])[0]
             diagnosis_code_enc = _encoders['diagnosis_code'].transform([scenario_data['diagnosis_code']])[0]
-            
-            features = np.array([[
+
+            structured = np.array([[
                 scenario_data['claim_amount'],
                 scenario_data['patient_age'],
                 claim_type_enc,
                 procedure_code_enc,
                 diagnosis_code_enc
             ]])
+
+            # Build hybrid features matching training: structured + sentence embeddings
+            if _embedding_model is not None:
+                text = (
+                    f"{scenario_data['claim_type']} claim for {scenario_data['procedure_code']} "
+                    f"diagnosis {scenario_data['diagnosis_code']} "
+                    f"amount ${scenario_data['claim_amount']} age {scenario_data['patient_age']}"
+                )
+                embedding = _embedding_model.encode([text])
+                features = np.hstack([structured, embedding])
+            else:
+                features = structured
             
             # Get AI prediction and confidence
             prediction = _classifier.predict(features)[0]
@@ -483,13 +851,14 @@ def classify_claim(scenario_data):
             # Generate AI reasoning
             ai_reasoning = generate_ai_reasoning(scenario_data, predicted_label, class_probs)
             
-            print(f"🤖 AI Classification: {predicted_label} (confidence: {max(probabilities):.2%})")
+            print(f"[AI] Classification: {predicted_label} (confidence: {max(probabilities):.2%})")
             
             return {
                 "prediction": predicted_label,
                 "confidence": float(max(probabilities)),
                 "probabilities": class_probs,
-                "ai_reasoning": ai_reasoning
+                "ai_reasoning": ai_reasoning,
+                "source": "ml_with_rules_audit"
             }
         except Exception as e:
             print(f"AI classification error: {e}")
@@ -607,14 +976,10 @@ def validate_ai_prediction(ai_prediction, scenario_data):
 def classify_with_rules(scenario_data):
     """Fallback classification using business rules when AI is unavailable"""
     import random
-    
-    claim_type = scenario_data['claim_type']
+
     difficulty = scenario_data['difficulty']
-    amount = scenario_data['claim_amount']
-    age = scenario_data['patient_age']
     description = scenario_data.get('description', '')
-    
-    # Rule-based classification
+
     if difficulty == 'easy':
         if "Issues" in description:
             prediction = random.choice(['valid', 'insufficient'])
@@ -634,41 +999,41 @@ def classify_with_rules(scenario_data):
             prediction = 'insufficient'
         else:
             prediction = random.choice(['invalid', 'insufficient'])
-    
-    confidence = random.uniform(0.7, 0.95)
-    
+
+    confidence = random.uniform(0.55, 0.75)
+
+    # Build probabilities that reflect the prediction rather than flat 33/33/34
+    remaining = 1.0 - confidence
+    other_two = [k for k in ['valid', 'invalid', 'insufficient'] if k != prediction]
+    split = round(remaining / 2, 4)
+    probs = {prediction: round(confidence, 4), other_two[0]: split, other_two[1]: round(remaining - split, 4)}
+
     return {
         "prediction": prediction,
         "confidence": confidence,
-        "probabilities": {
-            "valid": 0.33,
-            "invalid": 0.33,
-            "insufficient": 0.34
-        }
+        "probabilities": probs,
+        "source": "rules_only_fallback"
     }
 
 def generate_feedback(scenario, user_answer, correct_answer):
     """Generate AI-powered feedback based on user's answer"""
     is_correct = user_answer.lower() == correct_answer.lower()
-    
-    # Generate detailed explanation using AI-enhanced logic
-    explanation = generate_explanation(scenario, correct_answer)
-    
-    # Use AI to enhance feedback message if available
+
+    # Rule-based explanation is always the authoritative feedback
+    rule_explanation = generate_explanation(scenario, correct_answer)
+
     if is_correct:
         message = "Correct! Well done!"
     else:
-        message = f"Incorrect. The correct answer is '{correct_answer}'."
-    
-    feedback = {
+        message = "Incorrect."
+
+    return {
         "is_correct": is_correct,
         "user_answer": user_answer,
         "correct_answer": correct_answer,
         "message": message,
-        "explanation": explanation
+        "explanation": rule_explanation
     }
-    
-    return feedback
 
 def generate_client_profile(scenario_data):
     """Generate client profile data with potential mismatches for training"""
@@ -865,21 +1230,31 @@ def generate_explanation(scenario, correct_answer):
     
     if correct_answer == 'invalid':
         return f"This claim is INVALID. Check: 1) Code Reference for valid procedure-diagnosis pairings, 2) Client Profile age vs claim age, 3) Policy exclusions and authorization requirements."
-    
+
+    if correct_answer == 'insufficient':
+        return "This claim has INSUFFICIENT information. Review the Document Status section and ensure all required documents are present before processing."
+
     return f"This claim is {correct_answer.upper()}."
 
 # Initialize models when module is imported
 try:
     if CLASSIFIER_PATH.exists() and GENERATOR_PATH.exists():
         load_models()
-        print("✓ AI models loaded successfully")
+        print("[OK] AI models loaded successfully")
     else:
-        print("⚠ AI models not found - using fallback mode")
+        print("[WARN] AI models not found - using fallback mode")
         print(f"  Classifier path: {CLASSIFIER_PATH}")
         print(f"  Generator path: {GENERATOR_PATH}")
 except Exception as e:
-    print(f"⚠ Warning: Could not load models: {e}")
+    print(f"[WARN] Warning: Could not load models: {e}")
     print("  Application will use fallback scenario generation")
+
+try:
+    load_flan_t5()
+    print("[OK] Flan-T5 feedback model loaded successfully")
+except Exception as e:
+    print(f"[WARN] Could not load Flan-T5: {e}")
+    print("  Feedback will use rule-based explanations")
 
 
 def generate_ai_reasoning(scenario_data, prediction, probabilities):
@@ -916,45 +1291,97 @@ def generate_ai_reasoning(scenario_data, prediction, probabilities):
     return " ".join(reasoning_parts)
 
 def generate_ai_hint(scenario_data, user_attempts=0):
-    """Generate AI-powered hints based on scenario complexity"""
-    hints = []
-    
+    """Generate scenario-specific hints without revealing the answer"""
+    from datetime import datetime
+    import json, os
+
     claim_type = scenario_data.get('claim_type', 'medical')
-    difficulty = scenario_data.get('difficulty', 'medium')
-    
-    # Use AI classifier to identify key factors
-    if _classifier is not None and _encoders is not None:
+    client_profile = scenario_data.get('client_profile', {})
+    doc_status = scenario_data.get('document_status', {})
+    missing_docs = doc_status.get('missing', [])
+    procedure_code = scenario_data.get('procedure_code', '')
+    diagnosis_code = scenario_data.get('diagnosis_code', '')
+    claim_age = scenario_data.get('patient_age')
+
+    # Detect actual issues in the scenario
+    issues = []
+
+    # 1. Age mismatch
+    if client_profile and claim_age:
         try:
-            classification = classify_claim(scenario_data)
-            confidence = classification.get('confidence', 0)
-            
-            if confidence < 0.7:
-                hints.append("This is a complex case with multiple factors to consider.")
-            
-            # Hint based on what to check
-            if user_attempts == 0:
-                hints.append("Start by checking the Client Profile for any discrepancies.")
-            elif user_attempts == 1:
-                hints.append("Review the Document Status - are all critical documents present?")
-            elif user_attempts == 2:
-                hints.append("Use the Code Reference to verify procedure-diagnosis pairing.")
-            else:
-                hints.append("Check: Age match, injury date, code pairing, and missing documents.")
-        except Exception as e:
-            print(f"Error in AI hint generation: {e}")
-            hints.append("Review all claim details carefully.")
+            dob = datetime.fromisoformat(client_profile['date_of_birth'])
+            today = datetime.now()
+            profile_age = today.year - dob.year
+            if today.month < dob.month or (today.month == dob.month and today.day < dob.day):
+                profile_age -= 1
+            if abs(claim_age - profile_age) > 1:
+                issues.append(('age', f"The claim lists the patient as {claim_age} years old. Compare that carefully with the date of birth in the Client Profile."))
+        except Exception:
+            pass
+
+    # 2. Injury date before policy start
+    if client_profile and 'injury_date' in client_profile:
+        try:
+            injury_date = datetime.fromisoformat(client_profile['injury_date'])
+            policy_start = datetime.fromisoformat(client_profile['policy_start_date'])
+            if injury_date < policy_start:
+                issues.append(('date', f"Look at the Date of Injury/Service ({injury_date.strftime('%Y-%m-%d')}) and compare it to when the policy became active."))
+        except Exception:
+            pass
+
+    # 3. Code mismatch
+    if claim_type in ('medical', 'dental') and procedure_code and diagnosis_code:
+        try:
+            reference_file = os.path.join(os.path.dirname(__file__), 'reference_data', 'code_mappings.json')
+            with open(reference_file, 'r') as f:
+                code_mappings = json.load(f)
+            for mapping in code_mappings.get(claim_type, []):
+                if mapping['procedure_code'] == procedure_code:
+                    if diagnosis_code not in mapping['valid_diagnosis_codes']:
+                        issues.append(('codes', f"Procedure {procedure_code} is on the claim. Use the Code Reference to check which diagnosis codes are valid for that procedure."))
+                    break
+        except Exception:
+            pass
+
+    # 4. Missing critical documents
+    critical_docs = {
+        'medical': ['Patient medical records', 'Physician notes and diagnosis'],
+        'dental': ['X-rays or diagnostic images', 'Treatment plan with CDT codes'],
+        'life': ['Death certificate', 'Policy documents']
+    }
+    missing_critical = [d for d in critical_docs.get(claim_type, []) if d in missing_docs]
+    if missing_critical:
+        issues.append(('docs', f"Check the Document Status section — some items listed as missing may be required before this claim can move forward."))
+    elif missing_docs:
+        issues.append(('docs', f"There are {len(missing_docs)} document(s) listed as missing. Review whether any of them are required for this claim type."))
+
+    # Return hints progressively based on attempts, cycling through detected issues
+    if not issues:
+        # No specific issues found — give generic progressive guidance
+        generic = [
+            "Start by reviewing the Client Profile and comparing it against the claim details.",
+            "Check the Document Status — are all required documents present for this claim type?",
+            "Use the Code Reference to verify the procedure and diagnosis codes are a valid pairing.",
+            "Review the policy start date, patient age, and claim amount together for consistency."
+        ]
+        return [generic[min(user_attempts, len(generic) - 1)]]
+
+    # On first attempt: give a directional hint toward the first issue area
+    # On subsequent attempts: reveal more specific detail about each issue
+    hint_index = min(user_attempts, len(issues) - 1)
+    issue_type, specific_hint = issues[hint_index]
+
+    area_intro = {
+        'age': "Take a close look at the Client Profile.",
+        'date': "Pay attention to the timeline of this claim.",
+        'codes': "The procedure and diagnosis codes are worth a second look.",
+        'docs': "The documentation for this claim needs attention."
+    }
+
+    if user_attempts == 0:
+        return [area_intro.get(issue_type, "Review the claim details carefully.")]
     else:
-        # Fallback hints when AI not available
-        if user_attempts == 0:
-            hints.append("Start by checking the Client Profile for any discrepancies.")
-        else:
-            hints.append("Review the Document Status and Code Reference.")
-    
-    # Difficulty-based hints
-    if difficulty == 'hard':
-        hints.append("Hard difficulty - look for subtle issues.")
-    
-    return hints
+        return [specific_hint]
 
 def analyze_user_performance(user_history):
     """Use AI to analyze user performance and identify weak areas"""
@@ -1008,3 +1435,48 @@ def analyze_user_performance(user_history):
         "recommendation": recommendation,
         "total_attempts": len(user_history)
     }
+
+
+def summarize_performance_with_flan(perf_result):
+    """Use Flan-T5 to generate a natural-language study plan from performance stats."""
+    global _flan_model, _flan_tokenizer
+    if _flan_model is None or _flan_tokenizer is None:
+        try:
+            load_flan_t5()
+        except Exception as e:
+            print(f"[WARN] Flan-T5 load failed in summarize_performance_with_flan: {e}")
+            return None
+    if _flan_model is None or _flan_tokenizer is None:
+        return None
+
+    try:
+        overall = perf_result.get("overall_accuracy", 0.0)
+        weak = ", ".join(perf_result.get("weak_areas", [])) or "none"
+        strong = ", ".join(perf_result.get("strong_areas", [])) or "none"
+        recommendation = perf_result.get("recommendation", "")
+        total = perf_result.get("total_attempts", 0)
+
+        prompt = (
+            "You are coaching a trainee insurance claims adjuster.\n"
+            f"Total scenarios completed: {total}.\n"
+            f"Overall accuracy: {overall:.0%}.\n"
+            f"Weak areas: {weak}.\n"
+            f"Strong areas: {strong}.\n"
+            f"High-level recommendation: {recommendation}\n"
+            "In 3-4 sentences, give a friendly, concrete study plan. "
+            "Be specific about which claim types and concepts they should practice next, "
+            "and keep the tone encouraging."
+        )
+
+        inputs = _flan_tokenizer(prompt, return_tensors='pt', max_length=300, truncation=True)
+        outputs = _flan_model.generate(
+            **inputs,
+            max_new_tokens=160,
+            num_beams=4,
+            temperature=0.7,
+            repetition_penalty=1.2,
+        )
+        return _flan_tokenizer.decode(outputs[0], skip_special_tokens=True)
+    except Exception as e:
+        print(f"[WARN] Flan-T5 performance summary error: {e}")
+        return None

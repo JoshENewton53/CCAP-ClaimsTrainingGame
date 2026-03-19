@@ -40,7 +40,7 @@ If you have access to the pre-trained models:
 
 ## Option 3: Run Without AI Models
 
-The application can run with simplified scenario generation by modifying `backend/ai_service.py` to use rule-based generation instead of ML models.
+No changes needed — the application automatically falls back to rule-based scenario generation and classification if the models are not present.
 
 ## Verifying Setup
 

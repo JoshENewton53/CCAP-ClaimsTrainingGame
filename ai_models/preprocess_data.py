@@ -54,7 +54,7 @@ def extract_dental_features(df):
         'claim_id': df['claim_id'],
         'claim_type': 'dental',
         'procedure_code': df['cdt_code'],
-        'diagnosis_code': 'D' + df['tooth_number'].astype(str),
+        'diagnosis_code': df['diagnosis_code'] if 'diagnosis_code' in df.columns else 'D' + df['tooth_number'].astype(str),
         'claim_amount': df['claim_amount'],
         'patient_age': df['patient_age'] if 'patient_age' in df.columns else np.random.randint(5, 80, len(df)),
         'service_date': df['service_date'],
@@ -79,11 +79,31 @@ def extract_dental_features(df):
 
 def extract_life_features(df):
     """Extract features from life insurance claims"""
+    # Map claim_type to the diagnosis codes the app uses at runtime
+    cause_to_dx = {
+        'Natural causes': 'natural_death',
+        'Heart attack': 'natural_death',
+        'Stroke': 'natural_death',
+        'Cancer': 'natural_death',
+        'Car accident': 'accidental_death',
+        'Fall': 'accidental_death',
+        'Drowning': 'accidental_death',
+        'Heart disease': 'terminal_illness',
+        'Kidney failure': 'terminal_illness',
+        'Suspicious circumstances': 'suspicious_death',
+        'Undisclosed condition': 'undisclosed_condition',
+    }
+    # Map procedure_code (claim_type column) to app runtime codes
+    proc_map = {
+        'death_benefit': 'death_benefit',
+        'accidental_death': 'death_benefit',
+        'terminal_illness': 'death_benefit',
+    }
     features = pd.DataFrame({
         'claim_id': df['claim_id'],
         'claim_type': 'life',
-        'procedure_code': df['claim_type'],
-        'diagnosis_code': 'N/A',
+        'procedure_code': df['claim_type'].map(proc_map).fillna('death_benefit'),
+        'diagnosis_code': df['cause_of_death'].map(cause_to_dx).fillna('natural_death') if 'cause_of_death' in df.columns else 'natural_death',
         'claim_amount': df['claim_amount'],
         'patient_age': df['age_at_death'],
         'service_date': df['claim_date'],

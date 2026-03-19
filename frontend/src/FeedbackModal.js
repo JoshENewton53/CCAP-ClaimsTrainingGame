@@ -43,10 +43,36 @@ function FeedbackModal({ result, onNext }) {
                 <span className="mr-2">🤖</span> AI Analysis
               </h3>
               <div className="space-y-3">
-                <div>
-                  <span className="text-gray-700 font-semibold">AI Confidence:</span>
-                  <span className="text-indigo-900 font-bold ml-2 text-lg">
-                    {(result.ai_confidence.confidence * 100).toFixed(1)}%
+                {result.ai_confidence.source && (
+                  <p className="text-xs text-indigo-700">
+                    Source:{' '}
+                    {result.ai_confidence.source === 'ml_with_rules_audit'
+                      ? 'Hybrid ML model (XGBoost + embeddings) with business-rule audit'
+                      : 'Business-rule engine'}
+                  </p>
+                )}
+                <div className="flex items-center gap-3">
+                  <div>
+                    <span className="text-gray-700 font-semibold">AI Predicted:</span>
+                    <span className={`ml-2 px-2 py-0.5 rounded font-bold text-white capitalize ${
+                      result.ai_confidence.prediction === 'valid' ? 'bg-green-500' :
+                      result.ai_confidence.prediction === 'invalid' ? 'bg-red-500' : 'bg-yellow-500'
+                    }`}>
+                      {result.ai_confidence.prediction}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-gray-700 font-semibold">Confidence:</span>
+                    <span className="text-indigo-900 font-bold ml-2">
+                      {(result.ai_confidence.confidence * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  <span className={`ml-auto px-2 py-0.5 rounded text-sm font-bold ${
+                    result.ai_confidence.ai_agreed
+                      ? 'bg-green-100 text-green-700'
+                      : 'bg-orange-100 text-orange-700'
+                  }`}>
+                    {result.ai_confidence.ai_agreed ? 'AI agreed with your answer' : 'AI disagreed with your answer'}
                   </span>
                 </div>
                 <div>
@@ -56,7 +82,7 @@ function FeedbackModal({ result, onNext }) {
                       <div key={key} className="flex items-center">
                         <span className="text-gray-700 w-28 capitalize">{key}:</span>
                         <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
-                          <div 
+                          <div
                             className={`h-full flex items-center justify-end pr-2 text-white text-sm font-bold ${
                               key === 'valid' ? 'bg-green-500' :
                               key === 'invalid' ? 'bg-red-500' : 'bg-yellow-500'

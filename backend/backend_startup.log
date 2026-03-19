@@ -1,0 +1,85 @@
+C:\Users\joshn\AppData\Local\Programs\Python\Python313\Lib\site-packages\huggingface_hub\file_download.py:143: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\joshn\.cache\huggingface\hub\models--google--flan-t5-base. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+  warnings.warn(message)
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+You are using the default legacy behaviour of the <class 'transformers.models.t5.tokenization_t5.T5Tokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+Loading classifier model...
+Loading generator model...
+Models loaded successfully!
+[OK] AI models loaded successfully
+Loading Flan-T5 model (downloads ~250MB on first run)...
+Flan-T5 loaded successfully!
+[OK] Flan-T5 feedback model loaded successfully
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.110.101.251:5000
+Press CTRL+C to quit
+ * Restarting with watchdog (windowsapi)
+You are using the default legacy behaviour of the <class 'transformers.models.t5.tokenization_t5.T5Tokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
+ * Debugger is active!
+ * Debugger PIN: 586-497-472
+ * Detected change in 'C:\\Users\\joshn\\CCAP-ClaimsTraingGame\\backend\\test_full.py', reloading
+Loading classifier model...
+Loading generator model...
+Models loaded successfully!
+[OK] AI models loaded successfully
+Loading Flan-T5 model (downloads ~250MB on first run)...
+Flan-T5 loaded successfully!
+[OK] Flan-T5 feedback model loaded successfully
+ * Restarting with watchdog (windowsapi)
+You are using the default legacy behaviour of the <class 'transformers.models.t5.tokenization_t5.T5Tokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
+ * Debugger is active!
+ * Debugger PIN: 586-497-472
+ * Detected change in 'C:\\Users\\joshn\\CCAP-ClaimsTraingGame\\backend\\ai_service.py', reloading
+Loading classifier model...
+Loading generator model...
+Models loaded successfully!
+[OK] AI models loaded successfully
+Loading Flan-T5 model (downloads ~250MB on first run)...
+Flan-T5 loaded successfully!
+[OK] Flan-T5 feedback model loaded successfully
+ * Restarting with watchdog (windowsapi)
+You are using the default legacy behaviour of the <class 'transformers.models.t5.tokenization_t5.T5Tokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
+ * Debugger is active!
+ * Debugger PIN: 586-497-472
+ * Detected change in 'C:\\Users\\joshn\\CCAP-ClaimsTraingGame\\backend\\test_pdf.py', reloading
+Loading classifier model...
+Loading generator model...
+Models loaded successfully!
+[OK] AI models loaded successfully
+Loading Flan-T5 model (downloads ~250MB on first run)...
+Flan-T5 loaded successfully!
+[OK] Flan-T5 feedback model loaded successfully
+ * Restarting with watchdog (windowsapi)
+You are using the default legacy behaviour of the <class 'transformers.models.t5.tokenization_t5.T5Tokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
+ * Debugger is active!
+ * Debugger PIN: 586-497-472
+ * Detected change in 'C:\\Users\\joshn\\CCAP-ClaimsTraingGame\\backend\\ai_service.py', reloading
+Loading classifier model...
+Loading generator model...
+Models loaded successfully!
+[OK] AI models loaded successfully
+Loading Flan-T5 model (downloads ~250MB on first run)...
+Flan-T5 loaded successfully!
+[OK] Flan-T5 feedback model loaded successfully
+ * Restarting with watchdog (windowsapi)
+You are using the default legacy behaviour of the <class 'transformers.models.t5.tokenization_t5.T5Tokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
+ * Debugger is active!
+ * Debugger PIN: 586-497-472
+ * Detected change in 'C:\\Users\\joshn\\CCAP-ClaimsTraingGame\\backend\\.venv\\Lib\\site-packages\\pip\\__init__.py', reloading
+Loading classifier model...
+Loading generator model...
+Models loaded successfully!
+[OK] AI models loaded successfully
+Loading Flan-T5 model (downloads ~250MB on first run)...
+Flan-T5 loaded successfully!
+[OK] Flan-T5 feedback model loaded successfully
+Exception in thread Thread-2 (serve_forever):
+ * Restarting with watchdog (windowsapi)
+You are using the default legacy behaviour of the <class 'transformers.models.t5.tokenization_t5.T5Tokenizer'>. This is expected, and simply means that the `legacy` (previous) behavior will be used so nothing changes for you. If you want to use the new behaviour, set `legacy=False`. This should only be set if you understand what it means, and thoroughly read the reason why this was added as explained in https://github.com/huggingface/transformers/pull/24565
+ * Debugger is active!
+ * Debugger PIN: 586-497-472

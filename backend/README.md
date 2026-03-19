@@ -40,7 +40,7 @@ Server runs on `http://localhost:5000`
 ## Database Schema
 
 ### users
-- id, username, password_hash, score, current_streak
+- id, username, password_hash, score, current_streak, xp, level, bio, profile_picture
 
 ### scenarios
 - id, claim_type, difficulty, scenario_json, correct_answer, created_at

@@ -79,14 +79,18 @@ def train_model(X_train, y_train, X_val, y_val):
     """Train XGBoost classifier"""
     print("Training XGBoost classifier...")
     model = XGBClassifier(
-        n_estimators=100,
-        max_depth=6,
-        learning_rate=0.1,
+        n_estimators=200,
+        max_depth=4,
+        learning_rate=0.05,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        reg_alpha=0.1,
+        reg_lambda=1.0,
+        min_child_weight=5,
         random_state=42,
-        use_label_encoder=False,
         eval_metric='mlogloss'
     )
-    model.fit(X_train, y_train)
+    model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
     return model
 
 def evaluate_model(model, X, y, split_name, label_encoder):

@@ -6,6 +6,8 @@ import GameScreen from './GameScreen';
 import Achievements from './Achievements';
 import Account from './Account';
 import Leaderboard from './Leaderboard';
+import AdminDashboard from './AdminDashboard';
+import NaturalLanguageGame from './NaturalLanguageGame';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -60,6 +62,10 @@ function App() {
   const xpToNextLevel = user ? ((user.level || 1) * 100) : 100;
   const currentLevelXp = user ? (user.xp || 0) % 100 : 0;
   const xpProgress = (currentLevelXp / 100) * 100;
+
+  if (user && user.username === 'Admin1') {
+    return <AdminDashboard onLogout={handleLogout} />;
+  }
 
   if (!user) {
     return (
@@ -169,6 +175,8 @@ function App() {
       <main className="w-full max-w-7xl px-6 py-8">
         {!scenario ? (
           <StartGame onGameStart={handleGameStart} />
+        ) : scenario.mode === 'nl' ? (
+          <NaturalLanguageGame scenario={scenario} onComplete={handleComplete} />
         ) : (
           <GameScreen scenario={scenario} onComplete={handleComplete} />
         )}

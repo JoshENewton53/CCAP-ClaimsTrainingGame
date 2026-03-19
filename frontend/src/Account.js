@@ -6,19 +6,20 @@ function Account({ user, onClose, onUpdate }) {
   const [profilePicture, setProfilePicture] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [performance, setPerformance] = useState(null);
 
   useEffect(() => {
-    // Load user profile data
-    fetch('http://localhost:5000/api/profile', {
-      credentials: 'include'
-    })
+    fetch('http://localhost:5000/api/profile', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setBio(data.bio || '');
-        if (data.profile_picture) {
-          setPreviewUrl(`data:image/jpeg;base64,${data.profile_picture}`);
-        }
+        if (data.profile_picture) setPreviewUrl(`data:image/jpeg;base64,${data.profile_picture}`);
       })
+      .catch(err => console.error(err));
+
+    fetch('http://localhost:5000/api/ai/performance', { credentials: 'include' })
+      .then(res => res.json())
+      .then(data => setPerformance(data))
       .catch(err => console.error(err));
   }, []);
 
@@ -141,6 +142,55 @@ function Account({ user, onClose, onUpdate }) {
             />
             <div className="text-gray-400 text-sm mt-1">{bio.length}/500 characters</div>
           </div>
+
+          {/* AI Performance Report */}
+          {performance && (
+            <div className="bg-gray-800/50 rounded-lg p-4 border border-principal-blue/30">
+              <h3 className="text-xl font-bold text-principal-blue mb-3">🤖 AI Performance Report</h3>
+              {performance.total_attempts < 5 ? (
+                <p className="text-gray-400 text-sm">Complete at least 5 scenarios to unlock your personalized report.</p>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-gray-400 text-sm">Overall Accuracy</span>
+                    <span className={`font-bold text-lg ${
+                      performance.overall_accuracy >= 0.8 ? 'text-green-400' :
+                      performance.overall_accuracy >= 0.6 ? 'text-yellow-400' : 'text-red-400'
+                    }`}>{(performance.overall_accuracy * 100).toFixed(0)}%</span>
+                  </div>
+                  {performance.weak_areas.length > 0 && (
+                    <div className="mb-2">
+                      <div className="text-red-400 text-sm font-semibold mb-1">⚠ Needs Work</div>
+                      {performance.weak_areas.map(area => (
+                        <div key={area} className="text-gray-300 text-sm ml-2">• {area}</div>
+                      ))}
+                    </div>
+                  )}
+                  {performance.strong_areas.length > 0 && (
+                    <div className="mb-2">
+                      <div className="text-green-400 text-sm font-semibold mb-1">✓ Strong Areas</div>
+                      {performance.strong_areas.map(area => (
+                        <div key={area} className="text-gray-300 text-sm ml-2">• {area}</div>
+                      ))}
+                    </div>
+                  )}
+                  <div className="mt-3 p-3 bg-principal-blue/10 rounded-lg border border-principal-blue/20">
+                    <p className="text-principal-blue text-sm">{performance.recommendation}</p>
+                  </div>
+                  {performance.ai_summary && (
+                    <div className="mt-3 p-3 bg-indigo-900/30 rounded-lg border border-indigo-500/40">
+                      <div className="text-indigo-300 text-xs font-semibold mb-1">
+                        AI Study Plan (local Flan-T5 model)
+                      </div>
+                      <p className="text-indigo-100 text-sm whitespace-pre-line">
+                        {performance.ai_summary}
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
 
           {/* Save Button */}
           <button

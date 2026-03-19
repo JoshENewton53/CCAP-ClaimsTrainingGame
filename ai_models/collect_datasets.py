@@ -28,7 +28,7 @@ def download_cms_medicare_claims():
                 f.write(response.content)
             
             df = pd.read_csv(raw_path)
-            print(f"✓ Downloaded {len(df)} real medical insurance records")
+            print(f"[OK] Downloaded {len(df)} real medical insurance records")
             
             # Extract real statistics
             avg_age = df['age'].mean() if 'age' in df.columns else 45
@@ -37,18 +37,32 @@ def download_cms_medicare_claims():
             
             print(f"  Real data stats: avg_age={avg_age:.1f}, avg_charges=${avg_charges:.2f}")
         else:
-            print("✗ Download failed, using default values")
+            print("[FAIL] Download failed, using default values")
             avg_charges = 2500
             std_charges = 1500
     except Exception as e:
-        print(f"✗ Error: {e}, using default values")
+        print(f"[FAIL] Error: {e}, using default values")
         avg_charges = 2500
         std_charges = 1500
     
     # Generate synthetic claims using real statistics
     n_samples = 3000
     cpt_codes = np.random.choice(['99213', '99214', '99215', '99385', '99386', '80053', '85025', '36415'], n_samples)
-    diagnosis_codes = np.random.choice(['E11.9', 'I10', 'J44.9', 'M79.3', 'Z00.00'], n_samples)
+
+    # Valid procedure-diagnosis pairs matching code_mappings.json
+    valid_dx_by_cpt = {
+        '99213': ['I10', 'M79.3', 'J06.9'],
+        '99214': ['I10', 'E11.9', 'J44.1'],
+        '99215': ['E11.9', 'I10', 'N18.6'],
+        '99385': ['Z00.00', 'Z00.01'],
+        '99386': ['Z00.00', 'Z00.01'],
+        '80053': ['Z00.00', 'E78.5', 'I10'],
+        '85025': ['Z00.00', 'E78.5', 'I10'],
+        '36415': ['Z01.812', 'R50.9', 'D64.9'],
+    }
+    all_dx = ['E11.9', 'I10', 'J44.9', 'M79.3', 'Z00.00', 'Z00.01', 'E78.5',
+              'N18.6', 'J06.9', 'J44.1', 'Z01.812', 'R50.9', 'D64.9']
+
     claim_amounts = np.random.normal(avg_charges, std_charges, n_samples).clip(50, 10000).round(2)
     
     # Typical costs for each CPT code
@@ -58,9 +72,8 @@ def download_cms_medicare_claims():
     prior_auth_required = ['99215', '80053']  # Some codes need pre-auth
     prior_authorization = [('Yes' if code in prior_auth_required else 'No') for code in cpt_codes]
     
-    # Diagnosis-procedure matching (simplified)
-    valid_pairs = [('E11.9', '80053'), ('I10', '99213'), ('J44.9', '99214'), ('M79.3', '99213'), ('Z00.00', '99385')]
-    diagnosis_matches = [(diag, code) in valid_pairs or np.random.random() > 0.2 for diag, code in zip(diagnosis_codes, cpt_codes)]
+    # Diagnosis-procedure matching — will be set per-outcome in the loop below
+    diagnosis_matches = [True] * n_samples
     
     # Claim timing (days between service and filing)
     claim_delays = np.random.choice([1, 2, 3, 5, 7, 14, 30, 60, 90], n_samples, p=[0.1, 0.15, 0.2, 0.15, 0.15, 0.1, 0.08, 0.05, 0.02])
@@ -84,10 +97,21 @@ def download_cms_medicare_claims():
     outcomes = []
     
     # Distribute outcomes evenly across difficulties
+    diagnosis_codes = list(np.random.choice(all_dx, n_samples))  # start random, override below
     for i in range(n_samples):
         difficulty = np.random.choice(['easy', 'medium', 'hard'])
         outcome = np.random.choice(['valid', 'insufficient', 'invalid'])
-        
+
+        # Assign diagnosis code based on outcome — valid gets matching, invalid gets mismatched
+        valid_dx = valid_dx_by_cpt.get(cpt_codes[i], all_dx)
+        invalid_dx = [d for d in all_dx if d not in valid_dx] or all_dx
+        if outcome == 'valid':
+            diagnosis_codes[i] = np.random.choice(valid_dx)
+        elif outcome == 'invalid':
+            diagnosis_codes[i] = np.random.choice(invalid_dx)
+        else:  # insufficient — mix of both
+            diagnosis_codes[i] = np.random.choice(all_dx)
+
         # Inject red flags based on difficulty and outcome
         if outcome == 'invalid':
             if difficulty == 'easy':
@@ -144,7 +168,7 @@ def download_cms_medicare_claims():
         
         difficulties.append(difficulty)
         outcomes.append(outcome)
-    
+
     medical_claims = pd.DataFrame({
         'claim_id': range(1000, 1000 + n_samples),
         'patient_id': [f'P{i:05d}' for i in range(n_samples)],
@@ -176,7 +200,22 @@ def download_dental_claims():
     n_samples = 1500
     cdt_codes = np.random.choice(['D0120', 'D0150', 'D1110', 'D2391', 'D2740', 'D7140', 'D4341'], n_samples)
     tooth_numbers = np.random.choice([str(i) for i in range(1, 33)], n_samples)
-    
+
+    # Real ICD-10 diagnosis codes matching code_mappings.json (keyed by CDT code)
+    valid_dx_by_cdt = {
+        'D0120': ['K02.9', 'K04.7', 'K05.10'],
+        'D0150': ['K02.9', 'K05.10'],
+        'D1110': ['K02.9', 'K04.7', 'K05.10', 'K05.00'],
+        'D2391': ['K02.9', 'K02.51', 'K02.52'],
+        'D2740': ['K04.5', 'K02.9', 'K08.50'],
+        'D7140': ['K01.1', 'K04.7', 'K08.89'],
+        'D4341': ['K05.211', 'K05.212', 'K05.31'],
+    }
+    all_dx = ['K02.9', 'K04.7', 'K05.10', 'K05.00', 'K02.51', 'K02.52', 'K04.5',
+              'K08.50', 'K01.1', 'K08.89', 'K05.211', 'K05.212', 'K05.31']
+    # Start with valid codes; override per outcome in the loop below
+    diagnosis_codes_dental = [np.random.choice(valid_dx_by_cdt.get(c, all_dx)) for c in cdt_codes]
+
     # Cost ranges by procedure
     cost_map = {'D0120': (50, 150), 'D0150': (75, 200), 'D1110': (75, 200), 'D2391': (150, 400), 'D2740': (800, 2000), 'D7140': (150, 500), 'D4341': (500, 1500)}
     claim_amounts = [np.random.uniform(*cost_map[code]) for code in cdt_codes]
@@ -210,7 +249,16 @@ def download_dental_claims():
     for i in range(n_samples):
         difficulty = np.random.choice(['easy', 'medium', 'hard'])
         outcome = np.random.choice(['valid', 'insufficient', 'invalid'])
-        
+
+        # Vary diagnosis code by outcome
+        valid_dx = valid_dx_by_cdt.get(cdt_codes[i], all_dx)
+        invalid_dx = [d for d in all_dx if d not in valid_dx] or all_dx
+        if outcome == 'valid':
+            diagnosis_codes_dental[i] = np.random.choice(valid_dx)
+        elif outcome == 'invalid':
+            diagnosis_codes_dental[i] = np.random.choice(invalid_dx)
+        # insufficient keeps whatever was assigned
+
         if outcome == 'invalid':
             if difficulty == 'easy':
                 # 4-6 obvious red flags
@@ -273,6 +321,7 @@ def download_dental_claims():
         'patient_id': [f'P{i:05d}' for i in range(n_samples)],
         'cdt_code': cdt_codes,
         'tooth_number': tooth_numbers,
+        'diagnosis_code': diagnosis_codes_dental,
         'claim_amount': [round(x, 2) for x in claim_amounts],
         'provider_id': [f'DT{i%25:03d}' for i in range(n_samples)],
         'service_date': pd.date_range('2023-01-01', periods=n_samples, freq='17H').strftime('%Y-%m-%d'),
@@ -312,7 +361,8 @@ def download_life_insurance_claims():
         elif claim_type == 'terminal_illness':
             cause_of_death.append(np.random.choice(['Cancer', 'Heart disease', 'Kidney failure']))
         else:
-            cause_of_death.append(np.random.choice(['Natural causes', 'Heart attack', 'Stroke', 'Cancer']))
+            cause_of_death.append(np.random.choice(['Natural causes', 'Heart attack', 'Stroke', 'Cancer',
+                                                     'Suspicious circumstances', 'Undisclosed condition']))
     
     # Beneficiary relationship
     beneficiary_relationship = np.random.choice(['Spouse', 'Child', 'Parent', 'Sibling', 'Other'], n_samples, p=[0.60, 0.25, 0.05, 0.05, 0.05])

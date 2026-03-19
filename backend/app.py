@@ -4,7 +4,15 @@ import sqlite3
 import os
 import json
 import hashlib
-from ai_service import generate_scenario, classify_claim, generate_feedback, generate_client_profile, generate_ai_hint
+from ai_service import (
+    generate_scenario,
+    classify_claim,
+    generate_feedback,
+    generate_client_profile,
+    generate_ai_hint,
+    analyze_user_performance,
+    summarize_performance_with_flan,
+)
 from death_certificate_service import DeathCertificateService
 from itemized_bill_service import ItemizedBillService
 
@@ -380,7 +388,7 @@ def submit_scenario():
     xp_earned = calculate_xp(claim_type, difficulty, is_correct)
     
     feedback = generate_feedback(scenario, user_answer, correct_answer)
-    feedback_text = f"{feedback['message']} {feedback['explanation']}"
+    feedback_text = feedback['explanation']
     
     user_id = session['user_id']
     
@@ -412,7 +420,22 @@ def submit_scenario():
     
     # Check for new achievements
     new_achievements = check_achievements(user_id, new_score, new_streak, is_correct, difficulty, new_level)
-    
+
+    # AI confidence scoring
+    ai_confidence = None
+    try:
+        classification = classify_claim(scenario)
+        ai_confidence = {
+            'prediction': classification['prediction'],
+            'confidence': classification['confidence'],
+            'probabilities': classification['probabilities'],
+            'ai_reasoning': classification.get('ai_reasoning', ''),
+            'ai_agreed': classification['prediction'] == user_answer,
+            'source': classification.get('source', 'unknown')
+        }
+    except Exception as e:
+        print(f"AI confidence scoring failed: {e}")
+
     return jsonify({
         'is_correct': is_correct,
         'feedback_text': feedback_text,
@@ -423,7 +446,8 @@ def submit_scenario():
         'current_streak': new_streak,
         'level': new_level,
         'xp': new_xp,
-        'new_achievements': new_achievements
+        'new_achievements': new_achievements,
+        'ai_confidence': ai_confidence
     })
 
 def get_required_documents(claim_type):
@@ -497,6 +521,168 @@ def generate_submitted_documents(claim_type, difficulty):
         'missing': missing,
         'all_required': all_documents
     }
+
+@app.route('/api/scenario/nl-generate', methods=['POST'])
+def nl_generate():
+    """Generate a natural-language medical claim scenario."""
+    try:
+        data = request.get_json()
+        difficulty = data.get('difficulty', 'easy')
+        if difficulty not in ['easy', 'medium', 'hard']:
+            return jsonify({'error': 'Invalid difficulty'}), 400
+
+        from ai_service import (
+            generate_fallback_scenario, generate_client_profile,
+            generate_nl_paragraph, NL_PROCEDURE_CATEGORIES,
+            NL_DIAGNOSIS_CATEGORIES, _get_nl_category
+        )
+        import random
+
+        scenario = generate_fallback_scenario('medical', difficulty)
+        client_profile = generate_client_profile(scenario)
+        scenario['client_profile'] = client_profile
+        document_status = generate_submitted_documents('medical', difficulty)
+        scenario['document_status'] = document_status
+
+        # Classify to get correct answer
+        from ai_service import classify_claim
+        classification = classify_claim(scenario)
+        correct_answer = classification['prediction']
+
+        # Decide whether to inject a red flag (more likely on harder difficulties)
+        red_flag_chances = {'easy': 0.2, 'medium': 0.45, 'hard': 0.7}
+        red_flag_type = None
+        if random.random() < red_flag_chances[difficulty]:
+            if correct_answer == 'invalid':
+                red_flag_type = random.choice(['code_mismatch', 'high_amount'])
+            elif correct_answer == 'insufficient':
+                red_flag_type = 'high_amount'
+            else:
+                red_flag_type = 'pre_existing'
+
+        paragraph = generate_nl_paragraph(scenario, red_flag_type)
+
+        # Save scenario to DB (correct answer hidden from frontend)
+        db = get_db()
+        cur = db.cursor()
+        cur.execute(
+            'INSERT INTO scenarios (claim_type, difficulty, scenario_json, correct_answer) VALUES (?, ?, ?, ?)',
+            ('medical', difficulty, json.dumps(scenario), correct_answer)
+        )
+        db.commit()
+        scenario_id = cur.lastrowid
+
+        return jsonify({
+            'id': scenario_id,
+            'difficulty': difficulty,
+            'paragraph': paragraph,
+            'has_red_flag': red_flag_type is not None,
+            'procedure_categories': NL_PROCEDURE_CATEGORIES['medical'],
+            'diagnosis_categories': NL_DIAGNOSIS_CATEGORIES['medical'],
+            'correct_procedure_category': _get_nl_category('medical', 'procedure', scenario['procedure_code']),
+            'correct_diagnosis_category': _get_nl_category('medical', 'diagnosis', scenario['diagnosis_code']),
+            'max_points': {'easy': 75, 'medium': 150, 'hard': 300}[difficulty],
+        })
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/scenario/nl-submit', methods=['POST'])
+def nl_submit():
+    """Score a natural-language scenario submission."""
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not authenticated'}), 401
+
+    data = request.get_json()
+    scenario_id = data.get('scenario_id')
+    user_procedure = data.get('user_procedure')   # category label string
+    user_diagnosis = data.get('user_diagnosis')   # category label string
+    user_answer = data.get('user_answer')          # valid / invalid / insufficient
+
+    if user_answer not in ['valid', 'invalid', 'insufficient']:
+        return jsonify({'error': 'Invalid user_answer'}), 400
+
+    db = get_db()
+    cur = db.cursor()
+    cur.execute('SELECT scenario_json, correct_answer, difficulty FROM scenarios WHERE id = ?', (scenario_id,))
+    row = cur.fetchone()
+    if not row:
+        return jsonify({'error': 'Scenario not found'}), 404
+
+    scenario = json.loads(row[0])
+    correct_answer = row[1]
+    difficulty = row[2]
+
+    from ai_service import _get_nl_category, generate_explanation
+
+    correct_proc_cat = _get_nl_category('medical', 'procedure', scenario['procedure_code'])
+    correct_diag_cat = _get_nl_category('medical', 'diagnosis', scenario['diagnosis_code'])
+
+    proc_correct = user_procedure == correct_proc_cat
+    diag_correct = user_diagnosis == correct_diag_cat
+    decision_correct = user_answer == correct_answer
+
+    # Scoring: decision = 60%, procedure extraction = 20%, diagnosis extraction = 20%
+    max_points = {'easy': 75, 'medium': 150, 'hard': 300}[difficulty]
+    points_earned = 0
+    if decision_correct:
+        points_earned += int(max_points * 0.6)
+    if proc_correct:
+        points_earned += int(max_points * 0.2)
+    if diag_correct:
+        points_earned += int(max_points * 0.2)
+
+    # Penalty if fully wrong
+    if not decision_correct and not proc_correct and not diag_correct:
+        points_earned = -int(max_points * 0.3)
+    elif not decision_correct:
+        points_earned -= int(max_points * 0.2)
+
+    xp_earned = max(5, int(points_earned * 0.4)) if points_earned > 0 else 5
+    is_correct = decision_correct
+
+    user_id = session['user_id']
+    cur.execute('SELECT current_streak, xp, level FROM users WHERE id = ?', (user_id,))
+    user_data = cur.fetchone()
+    current_streak, current_xp, current_level = user_data
+
+    new_streak = (current_streak + 1 if current_streak >= 0 else 1) if is_correct \
+        else (current_streak - 1 if current_streak <= 0 else -1)
+
+    feedback_text = generate_explanation(scenario, correct_answer)
+
+    cur.execute(
+        'INSERT INTO attempts (user_id, scenario_id, user_answer, is_correct, feedback_text, points_earned) VALUES (?, ?, ?, ?, ?, ?)',
+        (user_id, scenario_id, user_answer, 1 if is_correct else 0, feedback_text, points_earned)
+    )
+    new_xp = current_xp + xp_earned
+    new_level = calculate_level(new_xp)
+    cur.execute('UPDATE users SET score = score + ?, current_streak = ?, xp = ?, level = ? WHERE id = ?',
+                (points_earned, new_streak, new_xp, new_level, user_id))
+    cur.execute('SELECT score FROM users WHERE id = ?', (user_id,))
+    new_score = cur.fetchone()[0]
+    db.commit()
+
+    new_achievements = check_achievements(user_id, new_score, new_streak, is_correct, difficulty, new_level)
+
+    return jsonify({
+        'decision_correct': decision_correct,
+        'proc_correct': proc_correct,
+        'diag_correct': diag_correct,
+        'correct_answer': correct_answer,
+        'correct_procedure_category': correct_proc_cat,
+        'correct_diagnosis_category': correct_diag_cat,
+        'points_earned': points_earned,
+        'xp_earned': xp_earned,
+        'total_score': new_score,
+        'current_streak': new_streak,
+        'level': new_level,
+        'xp': new_xp,
+        'feedback_text': feedback_text,
+        'new_achievements': new_achievements,
+    })
+
 
 @app.route('/api/leaderboard', methods=['GET'])
 def get_leaderboard():
@@ -728,6 +914,178 @@ def get_error_options():
     except Exception as e:
         print(f"Error getting error options: {e}")
         return jsonify({'error': str(e)}), 500
+
+@app.route('/api/admin/stats', methods=['GET'])
+def get_admin_stats():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not authenticated'}), 401
+    
+    db = get_db()
+    cur = db.cursor()
+    cur.execute('SELECT username FROM users WHERE id = ?', (session['user_id'],))
+    row = cur.fetchone()
+    if not row or row[0] != 'Admin1':
+        return jsonify({'error': 'Forbidden'}), 403
+
+    # All trainees (exclude admin)
+    cur.execute('SELECT id, username, score, current_streak, xp, level FROM users WHERE username != ?', ('Admin1',))
+    trainees = cur.fetchall()
+
+    result = []
+    for t in trainees:
+        user_id, username, score, streak, xp, level = t
+
+        # Total attempts and correct
+        cur.execute('SELECT COUNT(*), SUM(is_correct) FROM attempts WHERE user_id = ?', (user_id,))
+        totals = cur.fetchone()
+        total_attempts = totals[0] or 0
+        total_correct = int(totals[1] or 0)
+        accuracy = round(total_correct / total_attempts * 100, 1) if total_attempts else 0
+
+        # Per claim type breakdown
+        cur.execute('''
+            SELECT s.claim_type, COUNT(*) as total, SUM(a.is_correct) as correct
+            FROM attempts a
+            JOIN scenarios s ON a.scenario_id = s.id
+            WHERE a.user_id = ?
+            GROUP BY s.claim_type
+        ''', (user_id,))
+        type_rows = cur.fetchall()
+        by_type = {
+            r[0]: {'total': r[1], 'correct': int(r[2] or 0),
+                   'accuracy': round(int(r[2] or 0) / r[1] * 100, 1) if r[1] else 0}
+            for r in type_rows
+        }
+
+        # Per difficulty breakdown
+        cur.execute('''
+            SELECT s.difficulty, COUNT(*) as total, SUM(a.is_correct) as correct
+            FROM attempts a
+            JOIN scenarios s ON a.scenario_id = s.id
+            WHERE a.user_id = ?
+            GROUP BY s.difficulty
+        ''', (user_id,))
+        diff_rows = cur.fetchall()
+        by_difficulty = {
+            r[0]: {'total': r[1], 'correct': int(r[2] or 0),
+                   'accuracy': round(int(r[2] or 0) / r[1] * 100, 1) if r[1] else 0}
+            for r in diff_rows
+        }
+
+        # Recent activity (last 5 attempts)
+        cur.execute('''
+            SELECT s.claim_type, s.difficulty, a.is_correct, a.points_earned, a.created_at
+            FROM attempts a
+            JOIN scenarios s ON a.scenario_id = s.id
+            WHERE a.user_id = ?
+            ORDER BY a.created_at DESC
+            LIMIT 5
+        ''', (user_id,))
+        recent = [{'claim_type': r[0], 'difficulty': r[1], 'is_correct': bool(r[2]),
+                   'points_earned': r[3], 'created_at': r[4]} for r in cur.fetchall()]
+
+        # Confusion matrix: what they answered vs correct answer
+        cur.execute('''
+            SELECT a.user_answer, s.correct_answer, COUNT(*) as cnt
+            FROM attempts a
+            JOIN scenarios s ON a.scenario_id = s.id
+            WHERE a.user_id = ?
+            GROUP BY a.user_answer, s.correct_answer
+        ''', (user_id,))
+        confusion_raw = cur.fetchall()
+        # Build {actual: {predicted: count}}
+        confusion = {}
+        for user_ans, correct_ans, cnt in confusion_raw:
+            if correct_ans not in confusion:
+                confusion[correct_ans] = {}
+            confusion[correct_ans][user_ans] = cnt
+
+        # False approval rate: marked valid when actually invalid or insufficient
+        false_approvals = sum(
+            confusion.get(actual, {}).get('valid', 0)
+            for actual in ['invalid', 'insufficient']
+        )
+        false_approval_rate = round(false_approvals / total_attempts * 100, 1) if total_attempts else 0
+
+        # Weekly accuracy trend: last 8 weeks, each as {week, correct, total}
+        cur.execute('''
+            SELECT
+                strftime('%Y-W%W', a.created_at) as week,
+                SUM(a.is_correct) as correct,
+                COUNT(*) as total
+            FROM attempts a
+            WHERE a.user_id = ?
+            AND a.created_at >= date('now', '-56 days')
+            GROUP BY week
+            ORDER BY week ASC
+        ''', (user_id,))
+        trend_rows = cur.fetchall()
+        weekly_trend = [
+            {
+                'week': r[0],
+                'correct': int(r[1] or 0),
+                'total': r[2],
+                'accuracy': round(int(r[1] or 0) / r[2] * 100, 1) if r[2] else 0
+            }
+            for r in trend_rows
+        ]
+
+        result.append({
+            'username': username,
+            'score': score,
+            'level': level,
+            'xp': xp,
+            'current_streak': streak,
+            'total_attempts': total_attempts,
+            'total_correct': total_correct,
+            'accuracy': accuracy,
+            'by_type': by_type,
+            'by_difficulty': by_difficulty,
+            'recent_activity': recent,
+            'confusion': confusion,
+            'false_approval_rate': false_approval_rate,
+            'weekly_trend': weekly_trend,
+        })
+
+    # Sort by score descending
+    result.sort(key=lambda x: x['score'], reverse=True)
+    return jsonify({'trainees': result})
+
+
+
+@app.route('/api/ai/test-flan', methods=['GET'])
+def test_flan():
+    from ai_service import generate_flan_feedback
+    test_scenario = {'claim_type': 'dental', 'procedure_code': 'D1110', 'diagnosis_code': 'K04.5', 'claim_amount': 320.00}
+    result = generate_flan_feedback(test_scenario, 'valid', 'invalid', 'Procedure D1110 requires diagnosis codes K02.9, K05.10, K04.7. The claim shows K04.5, which is not valid.')
+    if result:
+        return jsonify({'status': 'ok', 'flan_output': result})
+    return jsonify({'status': 'fallback', 'message': 'Flan-T5 not loaded'}), 503
+
+@app.route('/api/ai/performance', methods=['GET'])
+def get_ai_performance():
+    if 'user_id' not in session:
+        return jsonify({'error': 'Not authenticated'}), 401
+
+    db = get_db()
+    cur = db.cursor()
+    cur.execute('''
+        SELECT s.claim_type, a.is_correct
+        FROM attempts a
+        JOIN scenarios s ON a.scenario_id = s.id
+        WHERE a.user_id = ?
+        ORDER BY a.created_at DESC
+        LIMIT 100
+    ''', (session['user_id'],))
+    rows = cur.fetchall()
+
+    history = [{'claim_type': r[0], 'is_correct': bool(r[1])} for r in rows]
+    result = analyze_user_performance(history)
+    # Try to generate a natural-language summary using Flan-T5 (local, no external API)
+    ai_summary = summarize_performance_with_flan(result)
+    if ai_summary:
+        result['ai_summary'] = ai_summary
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
