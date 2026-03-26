@@ -181,7 +181,7 @@ export default function NaturalLanguageGame({ scenario, onComplete }) {
 
         <button
           onClick={handleSubmit}
-          disabled={!canSubmit}
+          disabled={true}
           className="w-full bg-principal-blue hover:bg-blue-400 disabled:bg-gray-600 disabled:cursor-not-allowed text-black font-bold py-4 rounded-lg transition-colors text-xl"
         >
           {loading ? 'Submitting...' : 'Submit'}

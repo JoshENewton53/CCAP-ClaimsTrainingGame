@@ -64,11 +64,12 @@ function StartGame({ onGameStart }) {
               </button>
               <button
                 onClick={() => setMode('nl')}
+                disabled={true}
                 className={`p-4 rounded-lg border-2 text-left transition-colors ${
                   mode === 'nl'
                     ? 'border-orange-400 bg-orange-400/20'
                     : 'border-gray-600 bg-gray-800 hover:border-gray-500'
-                }`}
+                } disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 <div className="text-white font-bold">📄 Natural Language <span className="text-orange-400 text-xs font-bold ml-1">NEW</span></div>
                 <div className="text-gray-400 text-sm mt-1">Read a plain-English note, extract the details</div>

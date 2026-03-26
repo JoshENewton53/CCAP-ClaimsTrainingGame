@@ -8,6 +8,7 @@ import Account from './Account';
 import Leaderboard from './Leaderboard';
 import AdminDashboard from './AdminDashboard';
 import NaturalLanguageGame from './NaturalLanguageGame';
+import IntroPage from './IntroPage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -15,6 +16,7 @@ function App() {
   const [showAchievements, setShowAchievements] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showIntro, setShowIntro] = useState(localStorage.getItem('seenIntro') === 'true');
 
   useEffect(() => {
     // Check if user is already logged in
@@ -22,12 +24,23 @@ function App() {
       credentials: 'include'
     })
       .then(res => res.ok ? res.json() : null)
-      .then(data => data && setUser(data))
+      .then(data => {
+        if (data) {
+          setUser(data);
+          if (!localStorage.getItem('seenIntro')) {
+            setShowIntro(true);
+          }
+        }
+        return data;
+      })
       .catch(() => {});
   }, []);
 
   const handleLogin = (userData) => {
     setUser(userData);
+    if (!localStorage.getItem('seenIntro')) {
+      setShowIntro(true);
+    }
   };
 
   const handleLogout = async () => {
@@ -37,6 +50,7 @@ function App() {
     });
     setUser(null);
     setScenario(null);
+    setShowIntro(false);
   };
 
   const handleGameStart = (scenarioData) => {
@@ -85,6 +99,13 @@ function App() {
         </main>
       </div>
     );
+  }
+
+  if (showIntro) {
+    return <IntroPage onContinue={() => {
+      localStorage.setItem('seenIntro', 'true');
+      setShowIntro(false);
+    }} />;
   }
 
   return (
@@ -154,6 +175,13 @@ function App() {
                 👤 Account
               </button>
               
+              <button 
+                className="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-lg"
+                onClick={() => setShowIntro(true)}
+              >
+                📘 How to Play
+              </button>
+
               <button 
                 className="bg-principal-blue hover:bg-blue-400 text-black px-4 py-2 rounded-lg font-bold text-2xl transition-colors shadow-lg"
                 onClick={() => setShowAchievements(true)}
