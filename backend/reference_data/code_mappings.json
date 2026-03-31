@@ -2,165 +2,375 @@
   "dental": [
     {
       "procedure_code": "D1110",
-      "valid_diagnosis_codes": ["K02.9", "K04.7", "K05.10", "K05.00"],
+      "valid_diagnosis_codes": [
+        "K02.9",
+        "K04.7",
+        "K05.10",
+        "K05.00"
+      ],
       "description": "Prophylaxis - adult"
     },
     {
       "procedure_code": "D0150",
-      "valid_diagnosis_codes": ["D14.0", "D37.09", "K02.9", "K05.10"],
+      "valid_diagnosis_codes": [
+        "D14.0",
+        "D37.09",
+        "K02.9",
+        "K05.10"
+      ],
       "description": "Comprehensive oral evaluation"
     },
     {
       "procedure_code": "D0120",
-      "valid_diagnosis_codes": ["K02.9", "K04.7", "K05.10"],
+      "valid_diagnosis_codes": [
+        "K02.9",
+        "K04.7",
+        "K05.10"
+      ],
       "description": "Periodic oral evaluation"
     },
     {
       "procedure_code": "D2391",
-      "valid_diagnosis_codes": ["K02.9", "K02.51", "K02.52"],
+      "valid_diagnosis_codes": [
+        "K02.9",
+        "K02.51",
+        "K02.52"
+      ],
       "description": "Resin-based composite - one surface, posterior"
     },
     {
       "procedure_code": "D2140",
-      "valid_diagnosis_codes": ["K02.9", "K02.51"],
+      "valid_diagnosis_codes": [
+        "K02.9",
+        "K02.51"
+      ],
       "description": "Amalgam - one surface, primary or permanent"
     },
     {
       "procedure_code": "D2750",
-      "valid_diagnosis_codes": ["K04.5", "K02.9", "K08.50"],
+      "valid_diagnosis_codes": [
+        "K04.5",
+        "K02.9",
+        "K08.50"
+      ],
       "description": "Crown - porcelain fused to high noble metal"
     },
     {
       "procedure_code": "D7140",
-      "valid_diagnosis_codes": ["K01.1", "K04.7", "K08.89"],
+      "valid_diagnosis_codes": [
+        "K01.1",
+        "K04.7",
+        "K08.89"
+      ],
       "description": "Extraction, erupted tooth or exposed root"
     },
     {
       "procedure_code": "D4341",
-      "valid_diagnosis_codes": ["K05.211", "K05.212", "K05.31"],
+      "valid_diagnosis_codes": [
+        "K05.211",
+        "K05.212",
+        "K05.31"
+      ],
       "description": "Periodontal scaling and root planing - four or more teeth per quadrant"
     },
     {
       "procedure_code": "D6240",
-      "valid_diagnosis_codes": ["K08.101", "K08.129", "K08.409"],
+      "valid_diagnosis_codes": [
+        "K08.101",
+        "K08.129",
+        "K08.409"
+      ],
       "description": "Pontic - porcelain fused to high noble metal"
     },
     {
       "procedure_code": "D0330",
-      "valid_diagnosis_codes": ["K02.9", "K04.7", "K05.10"],
+      "valid_diagnosis_codes": [
+        "K02.9",
+        "K04.7",
+        "K05.10"
+      ],
       "description": "Panoramic radiographic image"
     },
     {
       "procedure_code": "D4910",
-      "valid_diagnosis_codes": ["K05.211", "K05.31", "K06.8"],
+      "valid_diagnosis_codes": [
+        "K05.211",
+        "K05.31",
+        "K06.8"
+      ],
       "description": "Periodontal maintenance"
     },
     {
       "procedure_code": "D7210",
-      "valid_diagnosis_codes": ["K01.0", "K01.1", "M26.30"],
+      "valid_diagnosis_codes": [
+        "K01.0",
+        "K01.1",
+        "M26.30"
+      ],
       "description": "Extraction, erupted tooth requiring removal of bone and/or sectioning"
     },
     {
       "procedure_code": "D6010",
-      "valid_diagnosis_codes": ["K08.101", "K08.129", "K07.25"],
+      "valid_diagnosis_codes": [
+        "K08.101",
+        "K08.129",
+        "K07.25"
+      ],
       "description": "Surgical placement of implant body: endosteal implant"
     },
     {
       "procedure_code": "D0272",
-      "valid_diagnosis_codes": ["K02.9", "K04.7", "K05.10"],
+      "valid_diagnosis_codes": [
+        "K02.9",
+        "K04.7",
+        "K05.10"
+      ],
       "description": "Bitewings - two radiographic images"
     },
     {
       "procedure_code": "D3310",
-      "valid_diagnosis_codes": ["K04.01", "K04.02", "K04.5"],
+      "valid_diagnosis_codes": [
+        "K04.01",
+        "K04.02",
+        "K04.5"
+      ],
       "description": "Endodontic therapy, anterior tooth"
     }
   ],
   "medical": [
     {
       "procedure_code": "99385",
-      "valid_diagnosis_codes": ["Z00.00", "Z00.01"],
+      "valid_diagnosis_codes": [
+        "Z00.00",
+        "Z00.01"
+      ],
       "description": "Initial comprehensive preventive medicine evaluation and management (age 18-39)"
     },
     {
       "procedure_code": "99213",
-      "valid_diagnosis_codes": ["I10", "E78.5", "M79.3", "J06.9", "K21.9"],
+      "valid_diagnosis_codes": [
+        "I10",
+        "E78.5",
+        "M79.3",
+        "J06.9",
+        "K21.9"
+      ],
       "description": "Office or other outpatient visit for established patient"
     },
     {
       "procedure_code": "90834",
-      "valid_diagnosis_codes": ["F32.9", "F33.1", "F41.1", "F43.10"],
+      "valid_diagnosis_codes": [
+        "F32.9",
+        "F33.1",
+        "F41.1",
+        "F43.10"
+      ],
       "description": "Psychotherapy, 45 minutes"
     },
     {
       "procedure_code": "99214",
-      "valid_diagnosis_codes": ["I10", "E11.9", "M17.11", "J44.1"],
+      "valid_diagnosis_codes": [
+        "I10",
+        "E11.9",
+        "M17.11",
+        "J44.1"
+      ],
       "description": "Office or other outpatient visit for established patient (moderate complexity)"
     },
     {
       "procedure_code": "99223",
-      "valid_diagnosis_codes": ["K92.2", "N39.0", "I25.10", "J18.9"],
+      "valid_diagnosis_codes": [
+        "K92.2",
+        "N39.0",
+        "I25.10",
+        "J18.9"
+      ],
       "description": "Initial hospital care, per day, for comprehensive evaluation"
     },
     {
       "procedure_code": "99291",
-      "valid_diagnosis_codes": ["I46.9", "R57.0", "J96.00", "N17.9"],
+      "valid_diagnosis_codes": [
+        "I46.9",
+        "R57.0",
+        "J96.00",
+        "N17.9"
+      ],
       "description": "Critical care, evaluation and management of critically ill patient"
     },
     {
       "procedure_code": "36415",
-      "valid_diagnosis_codes": ["Z01.812", "R50.9", "D64.9"],
+      "valid_diagnosis_codes": [
+        "Z01.812",
+        "R50.9",
+        "D64.9"
+      ],
       "description": "Collection of venous blood by venipuncture"
     },
     {
       "procedure_code": "80053",
-      "valid_diagnosis_codes": ["Z00.00", "E78.5", "I10"],
+      "valid_diagnosis_codes": [
+        "Z00.00",
+        "E78.5",
+        "I10"
+      ],
       "description": "Comprehensive metabolic panel"
     },
     {
       "procedure_code": "45378",
-      "valid_diagnosis_codes": ["K63.5", "Z12.11", "K92.2"],
+      "valid_diagnosis_codes": [
+        "K63.5",
+        "Z12.11",
+        "K92.2"
+      ],
       "description": "Colonoscopy, flexible; diagnostic"
     },
     {
       "procedure_code": "73721",
-      "valid_diagnosis_codes": ["M17.11", "S83.209A", "M23.90"],
+      "valid_diagnosis_codes": [
+        "M17.11",
+        "S83.209A",
+        "M23.90"
+      ],
       "description": "Magnetic resonance imaging, any joint of lower extremity"
     },
     {
       "procedure_code": "99232",
-      "valid_diagnosis_codes": ["J18.9", "I25.10", "K92.2"],
+      "valid_diagnosis_codes": [
+        "J18.9",
+        "I25.10",
+        "K92.2"
+      ],
       "description": "Subsequent hospital care, per day"
     },
     {
       "procedure_code": "43239",
-      "valid_diagnosis_codes": ["K92.2", "K25.9", "K21.9"],
+      "valid_diagnosis_codes": [
+        "K92.2",
+        "K25.9",
+        "K21.9"
+      ],
       "description": "Esophagogastroduodenoscopy, flexible, transoral; with biopsy"
     },
     {
       "procedure_code": "99215",
-      "valid_diagnosis_codes": ["E11.9", "I10", "N18.6"],
+      "valid_diagnosis_codes": [
+        "E11.9",
+        "I10",
+        "N18.6"
+      ],
       "description": "Office or other outpatient visit for established patient (high complexity)"
     },
     {
       "procedure_code": "99292",
-      "valid_diagnosis_codes": ["I46.9", "R57.0", "J96.00"],
+      "valid_diagnosis_codes": [
+        "I46.9",
+        "R57.0",
+        "J96.00"
+      ],
       "description": "Critical care, each additional 30 minutes"
     },
     {
       "procedure_code": "33533",
-      "valid_diagnosis_codes": ["I25.10", "I25.700", "I21.9"],
+      "valid_diagnosis_codes": [
+        "I25.10",
+        "I25.700",
+        "I21.9"
+      ],
       "description": "Coronary artery bypass, using arterial graft(s)"
     },
     {
       "procedure_code": "47562",
-      "valid_diagnosis_codes": ["K80.20", "K85.9", "K83.1"],
+      "valid_diagnosis_codes": [
+        "K80.20",
+        "K85.9",
+        "K83.1"
+      ],
       "description": "Laparoscopy, surgical; cholecystectomy"
     },
     {
       "procedure_code": "01402",
-      "valid_diagnosis_codes": ["S72.001A", "M16.11", "S72.141A"],
+      "valid_diagnosis_codes": [
+        "S72.001A",
+        "M16.11",
+        "S72.141A"
+      ],
       "description": "Anesthesia for open or surgical arthroscopic procedures on knee joint"
+    }
+  ],
+  "life": [
+    {
+      "procedure_code": "DB-001",
+      "valid_diagnosis_codes": [
+        "Natural Causes",
+        "Illness",
+        "Accident"
+      ],
+      "description": "Standard Death Benefit - Full face value paid when death results from natural causes, illness, or accident and policy is in force"
+    },
+    {
+      "procedure_code": "DB-002",
+      "valid_diagnosis_codes": [
+        "Accidental Death"
+      ],
+      "description": "Accidental Death Benefit (ADB) Rider - Additional benefit paid on top of face value for accidental death; requires police/coroner report"
+    },
+    {
+      "procedure_code": "DB-003",
+      "valid_diagnosis_codes": [
+        "Terminal Illness"
+      ],
+      "description": "Accelerated Death Benefit (ADB) - Early payout for terminal illness diagnosis; reduces final death benefit by amount advanced"
+    },
+    {
+      "procedure_code": "EXCL-001",
+      "valid_diagnosis_codes": [
+        "Suicide (within 2 years)"
+      ],
+      "description": "Suicide Exclusion - Within the first 2 years of policy issuance, suicide is excluded. After 2 years, full benefit is payable"
+    },
+    {
+      "procedure_code": "EXCL-002",
+      "valid_diagnosis_codes": [
+        "Pre-existing Condition"
+      ],
+      "description": "Pre-existing Condition Exclusion - Death caused by a condition that was not disclosed at policy application may void coverage"
+    },
+    {
+      "procedure_code": "EXCL-003",
+      "valid_diagnosis_codes": [
+        "War / Military Action"
+      ],
+      "description": "War Exclusion - Death resulting from war, military conflict, or acts of terrorism may be excluded per policy terms"
+    },
+    {
+      "procedure_code": "CONT-001",
+      "valid_diagnosis_codes": [
+        "Any Cause (within 2 years)"
+      ],
+      "description": "Contestability Period - During the first 2 years, insurer may investigate and contest claims if material misrepresentation is found in the application"
+    },
+    {
+      "procedure_code": "DOC-001",
+      "valid_diagnosis_codes": [
+        "All claim types"
+      ],
+      "description": "Required Documentation: Certified death certificate, completed claim form, photo ID of beneficiary, original policy document"
+    },
+    {
+      "procedure_code": "DOC-002",
+      "valid_diagnosis_codes": [
+        "Accidental Death",
+        "Suspicious Circumstances"
+      ],
+      "description": "Additional Documentation (Accidental/Suspicious): Police report, autopsy report, coroner's findings, toxicology results if applicable"
+    },
+    {
+      "procedure_code": "DOC-003",
+      "valid_diagnosis_codes": [
+        "Undisclosed Condition",
+        "Contestability"
+      ],
+      "description": "Additional Documentation (Contestability): Medical records from past 5 years, physician statements, hospital records related to cause of death"
     }
   ]
 }

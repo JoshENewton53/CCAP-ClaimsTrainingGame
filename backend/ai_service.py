@@ -131,6 +131,8 @@ def load_models():
 def generate_scenario(claim_type, difficulty):
     """Generate a realistic claim scenario with AI-written description"""
     scenario = generate_fallback_scenario(claim_type, difficulty)
+    # Try Flan-T5 for description; Claude story generation happens later in the
+    # endpoint AFTER the client profile is attached so it has the real name.
     ai_desc = generate_scenario_description(scenario)
     if ai_desc:
         scenario['description'] = ai_desc
@@ -181,130 +183,6 @@ _DIAGNOSIS_LABELS = {
     'K10.21': 'osteitis of jaw',
     'K05.31': 'aggressive periodontitis',
 }
-
-
-# NL mode: procedure categories shown in dropdowns (trainee-facing labels)
-NL_PROCEDURE_CATEGORIES = {
-    'medical': [
-        {'label': 'Preventive / Wellness Visit', 'codes': ['99385', '80053', '36415']},
-        {'label': 'Office Visit – Established Patient', 'codes': ['99213', '99214', '99215']},
-        {'label': 'Psychotherapy', 'codes': ['90834']},
-        {'label': 'Hospital Admission / Inpatient Care', 'codes': ['99223', '99232']},
-        {'label': 'Critical Care', 'codes': ['99291', '99292']},
-        {'label': 'Colonoscopy / GI Endoscopy', 'codes': ['45378', '43239']},
-        {'label': 'Imaging – MRI / Radiology', 'codes': ['73721']},
-        {'label': 'Cardiac Surgery', 'codes': ['33533']},
-        {'label': 'General Surgery', 'codes': ['47562']},
-        {'label': 'Orthopedic / Anesthesia', 'codes': ['01402']},
-    ]
-}
-
-NL_DIAGNOSIS_CATEGORIES = {
-    'medical': [
-        {'label': 'Hypertension', 'codes': ['I10']},
-        {'label': 'Diabetes', 'codes': ['E11.9']},
-        {'label': 'High Cholesterol / Hyperlipidemia', 'codes': ['E78.5']},
-        {'label': 'Routine / Preventive Exam', 'codes': ['Z00.00', 'Z00.01', 'Z01.812']},
-        {'label': 'Depression / Anxiety / PTSD', 'codes': ['F32.9', 'F33.1', 'F41.1', 'F43.10']},
-        {'label': 'Gastrointestinal Bleed / GI Issue', 'codes': ['K92.2', 'K25.9', 'K21.9', 'K63.5']},
-        {'label': 'Urinary Tract Infection', 'codes': ['N39.0']},
-        {'label': 'Cardiac / Coronary Artery Disease', 'codes': ['I25.10', 'I25.700', 'I21.9', 'I46.9']},
-        {'label': 'Respiratory / Pneumonia / COPD', 'codes': ['J18.9', 'J44.1', 'J96.00', 'J06.9']},
-        {'label': 'Knee / Joint / Orthopedic Condition', 'codes': ['M17.11', 'S83.209A', 'M23.90', 'S72.001A', 'M16.11']},
-        {'label': 'Kidney Disease / Renal Failure', 'codes': ['N18.6', 'N17.9']},
-        {'label': 'Anemia / Blood Disorder', 'codes': ['D64.9']},
-        {'label': 'Fever / Infection (unspecified)', 'codes': ['R50.9']},
-        {'label': 'Shock / Sepsis', 'codes': ['R57.0']},
-        {'label': 'Gallbladder / Pancreas', 'codes': ['K80.20', 'K85.9', 'K83.1']},
-    ]
-}
-
-
-def _get_nl_category(claim_type, field, code):
-    """Return the dropdown label for a given code, or None if not found."""
-    cats = NL_PROCEDURE_CATEGORIES if field == 'procedure' else NL_DIAGNOSIS_CATEGORIES
-    for cat in cats.get(claim_type, []):
-        if code in cat['codes']:
-            return cat['label']
-    return None
-
-
-def generate_nl_paragraph(scenario, red_flag_type=None):
-    """
-    Generate a plain-English claim submission paragraph for NL mode.
-    red_flag_type: None | 'pre_existing' | 'code_mismatch' | 'high_amount'
-    """
-    global _flan_model, _flan_tokenizer
-
-    claim_type = scenario['claim_type']
-    procedure = scenario['procedure_code']
-    diagnosis = scenario['diagnosis_code']
-    amount = scenario['claim_amount']
-    age = scenario['patient_age']
-    client = scenario.get('client_profile', {})
-    patient_name = client.get('name', 'the patient')
-
-    proc_label = _PROCEDURE_LABELS.get(procedure, procedure)
-    diag_label = _DIAGNOSIS_LABELS.get(diagnosis, diagnosis)
-
-    # Build red flag context string
-    red_flag_context = ''
-    if red_flag_type == 'pre_existing':
-        red_flag_context = (
-            ' The patient mentioned they have been managing this condition '
-            'for several years prior to obtaining coverage.'
-        )
-    elif red_flag_type == 'code_mismatch':
-        red_flag_context = (
-            ' Note: the billing department has flagged a possible discrepancy '
-            'between the listed procedure and the stated diagnosis.'
-        )
-    elif red_flag_type == 'high_amount':
-        red_flag_context = (
-            f' The total billed amount of ${amount:,.2f} is notably higher '
-            'than typical reimbursement rates for this service.'
-        )
-
-    if _flan_model and _flan_tokenizer:
-        prompt = (
-            f"Write a 3-sentence medical insurance claim submission note from a doctor's office. "
-            f"Patient: {patient_name}, age {age}. "
-            f"Service: {proc_label}. Reason: {diag_label}. "
-            f"Amount billed: ${amount:,.2f}. "
-            f"Do not mention CPT codes or ICD codes directly. "
-            f"Write in plain English as if a billing clerk wrote it."
-        )
-        try:
-            inputs = _flan_tokenizer(prompt, return_tensors='pt', max_length=220, truncation=True)
-            outputs = _flan_model.generate(
-                **inputs,
-                max_new_tokens=100,
-                num_beams=4,
-                no_repeat_ngram_size=3,
-                early_stopping=True,
-            )
-            text = _flan_tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
-            lower = text.lower()
-            if (
-                len(text) >= 40
-                and 'write a' not in lower
-                and 'claim note' not in lower
-                and not text.startswith('{')
-            ):
-                sentences = [s.strip() for s in text.replace('\n', ' ').split('.') if s.strip()]
-                text = '. '.join(sentences[:3]) + '.'
-                return text + red_flag_context
-        except Exception as e:
-            print(f"[Flan-T5] NL paragraph error: {e}")
-
-    # Deterministic fallback
-    fallback = (
-        f"This claim is submitted on behalf of {patient_name}, a {age}-year-old patient "
-        f"who received {proc_label} services on the date of service. "
-        f"The treating physician documented {diag_label} as the primary reason for the visit. "
-        f"Total charges submitted for reimbursement amount to ${amount:,.2f}."
-    )
-    return fallback + red_flag_context
 
 
 def generate_scenario_description(scenario):
@@ -1019,8 +897,16 @@ def generate_feedback(scenario, user_answer, correct_answer):
     """Generate AI-powered feedback based on user's answer"""
     is_correct = user_answer.lower() == correct_answer.lower()
 
-    # Rule-based explanation is always the authoritative feedback
+    # Rule-based explanation is always computed as the authoritative fallback
     rule_explanation = generate_explanation(scenario, correct_answer)
+
+    # Try Claude for richer, confidence-aware feedback
+    claude_feedback = None
+    try:
+        from claude_service import generate_claim_feedback
+        claude_feedback = generate_claim_feedback(scenario, user_answer, correct_answer, rule_explanation)
+    except Exception as e:
+        print(f"[Claude] Feedback skipped: {e}")
 
     if is_correct:
         message = "Correct! Well done!"
@@ -1032,7 +918,7 @@ def generate_feedback(scenario, user_answer, correct_answer):
         "user_answer": user_answer,
         "correct_answer": correct_answer,
         "message": message,
-        "explanation": rule_explanation
+        "explanation": claude_feedback if claude_feedback else rule_explanation,
     }
 
 def generate_client_profile(scenario_data):

@@ -7,7 +7,6 @@ import Achievements from './Achievements';
 import Account from './Account';
 import Leaderboard from './Leaderboard';
 import AdminDashboard from './AdminDashboard';
-import NaturalLanguageGame from './NaturalLanguageGame';
 import IntroPage from './IntroPage';
 
 function App() {
@@ -203,8 +202,6 @@ function App() {
       <main className="w-full max-w-7xl px-6 py-8">
         {!scenario ? (
           <StartGame onGameStart={handleGameStart} />
-        ) : scenario.mode === 'nl' ? (
-          <NaturalLanguageGame scenario={scenario} onComplete={handleComplete} />
         ) : (
           <GameScreen scenario={scenario} onComplete={handleComplete} />
         )}

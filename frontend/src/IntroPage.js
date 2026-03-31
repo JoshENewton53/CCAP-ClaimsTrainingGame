@@ -20,9 +20,8 @@ export default function IntroPage({ onContinue }) {
 
         <h2 className="text-2xl font-semibold mt-6 mb-2">How to play</h2>
         <ol className="list-decimal pl-5 text-gray-200 space-y-2">
-          <li>Select a difficulty and mode from the Start Game panel.</li>
-          <li>Read the claim note in Natural Language mode.</li>
-          <li>Choose the procedure category and primary diagnosis category from the dropdowns.</li>
+          <li>Select a claim type and difficulty from the Start Game panel.</li>
+          <li>Review the claim details and submitted documents.</li>
           <li>Choose claim outcome: Valid, Invalid, or Insufficient Info.</li>
           <li>Submit and review feedback, score, and achievements; then move to the next scenario.</li>
         </ol>

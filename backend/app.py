@@ -196,14 +196,24 @@ def generate_scenario_endpoint():
         
         # Generate scenario
         scenario = generate_scenario(claim_type, difficulty)
-        
+
         # Generate client profile with potential mismatches
         client_profile = generate_client_profile(scenario)
         scenario['client_profile'] = client_profile
-        
+
         # Generate document submission status
         document_status = generate_submitted_documents(claim_type, difficulty)
         scenario['document_status'] = document_status
+
+        # Now that client profile and documents are attached, ask Claude for
+        # a richer story using the real name and document details.
+        try:
+            from claude_service import generate_claim_story
+            claude_desc = generate_claim_story(scenario)
+            if claude_desc:
+                scenario['description'] = claude_desc
+        except Exception as e:
+            print(f"[Claude] Story generation skipped: {e}")
         
         # Classify to get correct answer
         classification = classify_claim(scenario)
@@ -521,168 +531,6 @@ def generate_submitted_documents(claim_type, difficulty):
         'missing': missing,
         'all_required': all_documents
     }
-
-@app.route('/api/scenario/nl-generate', methods=['POST'])
-def nl_generate():
-    """Generate a natural-language medical claim scenario."""
-    try:
-        data = request.get_json()
-        difficulty = data.get('difficulty', 'easy')
-        if difficulty not in ['easy', 'medium', 'hard']:
-            return jsonify({'error': 'Invalid difficulty'}), 400
-
-        from ai_service import (
-            generate_fallback_scenario, generate_client_profile,
-            generate_nl_paragraph, NL_PROCEDURE_CATEGORIES,
-            NL_DIAGNOSIS_CATEGORIES, _get_nl_category
-        )
-        import random
-
-        scenario = generate_fallback_scenario('medical', difficulty)
-        client_profile = generate_client_profile(scenario)
-        scenario['client_profile'] = client_profile
-        document_status = generate_submitted_documents('medical', difficulty)
-        scenario['document_status'] = document_status
-
-        # Classify to get correct answer
-        from ai_service import classify_claim
-        classification = classify_claim(scenario)
-        correct_answer = classification['prediction']
-
-        # Decide whether to inject a red flag (more likely on harder difficulties)
-        red_flag_chances = {'easy': 0.2, 'medium': 0.45, 'hard': 0.7}
-        red_flag_type = None
-        if random.random() < red_flag_chances[difficulty]:
-            if correct_answer == 'invalid':
-                red_flag_type = random.choice(['code_mismatch', 'high_amount'])
-            elif correct_answer == 'insufficient':
-                red_flag_type = 'high_amount'
-            else:
-                red_flag_type = 'pre_existing'
-
-        paragraph = generate_nl_paragraph(scenario, red_flag_type)
-
-        # Save scenario to DB (correct answer hidden from frontend)
-        db = get_db()
-        cur = db.cursor()
-        cur.execute(
-            'INSERT INTO scenarios (claim_type, difficulty, scenario_json, correct_answer) VALUES (?, ?, ?, ?)',
-            ('medical', difficulty, json.dumps(scenario), correct_answer)
-        )
-        db.commit()
-        scenario_id = cur.lastrowid
-
-        return jsonify({
-            'id': scenario_id,
-            'difficulty': difficulty,
-            'paragraph': paragraph,
-            'has_red_flag': red_flag_type is not None,
-            'procedure_categories': NL_PROCEDURE_CATEGORIES['medical'],
-            'diagnosis_categories': NL_DIAGNOSIS_CATEGORIES['medical'],
-            'correct_procedure_category': _get_nl_category('medical', 'procedure', scenario['procedure_code']),
-            'correct_diagnosis_category': _get_nl_category('medical', 'diagnosis', scenario['diagnosis_code']),
-            'max_points': {'easy': 75, 'medium': 150, 'hard': 300}[difficulty],
-        })
-    except Exception as e:
-        import traceback; traceback.print_exc()
-        return jsonify({'error': str(e)}), 500
-
-
-@app.route('/api/scenario/nl-submit', methods=['POST'])
-def nl_submit():
-    """Score a natural-language scenario submission."""
-    if 'user_id' not in session:
-        return jsonify({'error': 'Not authenticated'}), 401
-
-    data = request.get_json()
-    scenario_id = data.get('scenario_id')
-    user_procedure = data.get('user_procedure')   # category label string
-    user_diagnosis = data.get('user_diagnosis')   # category label string
-    user_answer = data.get('user_answer')          # valid / invalid / insufficient
-
-    if user_answer not in ['valid', 'invalid', 'insufficient']:
-        return jsonify({'error': 'Invalid user_answer'}), 400
-
-    db = get_db()
-    cur = db.cursor()
-    cur.execute('SELECT scenario_json, correct_answer, difficulty FROM scenarios WHERE id = ?', (scenario_id,))
-    row = cur.fetchone()
-    if not row:
-        return jsonify({'error': 'Scenario not found'}), 404
-
-    scenario = json.loads(row[0])
-    correct_answer = row[1]
-    difficulty = row[2]
-
-    from ai_service import _get_nl_category, generate_explanation
-
-    correct_proc_cat = _get_nl_category('medical', 'procedure', scenario['procedure_code'])
-    correct_diag_cat = _get_nl_category('medical', 'diagnosis', scenario['diagnosis_code'])
-
-    proc_correct = user_procedure == correct_proc_cat
-    diag_correct = user_diagnosis == correct_diag_cat
-    decision_correct = user_answer == correct_answer
-
-    # Scoring: decision = 60%, procedure extraction = 20%, diagnosis extraction = 20%
-    max_points = {'easy': 75, 'medium': 150, 'hard': 300}[difficulty]
-    points_earned = 0
-    if decision_correct:
-        points_earned += int(max_points * 0.6)
-    if proc_correct:
-        points_earned += int(max_points * 0.2)
-    if diag_correct:
-        points_earned += int(max_points * 0.2)
-
-    # Penalty if fully wrong
-    if not decision_correct and not proc_correct and not diag_correct:
-        points_earned = -int(max_points * 0.3)
-    elif not decision_correct:
-        points_earned -= int(max_points * 0.2)
-
-    xp_earned = max(5, int(points_earned * 0.4)) if points_earned > 0 else 5
-    is_correct = decision_correct
-
-    user_id = session['user_id']
-    cur.execute('SELECT current_streak, xp, level FROM users WHERE id = ?', (user_id,))
-    user_data = cur.fetchone()
-    current_streak, current_xp, current_level = user_data
-
-    new_streak = (current_streak + 1 if current_streak >= 0 else 1) if is_correct \
-        else (current_streak - 1 if current_streak <= 0 else -1)
-
-    feedback_text = generate_explanation(scenario, correct_answer)
-
-    cur.execute(
-        'INSERT INTO attempts (user_id, scenario_id, user_answer, is_correct, feedback_text, points_earned) VALUES (?, ?, ?, ?, ?, ?)',
-        (user_id, scenario_id, user_answer, 1 if is_correct else 0, feedback_text, points_earned)
-    )
-    new_xp = current_xp + xp_earned
-    new_level = calculate_level(new_xp)
-    cur.execute('UPDATE users SET score = score + ?, current_streak = ?, xp = ?, level = ? WHERE id = ?',
-                (points_earned, new_streak, new_xp, new_level, user_id))
-    cur.execute('SELECT score FROM users WHERE id = ?', (user_id,))
-    new_score = cur.fetchone()[0]
-    db.commit()
-
-    new_achievements = check_achievements(user_id, new_score, new_streak, is_correct, difficulty, new_level)
-
-    return jsonify({
-        'decision_correct': decision_correct,
-        'proc_correct': proc_correct,
-        'diag_correct': diag_correct,
-        'correct_answer': correct_answer,
-        'correct_procedure_category': correct_proc_cat,
-        'correct_diagnosis_category': correct_diag_cat,
-        'points_earned': points_earned,
-        'xp_earned': xp_earned,
-        'total_score': new_score,
-        'current_streak': new_streak,
-        'level': new_level,
-        'xp': new_xp,
-        'feedback_text': feedback_text,
-        'new_achievements': new_achievements,
-    })
-
 
 @app.route('/api/leaderboard', methods=['GET'])
 def get_leaderboard():
