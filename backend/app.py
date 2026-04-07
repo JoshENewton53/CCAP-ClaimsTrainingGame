@@ -92,7 +92,7 @@ def init_db():
     conn.close()
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'changeme-set-FLASK_SECRET_KEY-in-production')
 CORS(app, supports_credentials=True)
 
 # Initialize DB on app startup

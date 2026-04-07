@@ -1343,7 +1343,7 @@ def summarize_performance_with_flan(perf_result):
         total = perf_result.get("total_attempts", 0)
 
         prompt = (
-            "You are coaching a trainee insurance claims adjuster.\n"
+            "You are coaching a trainee insurance claims analyst.\n"
             f"Total scenarios completed: {total}.\n"
             f"Overall accuracy: {overall:.0%}.\n"
             f"Weak areas: {weak}.\n"

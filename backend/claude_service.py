@@ -73,43 +73,22 @@ def generate_claim_story(scenario: dict) -> str | None:
     # Build the prompt
     if claim_type == "life":
         user_prompt = (
-            f"You are writing a realistic insurance claim file note for a claims adjuster training game.\n\n"
-            f"Claim type: Life Insurance Death Benefit\n"
-            f"Policyholder age at death: {age}\n"
-            f"Policy number: {policy_num}\n"
-            f"Coverage: {coverage}\n"
-            f"Claim amount: ${amount:,.0f}\n"
-            f"Complexity: {complexity}\n"
-            f"Documents submitted: {', '.join(submitted) if submitted else 'None listed'}\n"
-            f"Documents missing: {', '.join(missing) if missing else 'None'}\n\n"
-            f"Write a 2-3 paragraph claim narrative as it would appear in a real insurance claim file. "
-            f"Use realistic insurance adjuster language. Describe the circumstances of the claim, "
-            f"the documentation status, and any notable factors an adjuster would need to review. "
-            f"Do NOT state whether the claim is valid or invalid — that is for the trainee to decide. "
-            f"Do NOT include headings, labels, bullet points, or markdown. Write in flowing prose only. "
-            f"Use the policyholder's name ({name}) consistently throughout."
+            f"You are writing flavor text for a claims analyst training game.\n\n"
+            f"Write 2-3 sentences about {name}, who was {age} years old. "
+            f"Tell a brief, warm human-interest story about who this person was — their life, personality, family, hobbies, or work. "
+            f"End with a single vague sentence about the circumstances of their passing (do not specify cause of death or anything clinical). "
+            f"Do NOT mention insurance, policy numbers, claim amounts, documents, codes, or anything related to the claim itself. "
+            f"Write in past tense. Plain prose only, no headings or bullet points."
         )
     else:
-        type_label = "Medical" if claim_type == "medical" else "Dental"
+        type_label = "medical" if claim_type == "medical" else "dental"
         user_prompt = (
-            f"You are writing a realistic insurance claim file note for a claims adjuster training game.\n\n"
-            f"Claim type: {type_label} Insurance\n"
-            f"Patient name: {name}\n"
-            f"Patient age: {age}\n"
-            f"Policy number: {policy_num}\n"
-            f"Coverage: {coverage}\n"
-            f"Procedure code: {procedure}\n"
-            f"Diagnosis code: {diagnosis}\n"
-            f"Claim amount: ${amount:,.2f}\n"
-            f"Complexity: {complexity}\n"
-            f"Documents submitted: {', '.join(submitted) if submitted else 'None listed'}\n"
-            f"Documents missing: {', '.join(missing) if missing else 'None'}\n\n"
-            f"Write a 2-3 paragraph claim narrative as it would appear in a real insurance claim file. "
-            f"Use realistic insurance adjuster language. Describe the treatment or service, "
-            f"the documentation status, and any notable factors an adjuster would need to review. "
-            f"Do NOT state whether the claim is valid or invalid — that is for the trainee to decide. "
-            f"Do NOT include headings, labels, bullet points, or markdown. Write in flowing prose only. "
-            f"Use the patient's name ({name}) consistently throughout."
+            f"You are writing flavor text for a claims analyst training game.\n\n"
+            f"Write 2-3 sentences about {name}, a {age}-year-old {type_label} patient. "
+            f"Tell a brief, engaging human-interest story about this person — their daily life, personality, job, family, or hobbies. "
+            f"End with one vague sentence about why they recently visited a {type_label} provider (keep it general, e.g. 'a routine visit' or 'an unexpected health concern'). "
+            f"Do NOT mention procedure codes, diagnosis codes, claim amounts, documents, insurance coverage, or anything related to the claim evaluation. "
+            f"Plain prose only, no headings or bullet points."
         )
 
     try:
@@ -166,7 +145,7 @@ def generate_claim_feedback(
     verdict = "CORRECT" if is_correct else "INCORRECT"
 
     user_prompt = (
-        f"You are an expert insurance claims trainer giving feedback to a trainee adjuster.\n\n"
+        f"You are an expert insurance claims trainer giving feedback to a trainee analyst.\n\n"
         f"=== CLAIM DETAILS ===\n"
         f"Claim type: {claim_type}\n"
         f"Patient/Policyholder: {name}, age {age}\n"
