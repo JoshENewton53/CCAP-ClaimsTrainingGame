@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import API_BASE from './config';
 
 function Leaderboard({ onClose }) {
   const [leaderboard, setLeaderboard] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/leaderboard', {
+    fetch(`${API_BASE}/api/leaderboard`, {
       credentials: 'include'
     })
       .then(res => res.json())

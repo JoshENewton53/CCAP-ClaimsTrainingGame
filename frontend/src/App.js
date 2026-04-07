@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import API_BASE from './config';
 import Login from './Login';
 import StartGame from './StartGame';
 import GameScreen from './GameScreen';
@@ -19,7 +20,7 @@ function App() {
 
   useEffect(() => {
     // Check if user is already logged in
-    fetch('http://localhost:5000/api/auth/me', {
+    fetch(`${API_BASE}/api/auth/me`, {
       credentials: 'include'
     })
       .then(res => res.ok ? res.json() : null)
@@ -43,7 +44,7 @@ function App() {
   };
 
   const handleLogout = async () => {
-    await fetch('http://localhost:5000/api/auth/logout', {
+    await fetch(`${API_BASE}/api/auth/logout`, {
       method: 'POST',
       credentials: 'include'
     });
@@ -64,7 +65,7 @@ function App() {
 
   const handleAccountUpdate = () => {
     // Refresh user data after profile update
-    fetch('http://localhost:5000/api/auth/me', {
+    fetch(`${API_BASE}/api/auth/me`, {
       credentials: 'include'
     })
       .then(res => res.ok ? res.json() : null)

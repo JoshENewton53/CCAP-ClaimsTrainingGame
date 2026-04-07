@@ -1,13 +1,9 @@
 flask==3.1.2
+gunicorn==23.0.0
 flask-cors==6.0.2
 pandas==2.3.2
 numpy==2.3.2
-transformers==4.57.3
-torch==2.8.0
-scikit-learn==1.7.1
 reportlab==4.4.10
-sentencepiece==0.2.1
-xgboost==3.0.5
 anthropic>=0.40.0
 python-dotenv>=1.0.0
 # sqlite3 is included in the Python standard library; no pip package required

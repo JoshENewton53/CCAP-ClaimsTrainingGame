@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './DeathCertificateReview.css';
+import API_BASE from './config';
 
 function DeathCertificateReview({ difficulty, scenario, onComplete, onSubmit, compact }) {
   const [localScenario, setLocalScenario] = useState(scenario);
@@ -19,7 +20,7 @@ function DeathCertificateReview({ difficulty, scenario, onComplete, onSubmit, co
   const loadScenario = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/death-certificate/generate', {
+      const response = await fetch(`${API_BASE}/api/death-certificate/generate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -37,7 +38,7 @@ function DeathCertificateReview({ difficulty, scenario, onComplete, onSubmit, co
 
   const loadErrorOptions = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/death-certificate/error-options', {
+      const response = await fetch(`${API_BASE}/api/death-certificate/error-options`, {
         credentials: 'include'
       });
       const data = await response.json();
@@ -66,7 +67,7 @@ function DeathCertificateReview({ difficulty, scenario, onComplete, onSubmit, co
 
     setSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5000/api/death-certificate/validate', {
+      const response = await fetch(`${API_BASE}/api/death-certificate/validate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

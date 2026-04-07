@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_BASE from './config';
 
 function Achievements({ onClose }) {
   const [achievements, setAchievements] = useState([]);
@@ -26,7 +27,7 @@ function Achievements({ onClose }) {
   };
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/achievements', {
+    fetch(`${API_BASE}/api/achievements`, {
       credentials: 'include'
     })
       .then(res => res.json())

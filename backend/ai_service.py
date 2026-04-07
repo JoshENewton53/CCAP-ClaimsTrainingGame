@@ -5,7 +5,6 @@ Provides claim scenario generation, classification, and feedback functions
 import pickle
 import numpy as np
 from pathlib import Path
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 # Paths
 BASE_DIR = Path(__file__).parent.parent
@@ -123,6 +122,7 @@ def load_models():
         _embedding_model = data.get('embedding_model')
     
     print("Loading generator model...")
+    from transformers import GPT2LMHeadModel, GPT2Tokenizer
     _generator_model = GPT2LMHeadModel.from_pretrained(str(GENERATOR_PATH))
     _generator_tokenizer = GPT2Tokenizer.from_pretrained(str(GENERATOR_PATH))
     

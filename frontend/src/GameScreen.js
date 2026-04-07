@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import API_BASE from './config';
 import FeedbackModal from './FeedbackModal';
 import ClientProfile from './ClientProfile';
 import PolicyGuide from './PolicyGuide';
@@ -27,7 +28,7 @@ function GameScreen({ scenario, onComplete }) {
 
   const loadDeathCertificate = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/death-certificate/generate', {
+      const response = await axios.post(`${API_BASE}/api/death-certificate/generate`, {
         difficulty: scenario.difficulty,
         client_profile: scenario.client_profile
       }, { withCredentials: true });
@@ -41,7 +42,7 @@ function GameScreen({ scenario, onComplete }) {
   const getAiHint = async () => {
     console.log('Getting AI hint for scenario:', scenario.id);
     try {
-      const response = await axios.post('http://localhost:5000/api/ai/hint', {
+      const response = await axios.post(`${API_BASE}/api/ai/hint`, {
         scenario_id: scenario.id,
         attempts: attempts
       }, { withCredentials: true });
@@ -68,7 +69,7 @@ function GameScreen({ scenario, onComplete }) {
     setShowReasonModal(false);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/scenario/submit', {
+      const response = await axios.post(`${API_BASE}/api/scenario/submit`, {
         scenario_id: scenario.id,
         user_answer: answer,
         reasons: reasons

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import API_BASE from './config';
 
 function StartGame({ onGameStart }) {
   const [claimType, setClaimType] = useState('medical');
@@ -11,7 +12,7 @@ function StartGame({ onGameStart }) {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.post('http://localhost:5000/api/scenario/generate', {
+      const response = await axios.post(`${API_BASE}/api/scenario/generate`, {
         claim_type: claimType,
         difficulty
       }, { withCredentials: true });

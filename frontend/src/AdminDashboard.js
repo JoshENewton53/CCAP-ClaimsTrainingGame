@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './AdminDashboard.css';
+import API_BASE from './config';
 
 const CLAIM_TYPES = ['medical', 'dental', 'life'];
 const DIFFICULTIES = ['easy', 'medium', 'hard'];
@@ -351,7 +352,7 @@ export default function AdminDashboard({ onLogout }) {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/stats', { credentials: 'include' })
+    fetch(`${API_BASE}/api/admin/stats`, { credentials: 'include' })
       .then(r => r.ok ? r.json() : Promise.reject(r.statusText))
       .then(d => { setTrainees(d.trainees); setLoading(false); })
       .catch(e => { setError(String(e)); setLoading(false); });

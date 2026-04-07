@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Account.css';
+import API_BASE from './config';
 
 function Account({ user, onClose, onUpdate }) {
   const [bio, setBio] = useState('');
@@ -9,7 +10,7 @@ function Account({ user, onClose, onUpdate }) {
   const [performance, setPerformance] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/profile', { credentials: 'include' })
+    fetch(`${API_BASE}/api/profile`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         setBio(data.bio || '');
@@ -17,7 +18,7 @@ function Account({ user, onClose, onUpdate }) {
       })
       .catch(err => console.error(err));
 
-    fetch('http://localhost:5000/api/ai/performance', { credentials: 'include' })
+    fetch(`${API_BASE}/api/ai/performance`, { credentials: 'include' })
       .then(res => res.json())
       .then(data => setPerformance(data))
       .catch(err => console.error(err));
@@ -44,7 +45,7 @@ function Account({ user, onClose, onUpdate }) {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/profile/update', {
+      const response = await fetch(`${API_BASE}/api/profile/update`, {
         method: 'POST',
         credentials: 'include',
         body: formData

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './CodeMatcher.css';
+import API_BASE from './config';
 
 function CodeMatcher({ isOpen, onClose, claimType, currentProcedure, currentDiagnosis }) {
   const [codes, setCodes] = useState([]);
@@ -16,7 +17,7 @@ function CodeMatcher({ isOpen, onClose, claimType, currentProcedure, currentDiag
   const loadCodes = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/reference/codes?type=${claimType}`);
+      const response = await axios.get(`${API_BASE}/api/reference/codes?type=${claimType}`);
       setCodes(response.data.codes);
     } catch (error) {
       console.error('Failed to load reference codes:', error);

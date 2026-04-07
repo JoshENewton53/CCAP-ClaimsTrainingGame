@@ -11,7 +11,6 @@ from ai_service import (
     generate_client_profile,
     generate_ai_hint,
     analyze_user_performance,
-    summarize_performance_with_flan,
 )
 from death_certificate_service import DeathCertificateService
 from itemized_bill_service import ItemizedBillService
@@ -929,10 +928,6 @@ def get_ai_performance():
 
     history = [{'claim_type': r[0], 'is_correct': bool(r[1])} for r in rows]
     result = analyze_user_performance(history)
-    # Try to generate a natural-language summary using Flan-T5 (local, no external API)
-    ai_summary = summarize_performance_with_flan(result)
-    if ai_summary:
-        result['ai_summary'] = ai_summary
     return jsonify(result)
 
 if __name__ == '__main__':

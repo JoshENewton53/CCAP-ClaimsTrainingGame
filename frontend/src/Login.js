@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE from './config';
 
 function Login({ onLogin }) {
   const [isRegister, setIsRegister] = useState(false);
@@ -13,7 +14,7 @@ function Login({ onLogin }) {
     const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
     
     try {
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await fetch(`${API_BASE}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
