@@ -218,10 +218,10 @@ def generate_scenario_endpoint():
         classification = classify_claim(scenario)
         correct_answer = classification['prediction']
         
-        # Determine actual reasons for invalid/insufficient
+        # Determine base actual reasons for invalid/insufficient
         actual_reasons = []
         if correct_answer == 'insufficient':
-            actual_reasons = document_status.get('missing', [])
+            actual_reasons = list(document_status.get('missing', []))
         elif correct_answer == 'invalid':
             if scenario.get('has_mismatch'):
                 actual_reasons.append('Procedure code does not match diagnosis')
@@ -229,9 +229,47 @@ def generate_scenario_endpoint():
                 actual_reasons.append('Service date outside policy coverage period')
             if len(document_status.get('missing', [])) > 0:
                 actual_reasons.append('Missing required documentation')
-        
+
+        # Generate additional reviewable documents for medium/hard
+        generated_docs = {}
+        if difficulty in ['medium', 'hard']:
+            generated_docs['insurance_card'] = generate_insurance_card(client_profile, difficulty, correct_answer)
+            if claim_type in ['medical', 'dental']:
+                generated_docs['prior_auth'] = generate_prior_auth(scenario, difficulty, correct_answer)
+            try:
+                from claude_service import generate_physician_notes
+                notes = generate_physician_notes(scenario, client_profile, difficulty, correct_answer)
+                if notes:
+                    generated_docs['physician_notes'] = notes
+            except Exception as e:
+                print(f"[Claude] Physician notes skipped: {e}")
+        if difficulty == 'hard':
+            try:
+                from claude_service import generate_medical_record
+                record = generate_medical_record(scenario, client_profile, difficulty, correct_answer)
+                if record:
+                    generated_docs['medical_record'] = record
+            except Exception as e:
+                print(f"[Claude] Medical record skipped: {e}")
+
+        # Wire document discrepancies into actual_reasons
+        if generated_docs:
+            card = generated_docs.get('insurance_card', {})
+            auth = generated_docs.get('prior_auth', {})
+            if card.get('is_expired'):
+                actual_reasons.append('Insurance card expired')
+            if card.get('has_name_mismatch'):
+                actual_reasons.append('Patient name does not match insurance records')
+            if auth.get('is_mismatch'):
+                actual_reasons.append('Prior authorization for wrong procedure')
+            if auth.get('is_expired'):
+                actual_reasons.append('Prior authorization expired')
+            if auth.get('status') == 'Pending' and correct_answer == 'insufficient':
+                actual_reasons.append('Prior authorization pending')
+            scenario['generated_docs'] = generated_docs
+
         scenario['actual_reasons'] = actual_reasons
-        
+
         # Generate itemized bill for medical claims
         itemized_bill = None
         if claim_type == 'medical' and 'Itemized bill with CPT codes' in document_status.get('submitted', []):
@@ -270,7 +308,9 @@ def generate_scenario_endpoint():
         
         if itemized_bill:
             response_data['itemized_bill'] = itemized_bill
-        
+        if generated_docs:
+            response_data['generated_docs'] = generated_docs
+
         return jsonify(response_data)
     except Exception as e:
         print(f"Error in generate_scenario: {e}")
@@ -393,35 +433,57 @@ def submit_scenario():
     difficulty_points = {'easy': 50, 'medium': 100, 'hard': 200}
     base_points = difficulty_points.get(difficulty, 50)
     points_earned = base_points if is_correct else -int(base_points / 2)
-    
+
+    # Score reason selection
+    reasons = data.get('reasons', [])
+    actual_reasons = scenario.get('actual_reasons', [])
+    reason_bonus = 0
+    reason_score = {}
+    if user_answer in ['invalid', 'insufficient'] and actual_reasons:
+        correct_picks = [r for r in reasons if r in actual_reasons]
+        wrong_picks   = [r for r in reasons if r not in actual_reasons]
+        missed        = [r for r in actual_reasons if r not in reasons]
+        max_bonus     = int(base_points * 0.25)
+        ratio         = max(0.0, (len(correct_picks) - len(wrong_picks) * 0.5) / max(1, len(actual_reasons)))
+        reason_bonus  = int(ratio * max_bonus)
+        reason_score  = {
+            'correct': correct_picks,
+            'incorrect': wrong_picks,
+            'missed': missed,
+            'bonus': reason_bonus,
+            'max_bonus': max_bonus,
+        }
+
     xp_earned = calculate_xp(claim_type, difficulty, is_correct)
-    
+
     feedback = generate_feedback(scenario, user_answer, correct_answer)
     feedback_text = feedback['explanation']
-    
+
     user_id = session['user_id']
-    
+
     # Update streak
     cur.execute('SELECT current_streak, xp, level FROM users WHERE id = ?', (user_id,))
     user_data = cur.fetchone()
     current_streak = user_data[0]
-    current_xp = user_data[1]
-    current_level = user_data[2]
+    current_xp     = user_data[1]
+    current_level  = user_data[2]
     if is_correct:
         new_streak = current_streak + 1 if current_streak >= 0 else 1
     else:
         new_streak = current_streak - 1 if current_streak <= 0 else -1
-    
+
+    total_points = points_earned + reason_bonus
+
     cur.execute(
         'INSERT INTO attempts (user_id, scenario_id, user_answer, is_correct, feedback_text, points_earned) VALUES (?, ?, ?, ?, ?, ?)',
-        (user_id, scenario_id, user_answer, 1 if is_correct else 0, feedback_text, points_earned)
+        (user_id, scenario_id, user_answer, 1 if is_correct else 0, feedback_text, total_points)
     )
-    
-    new_xp = current_xp + xp_earned
+
+    new_xp    = current_xp + xp_earned
     new_level = calculate_level(new_xp)
-    
-    cur.execute('UPDATE users SET score = score + ?, current_streak = ?, xp = ?, level = ? WHERE id = ?', 
-                (points_earned, new_streak, new_xp, new_level, user_id))
+
+    cur.execute('UPDATE users SET score = score + ?, current_streak = ?, xp = ?, level = ? WHERE id = ?',
+                (total_points, new_streak, new_xp, new_level, user_id))
     cur.execute('SELECT score FROM users WHERE id = ?', (user_id,))
     new_score = cur.fetchone()[0]
     
@@ -450,6 +512,8 @@ def submit_scenario():
         'feedback_text': feedback_text,
         'correct_answer': correct_answer,
         'points_earned': points_earned,
+        'reason_bonus': reason_bonus,
+        'reason_score': reason_score,
         'xp_earned': xp_earned,
         'total_score': new_score,
         'current_streak': new_streak,
@@ -458,6 +522,103 @@ def submit_scenario():
         'new_achievements': new_achievements,
         'ai_confidence': ai_confidence
     })
+
+def generate_insurance_card(client_profile, difficulty, correct_answer):
+    import random
+    from datetime import datetime, timedelta
+
+    name         = client_profile.get('name', 'Unknown Patient')
+    policy_num   = client_profile.get('policy_number', f'POL-{random.randint(10000,99999)}')
+    coverage_type = client_profile.get('coverage_type', 'Medical')
+
+    today          = datetime.now()
+    effective_date = today - timedelta(days=random.randint(180, 730))
+    expiry_date    = effective_date + timedelta(days=365)
+    group_num      = f"GRP-{random.randint(10000, 99999)}"
+    copay          = random.choice(['$20', '$25', '$30', '$35', '$40'])
+    deductible     = random.choice(['$500', '$750', '$1,000', '$1,500', '$2,000'])
+
+    has_name_mismatch = False
+    is_expired        = False
+    display_name      = name
+
+    if difficulty == 'hard' and correct_answer == 'invalid' and random.random() < 0.35:
+        if random.random() < 0.5:
+            has_name_mismatch = True
+            parts = name.split()
+            if len(parts) >= 2:
+                display_name = f"{parts[0][0]}. {parts[-1]}"
+        else:
+            is_expired    = True
+            expiry_date   = today - timedelta(days=random.randint(5, 60))
+
+    return {
+        'member_name':    display_name,
+        'member_id':      policy_num,
+        'group_number':   group_num,
+        'plan_name':      f"{coverage_type} PPO Plan",
+        'effective_date': effective_date.strftime('%m/%d/%Y'),
+        'expiry_date':    expiry_date.strftime('%m/%d/%Y'),
+        'copay':          copay,
+        'deductible':     deductible,
+        'is_expired':     is_expired,
+        'has_name_mismatch': has_name_mismatch,
+        'has_discrepancy':   has_name_mismatch or is_expired,
+    }
+
+
+def generate_prior_auth(scenario, difficulty, correct_answer):
+    import random
+    from datetime import datetime, timedelta
+
+    procedure_code = scenario.get('procedure_code', '')
+    claim_type     = scenario.get('claim_type', 'medical')
+
+    today       = datetime.now()
+    auth_number = f"AUTH-{random.randint(100000, 999999)}"
+    auth_date   = today - timedelta(days=random.randint(5, 45))
+    auth_expiry = auth_date + timedelta(days=90)
+
+    authorized_procedure = procedure_code
+    status          = 'Approved'
+    has_discrepancy = False
+
+    if difficulty == 'easy':
+        status = 'Approved'
+    elif difficulty == 'medium':
+        if correct_answer == 'valid':
+            status = 'Approved'
+        else:
+            status = random.choice(['Approved', 'Approved', 'Pending'])
+    else:
+        if correct_answer == 'invalid' and random.random() < 0.4:
+            alt_codes = {
+                'medical': ['99213', '99214', '70553', '80053'],
+                'dental':  ['D0120', 'D1110', 'D2391'],
+                'life':    [],
+            }
+            alts = [c for c in alt_codes.get(claim_type, []) if c != procedure_code]
+            if alts:
+                authorized_procedure = random.choice(alts)
+                has_discrepancy = True
+        elif correct_answer == 'invalid' and random.random() < 0.3:
+            auth_expiry     = today - timedelta(days=random.randint(3, 30))
+            has_discrepancy = True
+        elif correct_answer == 'insufficient':
+            status = random.choice(['Pending', 'Pending', 'Approved'])
+
+    return {
+        'auth_number':           auth_number,
+        'status':                status,
+        'authorized_procedure':  authorized_procedure,
+        'requested_procedure':   procedure_code,
+        'auth_date':             auth_date.strftime('%m/%d/%Y'),
+        'expiry_date':           auth_expiry.strftime('%m/%d/%Y'),
+        'is_expired':            auth_expiry < today,
+        'is_mismatch':           authorized_procedure != procedure_code,
+        'has_discrepancy':       has_discrepancy,
+    }
+
 
 def get_required_documents(claim_type):
     """Get list of required documents for claim type"""

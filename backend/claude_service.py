@@ -85,9 +85,11 @@ def generate_claim_story(scenario: dict) -> str | None:
         user_prompt = (
             f"You are writing flavor text for a claims analyst training game.\n\n"
             f"Write 2-3 sentences about {name}, a {age}-year-old {type_label} patient. "
-            f"Tell a brief, engaging human-interest story about this person — their daily life, personality, job, family, or hobbies. "
-            f"End with one vague sentence about why they recently visited a {type_label} provider (keep it general, e.g. 'a routine visit' or 'an unexpected health concern'). "
-            f"Do NOT mention procedure codes, diagnosis codes, claim amounts, documents, insurance coverage, or anything related to the claim evaluation. "
+            f"Start with one sentence about this person — their job, family, or daily life. "
+            f"Then describe in plain, patient-friendly language what brought them to the {type_label} provider. "
+            f"The visit involved procedure code {procedure} and diagnosis code {diagnosis} — describe what the patient experienced "
+            f"and was treated for in everyday terms a non-medical person would use, without mentioning the codes themselves. "
+            f"Do NOT mention claim amounts, documents, insurance coverage, whether anything is missing, or anything about claim validity. "
             f"Plain prose only, no headings or bullet points."
         )
 
@@ -104,6 +106,112 @@ def generate_claim_story(scenario: dict) -> str | None:
         return None
     except Exception as e:
         print(f"[Claude] Story generation error: {e}")
+        return None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Document Generation
+# ─────────────────────────────────────────────────────────────────────────────
+
+def generate_physician_notes(scenario: dict, client_profile: dict, difficulty: str, correct_answer: str) -> dict | None:
+    client = _get_client()
+    if client is None:
+        return None
+
+    name      = client_profile.get('name', 'the patient')
+    age       = scenario.get('patient_age', 40)
+    procedure = scenario.get('procedure_code', '')
+    diagnosis = scenario.get('diagnosis_code', '')
+    claim_type = scenario.get('claim_type', 'medical')
+
+    include_discrepancy = difficulty == 'hard' and correct_answer == 'invalid'
+
+    discrepancy_instruction = (
+        "Subtly include ONE discrepancy that a careful analyst would catch when comparing these notes "
+        "to the claim — for example: the complexity level documented does not match what was billed, "
+        "the primary complaint differs from the diagnosis code submitted, or the treatment plan implies "
+        "a different procedure than what appears on the claim. Write it naturally in the flow of the note. "
+        "Do NOT flag or highlight the discrepancy."
+    ) if include_discrepancy else ""
+
+    user_prompt = (
+        f"Write realistic SOAP-format physician notes for a {claim_type} insurance claim review.\n\n"
+        f"Patient: {name}, {age} years old\n"
+        f"Procedure code billed: {procedure}\n"
+        f"Diagnosis code billed: {diagnosis}\n\n"
+        f"Use exactly this format:\n"
+        f"Date: [realistic recent date]\n"
+        f"Provider: Dr. [realistic name], [specialty]\n\n"
+        f"S: [patient-reported symptoms, 1-2 sentences]\n"
+        f"O: [vitals and exam findings, 1-2 sentences]\n"
+        f"A: [assessment/diagnosis in plain clinical language]\n"
+        f"P: [treatment plan, 1-2 sentences]\n\n"
+        f"{discrepancy_instruction}\n"
+        f"Write only the note. No extra commentary."
+    )
+
+    try:
+        response = client.messages.create(
+            model="claude-haiku-4-5",
+            max_tokens=350,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        text = response.content[0].text.strip() if response.content else None
+        if text and len(text) > 30:
+            print(f"[Claude] Physician notes generated ({len(text)} chars).")
+            return {'content': text, 'has_discrepancy': include_discrepancy}
+        return None
+    except Exception as e:
+        print(f"[Claude] Physician notes error: {e}")
+        return None
+
+
+def generate_medical_record(scenario: dict, client_profile: dict, difficulty: str, correct_answer: str) -> dict | None:
+    client = _get_client()
+    if client is None:
+        return None
+
+    name       = client_profile.get('name', 'the patient')
+    age        = scenario.get('patient_age', 40)
+    diagnosis  = scenario.get('diagnosis_code', '')
+    claim_type = scenario.get('claim_type', 'medical')
+
+    include_preexisting = difficulty == 'hard' and correct_answer == 'invalid'
+
+    preexisting_instruction = (
+        "Include a prior condition in the medical history section that could be considered a relevant "
+        "pre-existing condition to the current claim. Write it as a natural part of the patient's history — "
+        "do not flag it. The analyst must discover it on their own."
+    ) if include_preexisting else ""
+
+    user_prompt = (
+        f"Write a concise patient medical record summary for a {claim_type} insurance claim review.\n\n"
+        f"Patient: {name}, {age} years old\n"
+        f"Current diagnosis: {diagnosis}\n\n"
+        f"Use exactly this format:\n"
+        f"MRN: [random 7-digit number]\n"
+        f"Date of Birth: [date consistent with age {age}]\n\n"
+        f"MEDICAL HISTORY:\n[2-3 prior conditions, or 'No significant prior history']\n\n"
+        f"CURRENT MEDICATIONS:\n[2-4 medications with dosage, or 'None reported']\n\n"
+        f"ALLERGIES:\n[1-2 allergies, or 'NKDA']\n\n"
+        f"PRIOR VISITS (last 12 months):\n[2-3 brief visit entries with dates and reason]\n\n"
+        f"{preexisting_instruction}\n"
+        f"Write only the record. Keep it realistic and concise."
+    )
+
+    try:
+        response = client.messages.create(
+            model="claude-haiku-4-5",
+            max_tokens=450,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        text = response.content[0].text.strip() if response.content else None
+        if text and len(text) > 30:
+            print(f"[Claude] Medical record generated ({len(text)} chars).")
+            return {'content': text, 'has_preexisting': include_preexisting}
+        return None
+    except Exception as e:
+        print(f"[Claude] Medical record error: {e}")
         return None
 
 

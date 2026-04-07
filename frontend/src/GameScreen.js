@@ -18,6 +18,13 @@ function GameScreen({ scenario, onComplete }) {
   const [pendingAnswer, setPendingAnswer] = useState(null);
   const [aiHints, setAiHints] = useState([]);
   const [attempts, setAttempts] = useState(0);
+  const [openDocs, setOpenDocs] = useState(new Set());
+
+  const toggleDoc = (key) => setOpenDocs(prev => {
+    const next = new Set(prev);
+    next.has(key) ? next.delete(key) : next.add(key);
+    return next;
+  });
 
   // Load death certificate for life insurance claims
   React.useEffect(() => {
@@ -263,6 +270,112 @@ function GameScreen({ scenario, onComplete }) {
             )
           )}
           
+          {/* Generated reviewable documents */}
+          {scenario.generated_docs && Object.keys(scenario.generated_docs).length > 0 && (
+            <div className="mb-4 space-y-2">
+              <h4 className="text-principal-blue font-semibold mb-2">📋 Claim Documents</h4>
+
+              {/* Insurance Card */}
+              {scenario.generated_docs.insurance_card && (() => {
+                const card = scenario.generated_docs.insurance_card;
+                const open = openDocs.has('insurance_card');
+                return (
+                  <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button onClick={() => toggleDoc('insurance_card')} className="w-full flex justify-between items-center p-3 text-left hover:bg-gray-750">
+                      <span className="text-white font-semibold">🪪 Insurance Card</span>
+                      <span className="text-gray-400 text-sm">{open ? '▲ Hide' : '▼ View'}</span>
+                    </button>
+                    {open && (
+                      <div className="p-4 border-t border-gray-700">
+                        <div className="bg-gradient-to-br from-principal-blue to-blue-800 rounded-xl p-4 text-white max-w-sm mx-auto shadow-lg">
+                          <div className="text-xs font-bold uppercase tracking-widest mb-3 opacity-75">{card.plan_name}</div>
+                          <div className="text-lg font-bold mb-1">{card.member_name}</div>
+                          <div className="text-xs opacity-75 mb-3">Member Name</div>
+                          <div className="grid grid-cols-2 gap-3 text-sm">
+                            <div><div className="opacity-75 text-xs">Member ID</div><div className="font-mono font-semibold">{card.member_id}</div></div>
+                            <div><div className="opacity-75 text-xs">Group #</div><div className="font-mono font-semibold">{card.group_number}</div></div>
+                            <div><div className="opacity-75 text-xs">Effective</div><div className="font-semibold">{card.effective_date}</div></div>
+                            <div><div className="opacity-75 text-xs">Expires</div><div className={`font-semibold ${card.is_expired ? 'text-red-300' : ''}`}>{card.expiry_date}</div></div>
+                            <div><div className="opacity-75 text-xs">Copay</div><div className="font-semibold">{card.copay}</div></div>
+                            <div><div className="opacity-75 text-xs">Deductible</div><div className="font-semibold">{card.deductible}</div></div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Prior Authorization */}
+              {scenario.generated_docs.prior_auth && (() => {
+                const auth = scenario.generated_docs.prior_auth;
+                const open = openDocs.has('prior_auth');
+                const statusColor = auth.status === 'Approved' ? 'text-green-400' : auth.status === 'Pending' ? 'text-yellow-400' : 'text-red-400';
+                return (
+                  <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button onClick={() => toggleDoc('prior_auth')} className="w-full flex justify-between items-center p-3 text-left hover:bg-gray-750">
+                      <span className="text-white font-semibold">📝 Prior Authorization Notice</span>
+                      <span className="text-gray-400 text-sm">{open ? '▲ Hide' : '▼ View'}</span>
+                    </button>
+                    {open && (
+                      <div className="p-4 border-t border-gray-700 font-mono text-sm">
+                        <div className="bg-gray-900 rounded p-4 space-y-2 text-gray-300">
+                          <div className="flex justify-between border-b border-gray-700 pb-2 mb-3">
+                            <span className="text-white font-bold text-base not-italic" style={{fontFamily:'sans-serif'}}>Prior Authorization Notice</span>
+                            <span className={`font-bold ${statusColor}`} style={{fontFamily:'sans-serif'}}>{auth.status}</span>
+                          </div>
+                          <div>Auth Number: <span className="text-white">{auth.auth_number}</span></div>
+                          <div>Auth Date: <span className="text-white">{auth.auth_date}</span></div>
+                          <div>Expiry Date: <span className={auth.is_expired ? 'text-red-400' : 'text-white'}>{auth.expiry_date}</span></div>
+                          <div>Requested Procedure: <span className="text-white">{auth.requested_procedure}</span></div>
+                          <div>Authorized Procedure: <span className={auth.is_mismatch ? 'text-yellow-400' : 'text-white'}>{auth.authorized_procedure}</span></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Physician Notes */}
+              {scenario.generated_docs.physician_notes && (() => {
+                const notes = scenario.generated_docs.physician_notes;
+                const open = openDocs.has('physician_notes');
+                return (
+                  <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button onClick={() => toggleDoc('physician_notes')} className="w-full flex justify-between items-center p-3 text-left hover:bg-gray-750">
+                      <span className="text-white font-semibold">🩺 Physician Notes</span>
+                      <span className="text-gray-400 text-sm">{open ? '▲ Hide' : '▼ View'}</span>
+                    </button>
+                    {open && (
+                      <div className="p-4 border-t border-gray-700">
+                        <pre className="text-gray-300 text-sm whitespace-pre-wrap font-mono bg-gray-900 rounded p-4 leading-relaxed">{notes.content}</pre>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Medical Record */}
+              {scenario.generated_docs.medical_record && (() => {
+                const record = scenario.generated_docs.medical_record;
+                const open = openDocs.has('medical_record');
+                return (
+                  <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+                    <button onClick={() => toggleDoc('medical_record')} className="w-full flex justify-between items-center p-3 text-left hover:bg-gray-750">
+                      <span className="text-white font-semibold">📁 Patient Medical Record</span>
+                      <span className="text-gray-400 text-sm">{open ? '▲ Hide' : '▼ View'}</span>
+                    </button>
+                    {open && (
+                      <div className="p-4 border-t border-gray-700">
+                        <pre className="text-gray-300 text-sm whitespace-pre-wrap font-mono bg-gray-900 rounded p-4 leading-relaxed">{record.content}</pre>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+
           <div className="mb-4">
             <h4 className="text-green-400 font-semibold mb-2">✓ Documents Submitted:</h4>
             <ul className="space-y-1">
@@ -326,6 +439,7 @@ function GameScreen({ scenario, onComplete }) {
       {showReasonModal && (
         <ReasonModal
           answer={pendingAnswer}
+          claimType={scenario.claim_type}
           onSubmit={(reasons) => submitAnswer(pendingAnswer, reasons)}
           onCancel={() => {
             setShowReasonModal(false);

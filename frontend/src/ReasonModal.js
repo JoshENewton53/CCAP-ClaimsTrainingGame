@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-function ReasonModal({ answer, onSubmit, onCancel }) {
+function ReasonModal({ answer, claimType, onSubmit, onCancel }) {
   const [selectedReasons, setSelectedReasons] = useState([]);
 
-  const reasons = answer === 'invalid' ? [
-    'Missing required documentation',
+  const invalidReasons = [
     'Procedure code does not match diagnosis',
     'Service not covered by policy',
     'Pre-authorization not obtained',
@@ -13,81 +12,131 @@ function ReasonModal({ answer, onSubmit, onCancel }) {
     'Duplicate claim submission',
     'Service date outside policy coverage period',
     'Provider not in network',
-    'Incorrect billing codes'
-  ] : [
-    'Missing patient medical records',
-    'Missing physician notes',
-    'Missing itemized bill',
-    'Missing insurance card copy',
-    'Missing prior authorization',
-    'Missing diagnostic images/X-rays',
-    'Missing treatment plan',
-    'Missing death certificate',
-    'Missing policy documents',
-    'Missing beneficiary identification'
+    'Incorrect billing codes',
+    'Missing required documentation',
+    'Prior authorization for wrong procedure',
+    'Prior authorization expired',
+    'Insurance card expired',
+    'Patient name does not match insurance records',
   ];
 
+  const insufficientReasonsByType = {
+    medical: [
+      'Missing patient medical records',
+      'Missing physician notes',
+      'Missing itemized bill',
+      'Missing insurance card copy',
+      'Missing prior authorization',
+      'Missing diagnostic images/X-rays',
+      'Missing treatment plan',
+      'Prior authorization pending',
+      'Prior authorization expired',
+    ],
+    dental: [
+      'Missing patient medical records',
+      'Missing physician notes',
+      'Missing itemized bill',
+      'Missing insurance card copy',
+      'Missing prior authorization',
+      'Missing diagnostic images/X-rays',
+      'Missing treatment plan',
+      'Prior authorization pending',
+      'Prior authorization expired',
+    ],
+    life: [
+      'Missing death certificate',
+      'Missing policy documents',
+      'Missing beneficiary identification',
+      'Missing physician notes',
+      'Missing insurance card copy',
+      'Missing prior authorization',
+      'Prior authorization pending',
+    ],
+  };
+
+  const reasons = answer === 'invalid'
+    ? invalidReasons
+    : (insufficientReasonsByType[claimType] || insufficientReasonsByType.medical);
+
   const toggleReason = (reason) => {
-    if (selectedReasons.includes(reason)) {
-      setSelectedReasons(selectedReasons.filter(r => r !== reason));
-    } else {
-      setSelectedReasons([...selectedReasons, reason]);
-    }
+    setSelectedReasons(prev =>
+      prev.includes(reason) ? prev.filter(r => r !== reason) : [...prev, reason]
+    );
+  };
+
+  const isInvalid = answer === 'invalid';
+  const accentColor = isInvalid ? 'red' : 'yellow';
+  const accentClasses = {
+    border: isInvalid ? 'border-red-500/40' : 'border-yellow-500/40',
+    headerBorder: isInvalid ? 'border-red-500/30' : 'border-yellow-500/30',
+    selectedBg: isInvalid ? 'bg-red-500/20 border-red-500 text-white' : 'bg-yellow-500/20 border-yellow-500 text-white',
+    checkBg: isInvalid ? 'bg-red-500 border-red-500' : 'bg-yellow-500 border-yellow-500',
+    submitBtn: isInvalid ? 'bg-red-500 hover:bg-red-400 text-white' : 'bg-yellow-500 hover:bg-yellow-400 text-black',
+    badge: isInvalid ? 'bg-red-500/20 text-red-300 border-red-500/30' : 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-principal-dark rounded-lg shadow-2xl max-w-2xl w-full border border-principal-blue/30">
-        <div className="bg-gradient-to-r from-principal-dark to-principal-darker p-6 border-b border-principal-blue/30">
-          <h2 className="text-2xl font-bold text-white text-center">
-            Why is this claim {answer === 'invalid' ? 'Invalid' : 'Insufficient'}?
+    <div className="fixed inset-0 bg-black/75 flex items-center justify-center z-50 p-4">
+      <div className={`bg-principal-dark rounded-xl shadow-2xl w-full max-w-xl border ${accentClasses.border}`}>
+
+        {/* Header */}
+        <div className={`p-5 border-b ${accentClasses.headerBorder}`}>
+          <h2 className="text-xl font-bold text-white text-center">
+            Why is this claim {isInvalid ? 'Invalid' : 'Insufficient'}?
           </h2>
-          <p className="text-gray-400 text-center mt-2">Select all that apply</p>
+          <p className="text-gray-400 text-sm text-center mt-1">
+            Select all that apply — correct selections earn bonus points
+          </p>
         </div>
-        
-        <div className="p-6 max-h-[60vh] overflow-y-auto">
-          <div className="space-y-2">
-            {reasons.map((reason, index) => (
-              <button
-                key={index}
-                onClick={() => toggleReason(reason)}
-                className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
-                  selectedReasons.includes(reason)
-                    ? 'bg-principal-blue/20 border-principal-blue text-white'
-                    : 'bg-gray-800/50 border-gray-700 text-gray-300 hover:border-gray-600'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
-                    selectedReasons.includes(reason)
-                      ? 'bg-principal-blue border-principal-blue'
-                      : 'border-gray-600'
-                  }`}>
-                    {selectedReasons.includes(reason) && (
-                      <span className="text-black font-bold">✓</span>
-                    )}
+
+        {/* Reason grid */}
+        <div className="p-5 max-h-[55vh] overflow-y-auto">
+          <div className="grid grid-cols-2 gap-2">
+            {reasons.map((reason, index) => {
+              const selected = selectedReasons.includes(reason);
+              return (
+                <button
+                  key={index}
+                  onClick={() => toggleReason(reason)}
+                  className={`text-left p-3 rounded-lg border-2 transition-all text-sm ${
+                    selected
+                      ? accentClasses.selectedBg
+                      : 'bg-gray-800/60 border-gray-700 text-gray-300 hover:border-gray-500'
+                  }`}
+                >
+                  <div className="flex items-start gap-2">
+                    <div className={`mt-0.5 w-4 h-4 rounded flex-shrink-0 border-2 flex items-center justify-center ${
+                      selected ? accentClasses.checkBg : 'border-gray-600'
+                    }`}>
+                      {selected && <span className="text-black font-bold text-xs">✓</span>}
+                    </div>
+                    <span className="leading-snug">{reason}</span>
                   </div>
-                  <span>{reason}</span>
-                </div>
-              </button>
-            ))}
+                </button>
+              );
+            })}
           </div>
         </div>
-        
-        <div className="p-6 border-t border-principal-blue/30 flex gap-4">
+
+        {/* Footer */}
+        <div className={`p-5 border-t ${accentClasses.headerBorder} flex items-center gap-3`}>
           <button
             onClick={onCancel}
-            className="flex-1 bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition-colors"
+            className="px-5 py-2.5 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors"
           >
             Cancel
           </button>
           <button
             onClick={() => onSubmit(selectedReasons)}
-            disabled={selectedReasons.length === 0}
-            className="flex-1 bg-principal-blue hover:bg-blue-400 disabled:bg-gray-600 text-black font-bold py-3 rounded-lg transition-colors"
+            className={`flex-1 py-2.5 font-bold rounded-lg transition-colors ${accentClasses.submitBtn}`}
           >
-            Submit ({selectedReasons.length} selected)
+            Submit
           </button>
+          {selectedReasons.length > 0 && (
+            <span className={`text-xs px-2 py-1 rounded border font-semibold ${accentClasses.badge}`}>
+              {selectedReasons.length} selected
+            </span>
+          )}
         </div>
       </div>
     </div>

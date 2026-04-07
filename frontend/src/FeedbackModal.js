@@ -11,8 +11,10 @@ function FeedbackModal({ result, onNext }) {
         }`}>
           <h2 className="text-3xl font-bold mb-2">{result.is_correct ? '✓ Correct!' : '✗ Incorrect'}</h2>
           <p className="text-2xl font-semibold">{result.points_earned > 0 ? '+' : ''}{result.points_earned} points</p>
-          {result.reason_bonus > 0 && (
-            <p className="text-yellow-300 font-bold text-lg mt-2">🎉 Bonus: +{result.reason_bonus} points for reasoning!</p>
+          {result.reason_score && result.reason_score.max_bonus > 0 && (
+            <p className="text-yellow-300 font-bold text-lg mt-2">
+              {result.reason_bonus > 0 ? `🎉 +${result.reason_bonus} reasoning bonus!` : '❌ No reasoning bonus earned'}
+            </p>
           )}
           {result.xp_earned && <p className="text-xl font-semibold text-green-100 mt-1">+{result.xp_earned} XP</p>}
           {result.level && <p className="text-lg font-bold text-yellow-300 mt-1">Level {result.level}</p>}
@@ -106,6 +108,36 @@ function FeedbackModal({ result, onNext }) {
             </div>
           )}
           
+          {result.reason_score && result.reason_score.max_bonus > 0 && (
+            <div className="bg-gray-50 border-l-4 border-yellow-400 p-4 rounded mb-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-2">Reasoning Breakdown</h3>
+              {result.reason_score.correct.length > 0 && (
+                <div className="mb-2">
+                  <span className="text-green-600 font-semibold">✓ Correct:</span>
+                  <ul className="ml-4 mt-1 space-y-0.5">
+                    {result.reason_score.correct.map((r, i) => <li key={i} className="text-green-700 text-sm">{r}</li>)}
+                  </ul>
+                </div>
+              )}
+              {result.reason_score.incorrect.length > 0 && (
+                <div className="mb-2">
+                  <span className="text-red-600 font-semibold">✗ Incorrect:</span>
+                  <ul className="ml-4 mt-1 space-y-0.5">
+                    {result.reason_score.incorrect.map((r, i) => <li key={i} className="text-red-700 text-sm">{r}</li>)}
+                  </ul>
+                </div>
+              )}
+              {result.reason_score.missed.length > 0 && (
+                <div>
+                  <span className="text-orange-600 font-semibold">⚠ Missed:</span>
+                  <ul className="ml-4 mt-1 space-y-0.5">
+                    {result.reason_score.missed.map((r, i) => <li key={i} className="text-orange-700 text-sm">{r}</li>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+
           <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
             <p className="text-gray-800"><strong className="text-blue-700">Correct Answer:</strong> {result.correct_answer}</p>
           </div>
