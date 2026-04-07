@@ -18,6 +18,15 @@ function ReasonModal({ answer, claimType, onSubmit, onCancel }) {
     'Prior authorization expired',
     'Insurance card expired',
     'Patient name does not match insurance records',
+    'Client profile age does not match claim information',
+    'Policy was lapsed at time of service',
+    'Claim filed outside the 18-month filing deadline',
+    'Procedure is excluded from policy coverage',
+    'Coverage type does not match claim type',
+    'Bill total does not match submitted claim amount',
+    'Upcoding detected on itemized bill',
+    'Unbundling of procedure codes detected',
+    'Service date on bill predates patient date of birth',
   ];
 
   const insufficientReasonsByType = {

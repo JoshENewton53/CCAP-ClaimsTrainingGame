@@ -204,6 +204,20 @@ def generate_scenario_endpoint():
         document_status = generate_submitted_documents(claim_type, difficulty)
         scenario['document_status'] = document_status
 
+        # Generate itemized bill BEFORE classify_claim so bill errors can
+        # influence the correct answer.
+        itemized_bill = None
+        if claim_type in ['medical', 'dental'] and 'Itemized bill with CPT codes' in document_status.get('submitted', []):
+            try:
+                itemized_bill = bill_service.generate_bill(
+                    claim_type, scenario['procedure_code'], scenario['claim_amount'],
+                    difficulty, client_profile
+                )
+                scenario['itemized_bill'] = itemized_bill
+            except Exception as e:
+                print(f"Error generating bill: {e}")
+                import traceback; traceback.print_exc()
+
         # Now that client profile and documents are attached, ask Claude for
         # a richer story using the real name and document details.
         try:
@@ -213,15 +227,38 @@ def generate_scenario_endpoint():
                 scenario['description'] = claude_desc
         except Exception as e:
             print(f"[Claude] Story generation skipped: {e}")
-        
+
         # Classify to get correct answer
         classification = classify_claim(scenario)
         correct_answer = classification['prediction']
         
+        # Map document names to the exact labels shown in ReasonModal.
+        # Only mandatory documents are included; optional ones (e.g. Beneficiary
+        # identification, Medical records (if applicable)) are intentionally omitted
+        # so players are not penalised for not selecting them.
+        DOC_TO_REASON = {
+            # medical / dental
+            'Patient medical records':           'Missing patient medical records',
+            'Physician notes and diagnosis':     'Missing physician notes',
+            'Itemized bill with CPT codes':      'Missing itemized bill',
+            'Insurance card copy':               'Missing insurance card copy',
+            'Prior authorization (if required)': 'Missing prior authorization',
+            'X-rays or diagnostic images':       'Missing diagnostic images/X-rays',
+            'Dental examination records':        'Missing patient medical records',
+            'Treatment plan with CDT codes':     'Missing treatment plan',
+            'Pre-treatment estimate':            'Missing treatment plan',
+            # life — only the two mandatory docs
+            'Death certificate':                 'Missing death certificate',
+            'Policy documents':                  'Missing policy documents',
+        }
+
         # Determine base actual reasons for invalid/insufficient
         actual_reasons = []
         if correct_answer == 'insufficient':
-            actual_reasons = list(document_status.get('missing', []))
+            for doc in document_status.get('missing', []):
+                reason_label = DOC_TO_REASON.get(doc)
+                if reason_label and reason_label not in actual_reasons:
+                    actual_reasons.append(reason_label)
         elif correct_answer == 'invalid':
             if scenario.get('has_mismatch'):
                 actual_reasons.append('Procedure code does not match diagnosis')
@@ -229,6 +266,29 @@ def generate_scenario_endpoint():
                 actual_reasons.append('Service date outside policy coverage period')
             if len(document_status.get('missing', [])) > 0:
                 actual_reasons.append('Missing required documentation')
+            if client_profile.get('has_mismatch') and client_profile.get('mismatch_type') == 'age_mismatch':
+                actual_reasons.append('Client profile age does not match claim information')
+            if client_profile.get('injury_date_mismatch'):
+                actual_reasons.append('Service date outside policy coverage period')
+            # Policy-level reasons
+            if client_profile.get('policy_lapsed'):
+                actual_reasons.append('Policy was lapsed at time of service')
+            if client_profile.get('filing_deadline_exceeded'):
+                actual_reasons.append('Claim filed outside the 18-month filing deadline')
+            if client_profile.get('excluded_procedures') and scenario.get('procedure_code') in client_profile['excluded_procedures']:
+                actual_reasons.append('Procedure is excluded from policy coverage')
+            if client_profile.get('coverage_mismatch'):
+                actual_reasons.append('Coverage type does not match claim type')
+            # Itemized bill reasons
+            if itemized_bill:
+                if itemized_bill.get('has_upcoding'):
+                    actual_reasons.append('Upcoding detected on itemized bill')
+                if itemized_bill.get('has_unbundling'):
+                    actual_reasons.append('Unbundling of procedure codes detected')
+                if itemized_bill.get('has_amount_mismatch'):
+                    actual_reasons.append('Bill total does not match submitted claim amount')
+                if itemized_bill.get('has_date_error'):
+                    actual_reasons.append('Service date on bill predates patient date of birth')
 
         # Generate additional reviewable documents for medium/hard
         generated_docs = {}
@@ -269,17 +329,6 @@ def generate_scenario_endpoint():
             scenario['generated_docs'] = generated_docs
 
         scenario['actual_reasons'] = actual_reasons
-
-        # Generate itemized bill for medical claims
-        itemized_bill = None
-        if claim_type == 'medical' and 'Itemized bill with CPT codes' in document_status.get('submitted', []):
-            try:
-                itemized_bill = bill_service.generate_bill(claim_type, scenario['procedure_code'], scenario['claim_amount'], difficulty, correct_answer)
-                scenario['itemized_bill'] = itemized_bill
-            except Exception as e:
-                print(f"Error generating bill: {e}")
-                import traceback
-                traceback.print_exc()
         
         # Save to database
         db = get_db()

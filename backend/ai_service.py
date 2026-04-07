@@ -637,6 +637,48 @@ def parse_generated_scenario(text, claim_type, difficulty):
     
     return scenario
 
+def validate_bill_errors(scenario_data):
+    """Return (is_valid, error_type) based on itemized bill flags."""
+    bill = scenario_data.get('itemized_bill')
+    if not bill:
+        return True, None
+    if bill.get('has_upcoding'):
+        return False, 'upcoding'
+    if bill.get('has_unbundling'):
+        return False, 'unbundling'
+    if bill.get('has_amount_mismatch'):
+        return False, 'amount_mismatch'
+    if bill.get('has_date_error'):
+        return False, 'date_error'
+    return True, None
+
+
+def validate_filing_deadline(scenario_data):
+    """Return False if the claim was filed after the 18-month deadline."""
+    profile = scenario_data.get('client_profile', {})
+    return not profile.get('filing_deadline_exceeded', False)
+
+
+def validate_policy_active(scenario_data):
+    """Return False if the policy was lapsed at the time of service."""
+    profile = scenario_data.get('client_profile', {})
+    return not profile.get('policy_lapsed', False)
+
+
+def validate_policy_exclusions(scenario_data):
+    """Return False if the procedure is explicitly excluded from the policy."""
+    profile        = scenario_data.get('client_profile', {})
+    excluded       = profile.get('excluded_procedures', [])
+    procedure_code = scenario_data.get('procedure_code', '')
+    return procedure_code not in excluded
+
+
+def validate_coverage_type_match(scenario_data):
+    """Return False if the insurance coverage type does not match the claim type."""
+    profile = scenario_data.get('client_profile', {})
+    return not profile.get('coverage_mismatch', False)
+
+
 def classify_claim(scenario_data):
     """Classify a claim using business rules with AI confidence scoring"""
     # Critical business rules - these ALWAYS determine the outcome
@@ -666,7 +708,43 @@ def classify_claim(scenario_data):
             "ai_reasoning": "Procedure-diagnosis code mismatch",
             "source": "rules_only"
         }
-    
+
+    if not validate_policy_active(scenario_data):
+        return {
+            "prediction": "invalid",
+            "confidence": 1.0,
+            "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
+            "ai_reasoning": "Policy was lapsed at time of service",
+            "source": "rules_only"
+        }
+
+    if not validate_filing_deadline(scenario_data):
+        return {
+            "prediction": "invalid",
+            "confidence": 1.0,
+            "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
+            "ai_reasoning": "Claim filed outside the 18-month filing deadline",
+            "source": "rules_only"
+        }
+
+    if not validate_policy_exclusions(scenario_data):
+        return {
+            "prediction": "invalid",
+            "confidence": 1.0,
+            "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
+            "ai_reasoning": "Procedure is excluded from policy coverage",
+            "source": "rules_only"
+        }
+
+    if not validate_coverage_type_match(scenario_data):
+        return {
+            "prediction": "invalid",
+            "confidence": 1.0,
+            "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
+            "ai_reasoning": "Coverage type does not match claim type",
+            "source": "rules_only"
+        }
+
     doc_status = scenario_data.get('document_status', {})
     missing_docs = doc_status.get('missing', [])
     if has_missing_critical_documents(scenario_data['claim_type'], missing_docs):
@@ -677,7 +755,18 @@ def classify_claim(scenario_data):
             "ai_reasoning": "Critical documents missing",
             "source": "rules_only"
         }
-    
+
+    # Bill errors make the claim invalid (only reachable if docs are present)
+    bill_valid, bill_error_type = validate_bill_errors(scenario_data)
+    if not bill_valid:
+        return {
+            "prediction": "invalid",
+            "confidence": 1.0,
+            "probabilities": {"valid": 0.0, "invalid": 1.0, "insufficient": 0.0},
+            "ai_reasoning": f"Itemized bill error: {bill_error_type}",
+            "source": "rules_only"
+        }
+
     # Use AI classifier for confidence scoring and reasoning
     if _classifier is not None and _encoders is not None:
         try:
@@ -1036,7 +1125,54 @@ def generate_client_profile(scenario_data):
     if injury_date:
         profile['injury_date'] = injury_date.isoformat()
         profile['injury_date_mismatch'] = injury_date_mismatch
-    
+
+    # ── Policy-level training errors (medium/hard only, one per scenario) ───
+    # Only inject a policy issue when the scenario wouldn't already be marked
+    # invalid by an earlier rule (age mismatch, injury-date fraud, code mismatch).
+    policy_issue_chance = {'easy': 0.0, 'medium': 0.15, 'hard': 0.25}.get(
+        scenario_data.get('difficulty', 'easy'), 0.0
+    )
+    profile['policy_lapsed']             = False
+    profile['filing_deadline_exceeded']  = False
+    profile['excluded_procedures']       = []
+    profile['coverage_mismatch']         = False
+    profile['claim_submission_date']     = None
+    profile['policy_end_date']           = None
+
+    if (
+        random.random() < policy_issue_chance
+        and not should_mismatch          # skip if age mismatch already active
+        and not injury_date_mismatch     # skip if injury-date fraud already active
+    ):
+        issue = random.choice(['lapsed', 'late_filing', 'exclusion', 'coverage_mismatch'])
+
+        if issue == 'lapsed':
+            # Policy expired before the service/injury date
+            service_dt = injury_date if injury_date else today
+            lapse_before = random.randint(30, 180)
+            lapse_dt = service_dt - timedelta(days=lapse_before)
+            profile['policy_lapsed']   = True
+            profile['policy_end_date'] = lapse_dt.isoformat()
+
+        elif issue == 'late_filing':
+            # Claim submitted 19–36 months after service
+            service_dt = injury_date if injury_date else (today - timedelta(days=30))
+            delay_days = random.randint(575, 1095)   # ~19–36 months
+            filed_dt   = service_dt + timedelta(days=delay_days)
+            profile['filing_deadline_exceeded'] = True
+            profile['claim_submission_date']    = filed_dt.isoformat()
+
+        elif issue == 'exclusion':
+            proc = scenario_data.get('procedure_code', '')
+            if proc:
+                profile['excluded_procedures'] = [proc]
+
+        elif issue == 'coverage_mismatch':
+            claim_type   = scenario_data.get('claim_type', 'medical')
+            other_types  = [t for t in ['Medical', 'Dental', 'Life'] if t.lower() != claim_type]
+            profile['coverage_type']     = random.choice(other_types)
+            profile['coverage_mismatch'] = True
+
     return profile
 
 def generate_explanation(scenario, correct_answer):
@@ -1089,6 +1225,54 @@ def generate_explanation(scenario, correct_answer):
         except:
             pass
     
+    # Check policy-level issues
+    if client_profile:
+        if client_profile.get('policy_lapsed'):
+            end = client_profile.get('policy_end_date', '')[:10]
+            svc = client_profile.get('injury_date', '')[:10] or 'the service date'
+            return (f"This claim is INVALID because the policy was lapsed at the time of service. "
+                    f"The policy ended on {end} but the service occurred on {svc}. "
+                    f"Always verify the policy end date in the Client Profile against the service date.")
+
+        if client_profile.get('filing_deadline_exceeded'):
+            filed = client_profile.get('claim_submission_date', '')[:10]
+            svc   = client_profile.get('injury_date', '')[:10] or 'the service date'
+            return (f"This claim is INVALID because it was filed after the 18-month deadline. "
+                    f"Service occurred on {svc} but the claim was submitted on {filed}. "
+                    f"Claims must be filed within 18 months of the date of service.")
+
+        excl = client_profile.get('excluded_procedures', [])
+        if excl and scenario.get('procedure_code') in excl:
+            return (f"This claim is INVALID because procedure {scenario['procedure_code']} is "
+                    f"explicitly excluded from the client's policy. Review the Policy Exclusions "
+                    f"section in the Client Profile before approving any procedure.")
+
+        if client_profile.get('coverage_mismatch'):
+            policy_cov  = client_profile.get('coverage_type', 'Unknown')
+            claim_type  = scenario.get('claim_type', 'unknown').title()
+            return (f"This claim is INVALID due to a coverage type mismatch. The policy provides "
+                    f"{policy_cov} coverage but the claim is for a {claim_type} service. "
+                    f"Always confirm the coverage type in the Client Profile matches the claim type.")
+
+    # Check itemized bill errors
+    bill = scenario.get('itemized_bill', {})
+    if bill:
+        if bill.get('has_upcoding'):
+            return (f"This claim is INVALID due to upcoding on the itemized bill. "
+                    f"The billed procedure code does not match the complexity documented in the "
+                    f"medical notes. Compare the bill codes against the physician notes carefully.")
+        if bill.get('has_unbundling'):
+            return (f"This claim is INVALID due to unbundling on the itemized bill. "
+                    f"One or more line items are billed separately even though they are already "
+                    f"included in the primary procedure code. Review the CPC bundling rules.")
+        if bill.get('has_amount_mismatch'):
+            return (f"This claim is INVALID because the itemized bill total does not match the "
+                    f"submitted claim amount. Always verify the bill total against the claim form amount.")
+        if bill.get('has_date_error'):
+            return (f"This claim is INVALID because the service date on the itemized bill "
+                    f"predates the patient's date of birth. Review the service date on the bill "
+                    f"against the DOB in the Client Profile.")
+
     # Check missing documents
     doc_status = scenario.get('document_status', {})
     missing_docs = doc_status.get('missing', [])
