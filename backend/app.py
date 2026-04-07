@@ -635,7 +635,8 @@ def get_required_documents(claim_type):
             'X-rays or diagnostic images',
             'Treatment plan with CDT codes',
             'Insurance card copy',
-            'Pre-treatment estimate'
+            'Pre-treatment estimate',
+            'Prior authorization (if required)'
         ],
         'life': [
             'Death certificate',
