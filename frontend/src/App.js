@@ -16,7 +16,7 @@ function App() {
   const [showAchievements, setShowAchievements] = useState(false);
   const [showAccount, setShowAccount] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [showIntro, setShowIntro] = useState(localStorage.getItem('seenIntro') === 'true');
+  const [showIntro, setShowIntro] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in

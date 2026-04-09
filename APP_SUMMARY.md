@@ -38,7 +38,6 @@ The backend is a Python Flask REST API that handles all game logic, authenticati
 | **SQLite3** | Lightweight relational database |
 | **Gunicorn 23.0** | Production WSGI server (2 workers) |
 | **Anthropic Claude API** | AI-generated claim narratives and feedback |
-| **Flan-T5 (google/flan-t5-base)** | Local fallback model for feedback generation |
 | **ReportLab 4.4** | PDF generation for death certificates |
 | **Pandas / NumPy** | Data handling for scenario generation |
 | **Python-dotenv** | Environment variable management |
@@ -106,12 +105,13 @@ A specialized game mode where users review generated PDF death certificates and 
 
 ## AI Integration
 
-Claude AI (`claude-haiku-4-5`) is the primary AI engine powering two core features:
+Claude AI (`claude-haiku-4-5`) is the primary AI engine powering three core features:
 
 1. **Claim Narrative Generation** — Claude writes 2–3 paragraph realistic claim stories with patient/policyholder details, medical context, and scenario complexity matching the selected difficulty.
 2. **Educational Feedback** — After each submission, Claude generates 3–4 sentences of tailored, instructional feedback explaining why the answer is correct or incorrect.
+3. **Progressive Hints** — Claude provides increasingly specific hints when requested without revealing the final answer.
 
-A local **Flan-T5** model serves as a graceful fallback if the Claude API is unavailable. Custom pickle-based ML models (`claim_classifier.pkl`, `scenario_generator`) handle claim classification and synthetic data generation.
+If the Claude API is unavailable, the app falls back to rule-based scenario generation and hardcoded feedback. The custom XGBoost classifier (`claim_classifier.pkl`) handles claim classification when the model is present, with rule-based logic as a fallback.
 
 ---
 

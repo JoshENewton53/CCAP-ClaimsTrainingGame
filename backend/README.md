@@ -7,10 +7,19 @@ Flask backend for the CCAP Claims Training Game with authentication, game logic,
 - **Authentication API**: User registration, login, logout, and session management
 - **Game API**: Scenario generation and answer submission
 - **Achievements API**: Track and retrieve user achievements
+- **Leaderboard**: Top 100 users ranked by score
+- **Profile API**: User profile, bio, and stats management
+- **Death Certificate API**: Life insurance PDF scenario generation and validation
+- **AI Hints**: Progressive hint system via Claude API
 - **Database**: SQLite with users, scenarios, attempts, and achievements tables
-- **AI Integration**: Interfaces with AI models for scenario generation and classification
+- **AI Integration**: Claude API for narrative generation and feedback; XGBoost for claim classification
+- **Itemized Bill Generation**: Realistic bills with trainable errors — upcoding, unbundling, amount mismatch, and date errors (medical/dental)
+- **Policy-Level Errors**: Trainable invalid scenarios — lapsed policy, late filing, exclusions, and coverage mismatch
 
 ## API Endpoints
+
+### Health
+- `GET /api/health` - Health check
 
 ### Authentication
 - `POST /api/auth/register` - Create new user account
@@ -23,8 +32,26 @@ Flask backend for the CCAP Claims Training Game with authentication, game logic,
 - `POST /api/scenario/submit` - Submit answer and get feedback
 - `GET /api/reference/codes` - Get reference code mappings
 
-### Achievements
+### Profile
+- `GET /api/profile` - Get current user's profile and stats
+- `POST /api/profile/update` - Update bio or profile picture
+
+### Achievements & Leaderboard
 - `GET /api/achievements` - Get all achievements with unlock status
+- `GET /api/leaderboard` - Get top 100 users ranked by score
+
+### Death Certificate (Life Insurance)
+- `POST /api/death-certificate/generate` - Generate a life insurance death certificate scenario
+- `POST /api/death-certificate/validate` - Validate the user's error checklist submission
+- `GET /api/death-certificate/error-options` - Get available checklist options
+
+### AI
+- `POST /api/ai/hint` - Get a progressive hint for the current scenario
+- `GET /api/ai/performance` - Get AI model performance metrics
+- `GET /api/ai/test-flan` - Test Flan-T5 model availability
+
+### Admin
+- `GET /api/admin/stats` - Get trainee roster, accuracy rates, and confusion matrix (Admin1 only)
 
 ## Setup
 

@@ -45,20 +45,14 @@ function ClientProfile({ clientData }) {
         {clientData.policy_end_date && (
           <div className="profile-row">
             <span className="profile-label">Policy End:</span>
-            <span className="profile-value" style={{ color: clientData.policy_lapsed ? '#f87171' : 'inherit' }}>
-              {formatDate(clientData.policy_end_date)}
-              {clientData.policy_lapsed && ' ⚠ LAPSED'}
-            </span>
+            <span className="profile-value">{formatDate(clientData.policy_end_date)}</span>
           </div>
         )}
 
         {clientData.claim_submission_date && (
           <div className="profile-row">
             <span className="profile-label">Claim Filed:</span>
-            <span className="profile-value" style={{ color: clientData.filing_deadline_exceeded ? '#f87171' : 'inherit' }}>
-              {formatDate(clientData.claim_submission_date)}
-              {clientData.filing_deadline_exceeded && ' ⚠ LATE'}
-            </span>
+            <span className="profile-value">{formatDate(clientData.claim_submission_date)}</span>
           </div>
         )}
 
@@ -75,9 +69,7 @@ function ClientProfile({ clientData }) {
         {clientData.excluded_procedures && clientData.excluded_procedures.length > 0 && (
           <div className="profile-row">
             <span className="profile-label">Exclusions:</span>
-            <span className="profile-value" style={{ color: '#f87171' }}>
-              {clientData.excluded_procedures.join(', ')}
-            </span>
+            <span className="profile-value">{clientData.excluded_procedures.join(', ')}</span>
           </div>
         )}
         

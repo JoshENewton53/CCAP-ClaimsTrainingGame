@@ -80,10 +80,31 @@ docker-compose up --build
 
 ## AI Models Setup
 
-The AI models are not included in the repository. See [MODEL_SETUP.md](MODEL_SETUP.md) for instructions on:
-- Training models yourself
+The XGBoost classifier is not included in the repository due to file size. See [MODEL_SETUP.md](MODEL_SETUP.md) for instructions on:
+- Training the classifier yourself
 - Obtaining pre-trained models
-- Running without AI models
+- Running without AI models (the app falls back to rule-based logic automatically)
+
+## Anthropic API Key
+
+The app uses the Claude API for scenario narrative generation and feedback. To enable it, set the `ANTHROPIC_API_KEY` environment variable before starting the backend:
+
+**Windows PowerShell:**
+```powershell
+$env:ANTHROPIC_API_KEY = "your-key-here"
+```
+
+**Mac/Linux:**
+```bash
+export ANTHROPIC_API_KEY="your-key-here"
+```
+
+Alternatively, create a `backend/.env` file:
+```
+ANTHROPIC_API_KEY=your-key-here
+```
+
+If the key is not set, the app will fall back to rule-based scenario generation.
 
 ## Database Management
 
@@ -130,7 +151,7 @@ Ensure the backend is running and the frontend proxy is configured correctly in 
 
 ### Missing AI Models
 
-The app will fail if AI models are missing. Follow [MODEL_SETUP.md](MODEL_SETUP.md) to set up models.
+If the XGBoost classifier is missing, the app automatically falls back to rule-based claim classification. See [MODEL_SETUP.md](MODEL_SETUP.md) for model setup instructions.
 
 ## Key Files
 
